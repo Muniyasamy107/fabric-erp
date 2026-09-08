@@ -1,0 +1,160 @@
+.tag-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1250;
+}
+
+.tag-modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tag-actions {
+  display: flex;
+  justify-content: space-between;
+  width: 320px;
+  margin-bottom: 15px;
+}
+
+.tag-print-btn {
+  background: linear-gradient(135deg, #d4af37, #aa820a);
+  color: #000;
+  font-weight: 600;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.tag-close-btn {
+  background: #161b22;
+  border: 1px solid #30363d;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* 🏷️ Physical Luxury Hangtag Design */
+.luxury-fabric-tag {
+  width: 320px;
+  background-color: #ffffff;
+  color: #1a1a1a;
+  padding: 24px;
+  border-radius: 8px;
+  border: 2px solid #d4af37;
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.tag-header {
+  display: flex;
+  flex-direction: column;
+}
+
+.tag-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  letter-spacing: 2px;
+  color: #aa820a;
+  font-weight: 700;
+}
+
+.tag-edition {
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  color: #777;
+}
+
+.tag-divider {
+  height: 1px;
+  background: #d4af37;
+  margin: 12px 0;
+}
+
+.tag-fabric-name {
+  font-size: 15px;
+  margin: 0 0 12px 0;
+  color: #000;
+  font-weight: 600;
+}
+
+.tag-specs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  background: #f8f9fa;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px dashed #d4af37;
+  margin-bottom: 12px;
+}
+
+.spec-item {
+  text-align: left;
+}
+
+.spec-label {
+  display: block;
+  font-size: 9px;
+  color: #777;
+  font-weight: 600;
+}
+
+.spec-value {
+  font-size: 12px;
+  font-weight: 600;
+  color: #222;
+}
+
+.gold-spec {
+  color: #aa820a;
+}
+
+.tag-barcode-box {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.tag-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 8px;
+  color: #888;
+  border-top: 1px solid #eee;
+  padding-top: 8px;
+}
+
+/* 🖨️ Direct Sticker Print Styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .luxury-fabric-tag, .luxury-fabric-tag * {
+    visibility: visible;
+  }
+  .luxury-fabric-tag {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 320px;
+    border: 1px solid #000;
+    box-shadow: none;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

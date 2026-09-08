@@ -1,0 +1,248 @@
+.po-print-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1300;
+  padding: 30px 0;
+  overflow-y: auto;
+}
+
+.po-print-container {
+  max-width: 820px;
+  width: 100%;
+  margin: auto;
+}
+
+.po-print-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.gold-print-btn {
+  background: linear-gradient(135deg, #d4af37, #aa820a);
+  color: #000;
+  font-weight: 700;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.close-btn {
+  background: #161b22;
+  border: 1px solid #30363d;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Printable Paper */
+.po-paper {
+  background: #ffffff;
+  color: #1a1a1a;
+  padding: 40px;
+  border-radius: 4px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+  font-family: 'Poppins', sans-serif;
+}
+
+.po-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.po-brand h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  letter-spacing: 2px;
+  color: #aa820a;
+  margin: 0;
+}
+
+.po-brand .tag {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: #666;
+  margin: 2px 0 6px;
+}
+
+.po-brand .addr {
+  font-size: 11px;
+  color: #555;
+  line-height: 1.4;
+}
+
+.po-meta {
+  text-align: right;
+  font-size: 12px;
+  color: #444;
+}
+
+.po-badge {
+  display: inline-block;
+  background: #222;
+  color: #f3e5ab;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 3px;
+  margin-bottom: 6px;
+}
+
+.po-divider {
+  height: 2px;
+  background: linear-gradient(90deg, #aa820a, #f3e5ab, #aa820a);
+  margin: 18px 0;
+}
+
+.po-supplier-block {
+  margin-bottom: 16px;
+}
+
+.sec-lbl {
+  font-size: 10px;
+  color: #777;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.po-supplier-block h3 {
+  font-size: 16px;
+  margin: 4px 0 2px;
+  color: #000;
+}
+
+.po-supplier-block p {
+  font-size: 12px;
+  color: #555;
+  margin: 2px 0;
+}
+
+.po-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.po-table th {
+  background: #f8f9fa;
+  border-bottom: 2px solid #aa820a;
+  padding: 10px;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #333;
+  text-align: left;
+}
+
+.po-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #eee;
+  font-size: 12px;
+}
+
+.sku-tag {
+  font-size: 10px;
+  color: #888;
+}
+
+.text-right { text-align: right; }
+.bold-txt { font-weight: 700; }
+
+.po-bottom-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 25px;
+  margin-top: 20px;
+}
+
+.po-terms h4 {
+  font-size: 11px;
+  color: #aa820a;
+  margin: 0 0 6px;
+}
+
+.po-terms ul {
+  padding-left: 15px;
+  font-size: 10px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.custom-notes {
+  font-size: 11px;
+  color: #333;
+  margin-top: 8px;
+}
+
+.po-total-box {
+  background: #fbfbfb;
+  border: 1px solid #e0e0e0;
+  padding: 15px;
+  border-radius: 4px;
+  text-align: right;
+}
+
+.total-line {
+  font-size: 14px;
+  color: #333;
+  font-weight: 600;
+}
+
+.gold-amt {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  color: #aa820a;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.po-footer-sign {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+}
+
+.sign-col {
+  text-align: center;
+  font-size: 11px;
+  color: #666;
+  width: 220px;
+}
+
+.sign-col .line {
+  height: 1px;
+  background: #333;
+  margin-bottom: 6px;
+}
+
+/* Direct Print */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .po-paper, .po-paper * {
+    visibility: visible;
+  }
+  .po-paper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    box-shadow: none;
+    padding: 0;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

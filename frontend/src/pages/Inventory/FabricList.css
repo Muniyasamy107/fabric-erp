@@ -1,0 +1,376 @@
+.fabric-container {
+  padding: 30px;
+  background: #0d1117;
+  min-height: calc(100vh - 70px);
+  color: #fff;
+}
+.fabric-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  padding-bottom: 15px;
+}
+.fabric-title {
+  font-family: "Playfair Display", serif;
+  color: #d4af37;
+  font-size: 28px;
+  margin: 0;
+}
+.fabric-sub {
+  color: #8b949e;
+  font-size: 14px;
+  margin: 4px 0 0;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.view-toggle {
+  display: flex;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.vt {
+  background: #161b22;
+  border: none;
+  color: #8b949e;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.vt.active {
+  background: #d4af37;
+  color: #000;
+  font-weight: 700;
+}
+.gold-btn {
+  background: linear-gradient(135deg, #d4af37, #aa820a);
+  color: #000;
+  font-weight: 600;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.fabric-toolbar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.fabric-search {
+  flex: 1;
+  background: #161b22;
+  border: 1px solid #30363d;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 6px;
+}
+.fabric-search:focus {
+  outline: none;
+  border-color: #d4af37;
+}
+.result-count {
+  color: #8b949e;
+  font-size: 12px;
+}
+
+/* CARD GRID */
+.fabric-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+.product-card {
+  background: #161b22;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.15);
+  border-color: #d4af37;
+}
+.product-card.card-low {
+  border-color: rgba(248, 81, 73, 0.4);
+}
+.product-card.card-remnant {
+  border-color: rgba(227, 179, 65, 0.5);
+}
+
+.card-image-wrap {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  background: #0d1117;
+}
+.card-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+.product-card:hover .card-image-wrap img {
+  transform: scale(1.05);
+}
+
+.remnant-ribbon {
+  position: absolute;
+  top: 10px;
+  right: -28px;
+  background: #e3b341;
+  color: #000;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 3px 30px;
+  transform: rotate(45deg);
+  letter-spacing: 1px;
+}
+.low-ribbon {
+  position: absolute;
+  top: 10px;
+  right: -24px;
+  background: #f85149;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 3px 28px;
+  transform: rotate(45deg);
+  letter-spacing: 1px;
+}
+
+.card-body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.card-sku {
+  font-size: 11px;
+  color: #d4af37;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.card-name {
+  font-family: "Playfair Display", serif;
+  font-size: 16px;
+  margin: 0;
+  color: #fff;
+}
+.card-meta {
+  display: flex;
+  gap: 8px;
+  font-size: 11px;
+  color: #8b949e;
+}
+.card-meta span {
+  background: #0d1117;
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid #21262d;
+}
+.card-location {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #c9d1d9;
+}
+.card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+  padding-top: 8px;
+  border-top: 1px solid #21262d;
+}
+.card-price {
+  font-size: 18px;
+  font-weight: 700;
+  color: #d4af37;
+}
+.card-price small {
+  font-size: 11px;
+  color: #8b949e;
+}
+.card-stock {
+  font-weight: 700;
+  font-size: 14px;
+}
+.card-stock.ok {
+  color: #3fb950;
+}
+.card-stock.low {
+  color: #f85149;
+}
+
+.card-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+.ca-btn {
+  background: transparent;
+  padding: 5px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+}
+.ca-btn.edit {
+  border: 1px solid #58a6ff;
+  color: #58a6ff;
+}
+.ca-btn.tag {
+  border: 1px solid #d4af37;
+  color: #d4af37;
+}
+.ca-btn.del {
+  border: 1px solid #f85149;
+  color: #f85149;
+}
+.ca-btn.edit:hover {
+  background: #58a6ff;
+  color: #000;
+}
+.ca-btn.tag:hover {
+  background: #d4af37;
+  color: #000;
+}
+.ca-btn.del:hover {
+  background: #f85149;
+  color: #000;
+}
+
+/* TABLE VIEW */
+.fabric-table-wrapper {
+  background: #161b22;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 8px;
+  overflow-x: auto;
+}
+.luxury-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.luxury-table th {
+  background: #1c2229;
+  color: #d4af37;
+  padding: 14px 12px;
+  font-size: 12px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  text-align: left;
+}
+.luxury-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #21262d;
+  font-size: 13px;
+}
+.thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #30363d;
+}
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.gold {
+  color: #d4af37;
+  font-weight: 700;
+}
+.sub {
+  font-size: 10px;
+  color: #8b949e;
+  margin-top: 2px;
+}
+.ok {
+  color: #3fb950;
+  font-weight: 700;
+}
+.low {
+  color: #f85149;
+  font-weight: 700;
+}
+.remnant-badge {
+  display: block;
+  font-size: 9px;
+  color: #e3b341;
+  font-weight: 700;
+}
+.loc-tag {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  color: #c9d1d9;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.text-center {
+  text-align: center;
+  padding: 30px;
+  color: #8b949e;
+}
+.actions {
+  display: flex;
+  gap: 6px;
+}
+.btn-e,
+.btn-d,
+.btn-t {
+  background: transparent;
+  padding: 5px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+.btn-e {
+  border: 1px solid #58a6ff;
+  color: #58a6ff;
+}
+.btn-t {
+  border: 1px solid #d4af37;
+  color: #d4af37;
+  font-size: 11px;
+}
+.btn-d {
+  border: 1px solid #f85149;
+  color: #f85149;
+}
+.btn-e:hover {
+  background: #58a6ff;
+  color: #000;
+}
+.btn-t:hover {
+  background: #d4af37;
+  color: #000;
+}
+.btn-d:hover {
+  background: #f85149;
+  color: #000;
+}
+
+.empty-catalog-box {
+  text-align: center;
+  padding: 40px;
+  color: #8b949e;
+  font-size: 13px;
+}

@@ -1,0 +1,118 @@
+.beam-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1350;
+  padding: 20px 0;
+  overflow-y: auto;
+}
+
+.beam-modal-content {
+  width: 720px;
+  max-height: 90vh;
+  background: #161b22;
+  border: 1px solid #d4af37;
+  border-radius: 8px;
+  padding: 30px;
+  color: #fff;
+  overflow-y: auto;
+  box-shadow: 0 0 35px rgba(212, 175, 55, 0.2);
+}
+
+.beam-modal-content h2 {
+  font-family: 'Playfair Display', serif;
+  color: #d4af37;
+  margin: 0;
+}
+
+.modal-sub {
+  color: #8b949e;
+  font-size: 13px;
+  margin: 4px 0 20px;
+}
+
+.beam-form-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 12px;
+}
+
+.beam-form-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.form-group.flex-1 { flex: 1; }
+
+.form-group label {
+  font-size: 12px;
+  color: #8b949e;
+}
+
+.form-group input,
+.form-group select {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  color: #fff;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #d4af37;
+}
+
+.sizing-box-card {
+  background: #0d1117;
+  border: 1px solid #21262d;
+  padding: 16px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.sizing-box-card h4 {
+  font-size: 13px;
+  color: #f3e5ab;
+  margin: 0 0 12px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.btn-cancel {
+  background: transparent;
+  border: 1px solid #30363d;
+  color: #8b949e;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-gold-save {
+  background: linear-gradient(135deg, #d4af37, #aa820a);
+  color: #000;
+  font-weight: 700;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 4px;
+  cursor: pointer;
+}

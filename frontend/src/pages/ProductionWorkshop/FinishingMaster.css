@@ -1,0 +1,121 @@
+.fin-page {
+  padding: 30px;
+  background-color: #0d1117;
+  min-height: calc(100vh - 70px);
+  color: #fff;
+}
+
+.fin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  padding-bottom: 15px;
+}
+
+.fin-kicker {
+  font-size: 11px;
+  color: #d4af37;
+  letter-spacing: 2px;
+  font-weight: 700;
+  display: block;
+}
+
+.fin-title {
+  font-family: 'Playfair Display', serif;
+  color: #d4af37;
+  font-size: 28px;
+  margin: 6px 0 4px;
+}
+
+.fin-sub {
+  color: #8b949e;
+  font-size: 14px;
+  margin: 0;
+}
+
+.gold-btn {
+  background: linear-gradient(135deg, #d4af37, #aa820a);
+  color: #000;
+  font-weight: 700;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.fin-table-card {
+  background: #161b22;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.fin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.fin-table th {
+  background: #1c2229;
+  color: #8b949e;
+  padding: 14px 12px;
+  text-align: left;
+  font-size: 12px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.fin-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #21262d;
+  font-size: 13px;
+}
+
+.gold-code { color: #d4af37; font-weight: 600; }
+.line-tag { background: #0d1117; border: 1px solid #30363d; padding: 2px 6px; border-radius: 4px; font-size: 11px; color: #f3e5ab; }
+.treatment-txt { font-weight: 600; color: #fff; }
+.temp-txt { color: #e3b341; font-weight: 700; }
+.green-txt { color: #3fb950; font-weight: 700; }
+
+.status-select {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.status-select.queued { border-color: #8b949e; color: #8b949e; }
+.status-select.in_stenter { border-color: #e3b341; color: #e3b341; }
+.status-select.calendering { border-color: #58a6ff; color: #58a6ff; }
+.status-select.completed { border-color: #3fb950; color: #3fb950; }
+
+.btn-print-batch {
+  background: transparent;
+  border: 1px solid #58a6ff;
+  color: #58a6ff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.btn-print-batch:hover {
+  background: #58a6ff;
+  color: #000;
+}
+
+.empty-text {
+  text-align: center;
+  color: #8b949e;
+  padding: 40px;
+}

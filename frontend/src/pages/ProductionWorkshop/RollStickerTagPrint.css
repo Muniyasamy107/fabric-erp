@@ -1,0 +1,187 @@
+.sticker-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1400;
+  padding: 30px 0;
+  overflow-y: auto;
+}
+
+.sticker-container {
+  max-width: 500px;
+  width: 100%;
+  margin: auto;
+}
+
+.sticker-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.gold-print-btn {
+  background: linear-gradient(135deg, #d4af37, #aa820a);
+  color: #000;
+  font-weight: 700;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.close-btn {
+  background: #161b22;
+  border: 1px solid #30363d;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* 4" x 6" Thermal Label Sheet */
+.industrial-roll-tag {
+  background: #ffffff;
+  color: #000000;
+  padding: 24px;
+  border: 2px solid #000;
+  border-radius: 6px;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+}
+
+.tag-header {
+  border-bottom: 2px solid #000;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.tag-mill {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+}
+
+.tag-sub {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.tag-grid-2 {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 15px;
+  margin-bottom: 12px;
+}
+
+.tag-qr-box {
+  text-align: center;
+  border: 1px dashed #444;
+  padding: 6px;
+}
+
+.qr-serial {
+  font-size: 9px;
+  font-weight: 700;
+  display: block;
+  margin-top: 4px;
+}
+
+.tag-core-info .lbl {
+  font-size: 9px;
+  font-weight: 700;
+  color: #555;
+}
+
+.tag-fabric-name {
+  font-size: 15px;
+  margin: 2px 0 4px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.tag-lot-line {
+  font-size: 10px;
+  margin: 0;
+  color: #333;
+}
+
+.tag-grade-stamp {
+  display: inline-block;
+  background: #000;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-top: 6px;
+}
+
+.tag-measurements-box {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  border: 2px solid #000;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.meas-col {
+  padding: 8px 4px;
+  border-right: 1px solid #000;
+}
+
+.meas-col:last-child {
+  border-right: none;
+}
+
+.m-lbl {
+  font-size: 8px;
+  font-weight: 700;
+  display: block;
+  color: #555;
+}
+
+.m-val {
+  font-size: 14px;
+  font-weight: 900;
+  display: block;
+  margin-top: 2px;
+}
+
+.tag-footer-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  border-top: 1px solid #666;
+  padding-top: 6px;
+}
+
+/* Direct Print */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .industrial-roll-tag, .industrial-roll-tag * {
+    visibility: visible;
+  }
+  .industrial-roll-tag {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    box-shadow: none;
+    padding: 10px;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

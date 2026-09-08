@@ -1,0 +1,185 @@
+.telemetry-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1350;
+  padding: 20px 0;
+  overflow-y: auto;
+}
+
+.telemetry-modal-content {
+  width: 680px;
+  background: #161b22;
+  border: 1px solid #d4af37;
+  border-radius: 8px;
+  padding: 30px;
+  color: #fff;
+  box-shadow: 0 0 35px rgba(212, 175, 55, 0.2);
+}
+
+.tm-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.tm-kicker {
+  font-size: 10px;
+  color: #d4af37;
+  letter-spacing: 2px;
+  font-weight: 700;
+  display: block;
+}
+
+.tm-title-group h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  color: #fff;
+  margin: 4px 0 2px;
+}
+
+.tm-title-group p {
+  font-size: 12px;
+  color: #8b949e;
+  margin: 0;
+}
+
+.tm-title-group strong { color: #f3e5ab; }
+
+.tm-live-pill {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.tm-live-pill.active_running { background: rgba(63, 185, 80, 0.15); color: #3fb950; border: 1px solid #3fb950; }
+.tm-live-pill.warp_break_stop { background: rgba(248, 81, 73, 0.2); color: #f85149; border: 1px solid #f85149; }
+.tm-live-pill.weft_feeder_stop { background: rgba(227, 179, 65, 0.2); color: #e3b341; border: 1px solid #e3b341; }
+.tm-live-pill.beam_gaiting_change { background: rgba(88, 166, 255, 0.2); color: #58a6ff; border: 1px solid #58a6ff; }
+
+.tm-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.tm-m-box {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  padding: 12px 14px;
+  border-radius: 6px;
+}
+
+.tm-m-box .lbl {
+  font-size: 9px;
+  color: #8b949e;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.5px;
+}
+
+.tm-m-box .val {
+  font-size: 18px;
+  color: #fff;
+  display: block;
+  margin: 4px 0 2px;
+}
+.tm-m-box .val.green { color: #3fb950; }
+.tm-m-box .val.gold { color: #d4af37; font-family: 'Playfair Display', serif; }
+
+.tm-m-box small {
+  font-size: 10px;
+  color: #8b949e;
+}
+
+.tm-weaver-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #0d1117;
+  border: 1px solid #21262d;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #c9d1d9;
+  margin-bottom: 20px;
+}
+
+.tm-weaver-bar strong { color: #fff; }
+
+.tm-control-form label {
+  font-size: 12px;
+  color: #8b949e;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.tm-status-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.btn-state-opt {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  color: #c9d1d9;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-state-opt.running.active { border-color: #3fb950; background: rgba(63, 185, 80, 0.15); color: #3fb950; }
+.btn-state-opt.warp-stop.active { border-color: #f85149; background: rgba(248, 81, 73, 0.15); color: #f85149; }
+.btn-state-opt.weft-stop.active { border-color: #e3b341; background: rgba(227, 179, 65, 0.15); color: #e3b341; }
+.btn-state-opt.beam-change.active { border-color: #58a6ff; background: rgba(88, 166, 255, 0.15); color: #58a6ff; }
+
+.tm-control-form input {
+  width: 100%;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  color: #fff;
+  padding: 10px;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-cancel {
+  background: transparent;
+  border: 1px solid #30363d;
+  color: #8b949e;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-gold-save {
+  background: linear-gradient(135deg, #d4af37, #aa820a);
+  color: #000;
+  font-weight: 700;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 4px;
+  cursor: pointer;
+}

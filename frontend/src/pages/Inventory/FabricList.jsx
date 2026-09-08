@@ -1,0 +1,175 @@
+import React, { useEffect, useState } from 'react';
+import { getFabrics, deleteFabric } from '../../services/fabricService';
+import AddFabricModal from './AddFabricModal';
+import BarcodeGenerator from './BarcodeGenerator';
+import { MapPin, Edit, Trash2, Tag } from 'lucide-react';
+import './FabricList.css';
+
+const DEFAULT_IMG = 'https://images.unsplash.com/photo-1618220179428-22790b461013?w=400&auto=format&fit=crop&q=80';
+
+const FabricList = () => {
+  const [fabrics, setFabrics] = useState([]);
+  const [modalFabric, setModalFabric] = useState(undefined);
+  const [tagFabric, setTagFabric] = useState(null);
+  const [search, setSearch] = useState('');
+  const [viewMode, setViewMode] = useState('card');
+
+  const load = async () => {
+    try {
+      const res = await getFabrics();
+      setFabrics(res.data || []);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => { load(); }, []);
+
+  const handleDelete = async (f) => {
+    const name = f.fabricName || f.name;
+    const code = f.qualityCode || f.itemCode;
+    if (!window.confirm(`Are you sure you want to permanently delete fabric quality "${name}" (${code})?`)) return;
+    try {
+      await deleteFabric(f.id);
+      load();
+    } catch (err) {
+      alert('Cannot delete this fabric quality.');
+    }
+  };
+
+  const filtered = fabrics.filter((f) => {
+    const q = search.toLowerCase();
+    return !q ||
+      (f.qualityCode || f.itemCode || '').toLowerCase().includes(q) ||
+      (f.fabricName || f.name || '').toLowerCase().includes(q) ||
+      (f.fabricType || '').toLowerCase().includes(q);
+  });
+
+  return (
+    <div className="fabric-container">
+      <div className="fabric-header">
+        <div>
+          <h1 className="fabric-title">Fabric Product Catalog</h1>
+          <p className="fabric-sub">Real-time inventory, rack shelf locations, GST and remnant status</p>
+        </div>
+        <div className="header-right">
+          <div className="view-toggle">
+            <button className={viewMode === 'card' ? 'vt active' : 'vt'} onClick={() => setViewMode('card')}>Cards</button>
+            <button className={viewMode === 'table' ? 'vt active' : 'vt'} onClick={() => setViewMode('table')}>Table</button>
+          </div>
+          <button className="gold-btn" onClick={() => setModalFabric(null)}>+ Add Product</button>
+        </div>
+      </div>
+
+      <div className="fabric-toolbar">
+        <input className="fabric-search" placeholder="Search SKU, name, material..." value={search} onChange={e => setSearch(e.target.value)} />
+        <span className="result-count">{filtered.length} Products</span>
+      </div>
+
+      {/* CARD VIEW */}
+      {viewMode === 'card' && (
+        <div className="fabric-card-grid">
+          {filtered.length === 0 ? (
+            <div className="empty-catalog-box">No products found.</div>
+          ) : filtered.map((f) => {
+            const stock = Number(f.totalStockMeters ?? f.totalAvailableMeters ?? 0);
+            const price = Number(f.wholesalePricePerMeter ?? f.pricePerMeter ?? 0);
+            const img = f.imageUrl && f.imageUrl.trim().startsWith('http') ? f.imageUrl.trim() : DEFAULT_IMG;
+            const loc = f.warehouseBinLocation || f.rackLocation || 'Rack A-01';
+            const alertLimit = Number(f.minStockAlert ?? 10);
+            const isLow = stock <= alertLimit;
+            const isRemnant = f.isRemnant;
+
+            return (
+              <div key={f.id} className={`product-card ${isLow ? 'card-low' : ''} ${isRemnant ? 'card-remnant' : ''}`}>
+                <div className="card-image-wrap">
+                  <img src={img} alt={f.fabricName} onError={e => e.target.src = DEFAULT_IMG} />
+                  {isRemnant && <span className="remnant-ribbon">REMNANT</span>}
+                  {isLow && !isRemnant && <span className="low-ribbon">LOW STOCK</span>}
+                </div>
+                <div className="card-body">
+                  <div className="card-sku">{f.qualityCode || f.itemCode}</div>
+                  <h3 className="card-name">{f.fabricName || f.name}</h3>
+                  <div className="card-meta">
+                    <span>{f.fabricType}</span>
+                    <span>{f.gsm} GSM</span>
+                    <span>GST {f.gstRate || 5}%</span>
+                  </div>
+                  <div className="card-location">
+                    <MapPin size={12} color="#d4af37" /> {loc}
+                  </div>
+                  <div className="card-bottom">
+                    <div className="card-price">₹{price.toFixed(2)}<small>/m</small></div>
+                    <div className={`card-stock ${isLow ? 'low' : 'ok'}`}>{stock.toFixed(1)} m</div>
+                  </div>
+                  <div className="card-actions">
+                    <button className="ca-btn edit" onClick={() => setModalFabric(f)}><Edit size={12} /> Edit</button>
+                    <button className="ca-btn tag" onClick={() => setTagFabric(f)}><Tag size={12} /> Tag</button>
+                    <button className="ca-btn del" onClick={() => handleDelete(f)}><Trash2 size={12} /></button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* TABLE VIEW */}
+      {viewMode === 'table' && (
+        <div className="fabric-table-wrapper">
+          <table className="luxury-table">
+            <thead>
+              <tr>
+                <th>Swatch</th><th>SKU</th><th>Fabric Name</th><th>Material</th>
+                <th>GSM</th><th>Rack</th><th>HSN</th><th>Rate/m</th>
+                <th>GST</th><th>Stock</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.length === 0 ? (
+                <tr><td colSpan="11" className="text-center">No products found.</td></tr>
+              ) : filtered.map((f) => {
+                const stock = Number(f.totalStockMeters ?? f.totalAvailableMeters ?? 0);
+                const price = Number(f.wholesalePricePerMeter ?? f.pricePerMeter ?? 0);
+                const img = f.imageUrl && f.imageUrl.trim().startsWith('http') ? f.imageUrl.trim() : DEFAULT_IMG;
+                const loc = f.warehouseBinLocation || f.rackLocation || 'Rack A-01';
+                const alertLimit = Number(f.minStockAlert ?? 10);
+                return (
+                  <tr key={f.id}>
+                    <td><div className="thumb"><img src={img} alt="" onError={e => e.target.src = DEFAULT_IMG} /></div></td>
+                    <td className="gold">{f.qualityCode || f.itemCode}</td>
+                    <td><strong>{f.fabricName || f.name}</strong><div className="sub">{f.seasonCollection}</div></td>
+                    <td>{f.fabricType}</td>
+                    <td>{f.gsm}</td>
+                    <td><span className="loc-tag"><MapPin size={11} color="#d4af37" /> {loc}</span></td>
+                    <td>{f.hsnCode || '5007'}</td>
+                    <td>₹{price.toFixed(2)}</td>
+                    <td>{f.gstRate || 5}%</td>
+                    <td className={stock <= alertLimit ? 'low' : 'ok'}>
+                      {stock.toFixed(1)} m
+                      {f.isRemnant && <span className="remnant-badge">Remnant</span>}
+                    </td>
+                    <td>
+                      <div className="actions">
+                        <button className="btn-e" onClick={() => setModalFabric(f)}><Edit size={12} /></button>
+                        <button className="btn-t" onClick={() => setTagFabric(f)}>Tag</button>
+                        <button className="btn-d" onClick={() => handleDelete(f)}><Trash2 size={12} /></button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {modalFabric !== undefined && (
+        <AddFabricModal fabric={modalFabric} onClose={() => setModalFabric(undefined)} onSuccess={() => { setModalFabric(undefined); load(); }} />
+      )}
+      {tagFabric && <BarcodeGenerator fabric={tagFabric} onClose={() => setTagFabric(null)} />}
+    </div>
+  );
+};
+
+export default FabricList;

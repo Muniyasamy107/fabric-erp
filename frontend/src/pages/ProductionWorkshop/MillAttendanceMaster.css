@@ -1,0 +1,448 @@
+.att-page {
+  padding: 30px;
+  background-color: #0d1117;
+  min-height: calc(100vh - 70px);
+  color: #fff;
+  position: relative;
+}
+
+/* 🌟 Luxury Floating In-App Toast Banner */
+.factory-toast-banner {
+  position: fixed;
+  top: 25px;
+  right: 30px;
+  background: #161b22;
+  border: 1px solid #d4af37;
+  color: #ffffff;
+  padding: 14px 20px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(212, 175, 55, 0.25);
+  z-index: 3000;
+  animation: slideInToast 0.35s ease-out;
+  max-width: 480px;
+}
+
+@keyframes slideInToast {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.factory-toast-banner.toast-success {
+  border-color: #3fb950;
+}
+.factory-toast-banner.toast-success .toast-icon {
+  color: #3fb950;
+}
+
+.factory-toast-banner.toast-error {
+  border-color: #f85149;
+}
+.factory-toast-banner.toast-error .toast-icon {
+  color: #f85149;
+}
+
+.factory-toast-banner.toast-info {
+  border-color: #58a6ff;
+}
+.factory-toast-banner.toast-info .toast-icon {
+  color: #58a6ff;
+}
+
+.toast-text {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  flex: 1;
+}
+
+.toast-close-btn {
+  background: transparent;
+  border: none;
+  color: #8b949e;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+}
+
+.toast-close-btn:hover {
+  color: #fff;
+}
+
+.att-header {
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.att-kicker {
+  font-size: 11px;
+  color: #d4af37;
+  letter-spacing: 2px;
+  font-weight: 700;
+  display: block;
+}
+
+.att-title {
+  font-family: 'Playfair Display', serif;
+  color: #d4af37;
+  font-size: 28px;
+  margin: 6px 0 4px;
+}
+
+.att-sub {
+  color: #8b949e;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Tabs */
+.att-tabs {
+  display: flex;
+  gap: 10px;
+  border-bottom: 1px solid #21262d;
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: #8b949e;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.tab-btn.active {
+  color: #d4af37;
+  border-bottom-color: #d4af37;
+}
+
+/* Filter Card */
+.sheet-filters-card {
+  background: #161b22;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.filter-row {
+  display: flex;
+  gap: 20px;
+}
+
+.filter-row .grp {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.filter-row label {
+  font-size: 11px;
+  color: #8b949e;
+}
+
+.filter-row input,
+.filter-row select {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+/* Table Card */
+.att-table-card {
+  background: #161b22;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 8px;
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.table-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #21262d;
+  padding-bottom: 12px;
+  margin-bottom: 15px;
+}
+
+.table-header-row h3 {
+  font-family: 'Playfair Display', serif;
+  color: #d4af37;
+  font-size: 18px;
+  margin: 0;
+}
+
+.gold-btn {
+  background: linear-gradient(135deg, #d4af37, #aa820a);
+  color: #000;
+  font-weight: 700;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.att-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.att-table th {
+  background: #1c2229;
+  color: #8b949e;
+  padding: 12px;
+  font-size: 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.att-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #21262d;
+  font-size: 13px;
+}
+
+.table-input,
+.table-select,
+.table-input-number {
+  background: #0d1117 !important;
+  border: 1px solid #30363d !important;
+  color: #fff !important;
+  padding: 6px !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+}
+
+.table-input { width: 90px; }
+.table-input-number { width: 60px; text-align: center; }
+.table-select { width: 150px; }
+
+.gold-code { color: #d4af37; font-weight: 600; }
+.muted-text { font-size: 11px; color: #8b949e; }
+.text-right { text-align: right; }
+.bold-amt { font-weight: 700; color: #3fb950; font-size: 14px; }
+
+.status-pill {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+}
+.status-pill.present { background: rgba(63, 185, 80, 0.15); color: #3fb950; }
+.status-pill.overtime_double_shift { background: rgba(227, 179, 65, 0.15); color: #e3b341; }
+.status-pill.absent { background: rgba(248, 81, 73, 0.15); color: #f85149; }
+
+/* Directory Layout */
+.directory-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 24px;
+}
+
+.dir-form-card,
+.dir-table-card {
+  background: #161b22;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 8px;
+  padding: 22px;
+}
+
+.dir-form-card h3,
+.dir-table-card h3 {
+  font-family: 'Playfair Display', serif;
+  color: #d4af37;
+  margin-top: 0;
+}
+
+.dir-form-card label {
+  display: block;
+  font-size: 12px;
+  color: #8b949e;
+  margin: 10px 0 4px;
+}
+
+.dir-form-card input,
+.dir-form-card select {
+  width: 100%;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  color: #fff;
+  padding: 9px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 13px;
+}
+
+.dir-form-card button {
+  width: 100%;
+  margin-top: 16px;
+  background: linear-gradient(135deg, #d4af37, #aa820a);
+  border: none;
+  color: #000;
+  font-weight: 700;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dir-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dir-table th {
+  text-align: left;
+  color: #8b949e;
+  font-size: 12px;
+  padding: 10px 8px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.dir-table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #21262d;
+  font-size: 13px;
+}
+
+.m-tag {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+.btn-delete-worker {
+  background: transparent;
+  border: 1px solid #f85149;
+  color: #f85149;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-delete-worker:hover {
+  background: #f85149;
+  color: #fff;
+}
+
+/* KPI Grid */
+.att-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.att-card {
+  background: #161b22;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.att-card.green-border {
+  border-color: #3fb950;
+  background: linear-gradient(145deg, #1c261e 0%, #161b22 100%);
+}
+
+.kpi-icon {
+  background: rgba(212, 175, 55, 0.1);
+  color: #d4af37;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.kpi-lbl {
+  font-size: 11px;
+  color: #8b949e;
+  letter-spacing: 1px;
+}
+
+.kpi-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  margin: 2px 0;
+}
+
+.green-val { color: #3fb950; }
+.gold-val { color: #d4af37; }
+
+.att-card small {
+  font-size: 11px;
+  color: #8b949e;
+}
+
+.att-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.att-toolbar input {
+  background: #161b22;
+  border: 1px solid #30363d;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+.btn-print-muster {
+  background: #161b22;
+  border: 1px solid #58a6ff;
+  color: #58a6ff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.btn-print-muster:hover {
+  background: #58a6ff;
+  color: #000;
+}
+
+.empty-text {
+  text-align: center;
+  color: #8b949e;
+  padding: 40px;
+}

@@ -1,0 +1,230 @@
+.remnant-page {
+  padding: 30px;
+  background-color: #0d1117;
+  min-height: calc(100vh - 70px);
+  color: #fff;
+}
+
+.remnant-header {
+  margin-bottom: 25px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  padding-bottom: 15px;
+}
+
+.remnant-kicker {
+  font-size: 11px;
+  color: #d4af37;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+}
+
+.remnant-title {
+  font-family: 'Playfair Display', serif;
+  color: #d4af37;
+  font-size: 28px;
+  margin: 6px 0 4px;
+}
+
+.remnant-sub {
+  color: #8b949e;
+  font-size: 14px;
+  margin: 0;
+}
+
+.remnants-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.remnant-card {
+  background: #161b22;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.remnant-card:hover {
+  transform: translateY(-3px);
+  border-color: #d4af37;
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.15);
+}
+
+.rem-card-top {
+  background: #0d1117;
+  border-bottom: 1px solid #21262d;
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rem-tag-badge {
+  background: rgba(248, 81, 73, 0.15);
+  border: 1px solid #f85149;
+  color: #f85149;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rem-rack {
+  font-size: 11px;
+  color: #f3e5ab;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rem-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.rem-sku {
+  font-size: 11px;
+  color: #8b949e;
+}
+
+.rem-body h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  margin: 0;
+  color: #fff;
+}
+
+.rem-type {
+  font-size: 12px;
+  color: #8b949e;
+  margin: 0;
+}
+
+.rem-length-box {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin: 6px 0;
+}
+
+.rem-length-box .lbl {
+  display: block;
+  font-size: 10px;
+  color: #8b949e;
+  letter-spacing: 0.5px;
+}
+
+.len-val {
+  font-size: 18px;
+  color: #d4af37;
+  display: block;
+  margin: 2px 0;
+}
+
+.rem-length-box small {
+  font-size: 10px;
+  color: #8b949e;
+}
+
+.rem-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-top: 10px;
+  border-top: 1px solid #21262d;
+}
+
+.old-price {
+  font-size: 11px;
+  color: #8b949e;
+  text-decoration: line-through;
+}
+
+.new-price {
+  font-size: 16px;
+  font-weight: 700;
+  color: #3fb950;
+}
+
+.rem-lot-total {
+  text-align: right;
+  font-size: 11px;
+  color: #8b949e;
+}
+
+.rem-lot-total strong {
+  display: block;
+  font-size: 15px;
+  color: #d4af37;
+}
+
+.rem-actions {
+  display: flex;
+  border-top: 1px solid #21262d;
+  background: #0d1117;
+}
+
+.btn-edit-disc {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-right: 1px solid #21262d;
+  color: #8b949e;
+  padding: 10px;
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.btn-edit-disc:hover {
+  color: #d4af37;
+}
+
+.btn-take-pos {
+  flex: 1.5;
+  background: linear-gradient(135deg, #d4af37, #aa820a);
+  border: none;
+  color: #000;
+  font-weight: 700;
+  padding: 10px;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-take-pos:hover {
+  background: #f3e5ab;
+}
+
+.empty-remnant-box {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  color: #8b949e;
+  background: #161b22;
+  border: 1px dashed rgba(212, 175, 55, 0.3);
+  border-radius: 8px;
+}
+
+.empty-remnant-box p {
+  margin-top: 12px;
+}

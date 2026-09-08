@@ -1,0 +1,200 @@
+.report-page {
+  padding: 30px;
+  background-color: #0d1117;
+  min-height: calc(100vh - 70px);
+  color: #fff;
+}
+
+.report-header {
+  margin-bottom: 25px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  padding-bottom: 15px;
+}
+
+.report-kicker {
+  font-size: 11px;
+  color: #d4af37;
+  letter-spacing: 2px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.report-title {
+  font-family: 'Playfair Display', serif;
+  color: #d4af37;
+  font-size: 28px;
+  margin: 6px 0 4px;
+}
+
+.report-sub {
+  color: #8b949e;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* KPI Cards */
+.report-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.r-card {
+  background: #161b22;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.r-card.gold-border {
+  border-color: #d4af37;
+  background: linear-gradient(145deg, #1c2229 0%, #161b22 100%);
+}
+
+.r-icon {
+  background: rgba(212, 175, 55, 0.1);
+  color: #d4af37;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.r-lbl {
+  font-size: 11px;
+  color: #8b949e;
+  letter-spacing: 1px;
+}
+
+.r-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  margin: 2px 0;
+}
+
+.gold-val { color: #d4af37; }
+
+.r-card small {
+  font-size: 11px;
+  color: #8b949e;
+}
+
+/* Tabs Bar */
+.report-tabs-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+}
+
+.tab-btn {
+  background: #161b22;
+  border: 1px solid #30363d;
+  color: #8b949e;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tab-btn.active {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: #d4af37;
+  color: #d4af37;
+}
+
+/* Table Card */
+.report-table-card {
+  background: #161b22;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 8px;
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.table-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #21262d;
+  padding-bottom: 12px;
+  margin-bottom: 15px;
+}
+
+.table-card-top h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  color: #d4af37;
+  margin: 0;
+}
+
+.btn-export-excel {
+  background: linear-gradient(135deg, #3fb950, #2ea043);
+  color: #000;
+  font-weight: 700;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.btn-export-excel:hover {
+  background: #56d364;
+}
+
+.rep-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.rep-table th {
+  background: #1c2229;
+  color: #8b949e;
+  padding: 12px 10px;
+  font-size: 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.rep-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #21262d;
+  font-size: 13px;
+}
+
+.gold-code { color: #d4af37; font-weight: 600; }
+.green-txt { color: #3fb950; font-weight: 700; }
+.red-txt { color: #f85149; font-weight: 600; }
+.score-txt { color: #f3e5ab; font-weight: 700; }
+.text-right { text-align: right; }
+.bold-amt { font-weight: 700; color: #fff; font-size: 14px; }
+
+.tag-pill, .grade-tag, .status-tag, .verdict-tag {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+.report-loading, .empty-txt {
+  text-align: center;
+  color: #8b949e;
+  padding: 40px;
+  font-size: 13px;
+}

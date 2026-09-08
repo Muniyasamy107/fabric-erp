@@ -1,0 +1,123 @@
+.pay-page {
+  padding: 30px;
+  background-color: #0d1117;
+  min-height: calc(100vh - 70px);
+  color: #fff;
+}
+
+.pay-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.pay-header h1 {
+  font-family: 'Playfair Display', serif;
+  color: #d4af37;
+  font-size: 28px;
+  margin: 0;
+}
+
+.pay-header p {
+  color: #8b949e;
+  font-size: 14px;
+  margin: 4px 0 0;
+}
+
+.pay-table-card {
+  background: #161b22;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.payroll-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.payroll-table th {
+  background: #1c2229;
+  color: #8b949e;
+  padding: 12px 10px;
+  font-size: 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.payroll-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #21262d;
+  font-size: 13px;
+}
+
+.tot-w { color: #3fb950; font-weight: 700; }
+
+.btn-pay-op {
+  background: linear-gradient(135deg, #d4af37, #aa820a);
+  color: #000;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.settled-lbl {
+  color: #3fb950;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Modal */
+.wage-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1300;
+}
+
+.wage-modal {
+  width: 480px;
+  background: #161b22;
+  border: 1px solid #d4af37;
+  border-radius: 8px;
+  padding: 28px;
+  color: #fff;
+}
+
+.wage-modal h2 {
+  font-family: 'Playfair Display', serif;
+  color: #d4af37;
+  margin-top: 0;
+}
+
+.wage-modal label {
+  display: block;
+  font-size: 12px;
+  color: #8b949e;
+  margin: 10px 0 5px;
+}
+
+.wage-modal input,
+.wage-modal select {
+  width: 100%;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  color: #fff;
+  padding: 10px;
+  border-radius: 4px;
+  box-sizing: border-box;
+}

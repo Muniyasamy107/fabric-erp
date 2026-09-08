@@ -1,0 +1,229 @@
+.voucher-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1350;
+  padding: 30px 0;
+  overflow-y: auto;
+}
+
+.voucher-container {
+  max-width: 700px;
+  width: 100%;
+  margin: auto;
+}
+
+.voucher-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.gold-print-btn {
+  background: linear-gradient(135deg, #d4af37, #aa820a);
+  color: #000;
+  font-weight: 700;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.close-btn {
+  background: #161b22;
+  border: 1px solid #30363d;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Printable Paper */
+.voucher-paper {
+  background: #ffffff;
+  color: #1a1a1a;
+  padding: 40px;
+  border-radius: 4px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+}
+
+.v-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.v-brand h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: #aa820a;
+  margin: 0;
+}
+
+.v-sub {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: #666;
+  margin: 2px 0;
+}
+
+.v-addr {
+  font-size: 11px;
+  color: #333;
+  margin: 0;
+}
+
+.v-meta {
+  text-align: right;
+  font-size: 11px;
+  color: #444;
+}
+
+.v-badge {
+  display: inline-block;
+  background: #222;
+  color: #f3e5ab;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 3px;
+  margin-bottom: 6px;
+}
+
+.v-divider {
+  height: 2px;
+  background: linear-gradient(90deg, #aa820a, #f3e5ab, #aa820a);
+  margin: 16px 0;
+}
+
+.v-recipient-box {
+  margin-bottom: 16px;
+}
+
+.v-lbl {
+  font-size: 10px;
+  color: #777;
+  font-weight: 700;
+}
+
+.v-recipient-box h3 {
+  font-size: 18px;
+  color: #000;
+  margin: 4px 0 2px;
+}
+
+.v-recipient-box p {
+  font-size: 12px;
+  color: #555;
+  margin: 2px 0;
+}
+
+.v-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.v-table th {
+  background: #f8f9fa;
+  border-bottom: 2px solid #aa820a;
+  padding: 10px;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #333;
+  text-align: left;
+}
+
+.v-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.v-spec-sub {
+  font-size: 10px;
+  color: #888;
+}
+
+.text-right { text-align: right; }
+.bold-amt { font-weight: 700; color: #000; font-size: 14px; }
+
+.v-notes {
+  background: #fbfbfb;
+  border-left: 3px solid #aa820a;
+  padding: 8px;
+  font-size: 11px;
+  color: #444;
+  margin-top: 15px;
+}
+
+.v-total-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.gold-amt {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  color: #aa820a;
+}
+
+.v-sign-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+}
+
+.sign-col {
+  text-align: center;
+  font-size: 11px;
+  color: #555;
+  width: 200px;
+}
+
+.sign-col .line {
+  height: 1px;
+  background: #333;
+  margin-bottom: 6px;
+}
+
+.sign-col small {
+  display: block;
+  font-size: 9px;
+  color: #888;
+}
+
+/* Direct Print */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .voucher-paper, .voucher-paper * {
+    visibility: visible;
+  }
+  .voucher-paper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    box-shadow: none;
+    padding: 0;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

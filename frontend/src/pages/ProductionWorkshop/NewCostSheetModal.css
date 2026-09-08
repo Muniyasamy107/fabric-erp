@@ -1,0 +1,171 @@
+.cost-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1350;
+  padding: 20px 0;
+  overflow-y: auto;
+}
+
+.cost-modal-content {
+  width: 800px;
+  max-height: 90vh;
+  background: #161b22;
+  border: 1px solid #d4af37;
+  border-radius: 8px;
+  padding: 30px;
+  color: #fff;
+  overflow-y: auto;
+  box-shadow: 0 0 35px rgba(212, 175, 55, 0.2);
+}
+
+.cost-modal-content h2 {
+  font-family: 'Playfair Display', serif;
+  color: #d4af37;
+  margin: 0;
+}
+
+.modal-sub {
+  color: #8b949e;
+  font-size: 13px;
+  margin: 4px 0 18px;
+}
+
+.cost-form-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 12px;
+}
+
+.cost-form-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.cost-form-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.cost-section-card {
+  background: #0d1117;
+  border: 1px solid #21262d;
+  padding: 16px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.cost-section-card h4 {
+  font-size: 13px;
+  color: #f3e5ab;
+  margin: 0 0 12px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.form-group.flex-1 { flex: 1; }
+
+.form-group label {
+  font-size: 11px;
+  color: #8b949e;
+}
+
+.form-group input,
+.form-group select {
+  background: #161b22;
+  border: 1px solid #30363d;
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #d4af37;
+}
+
+.cost-pricing-summary-card {
+  background: linear-gradient(145deg, #1c2229 0%, #0d1117 100%);
+  border: 1px solid #d4af37;
+  padding: 16px 20px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.summary-col span {
+  font-size: 11px;
+  color: #8b949e;
+  display: block;
+}
+
+.cop-val {
+  font-size: 16px;
+  color: #fff;
+}
+
+.margin-input-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.margin-input-col label {
+  font-size: 11px;
+  color: #8b949e;
+}
+
+.margin-input-col input {
+  width: 90px;
+  background: #0d1117;
+  border: 1px solid #d4af37;
+  color: #fff;
+  padding: 6px;
+  text-align: center;
+  border-radius: 4px;
+}
+
+.ex-price-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  color: #3fb950;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn-cancel {
+  background: transparent;
+  border: 1px solid #30363d;
+  color: #8b949e;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-gold-save {
+  background: linear-gradient(135deg, #d4af37, #aa820a);
+  color: #000;
+  font-weight: 700;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 4px;
+  cursor: pointer;
+}

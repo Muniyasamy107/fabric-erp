@@ -1,0 +1,199 @@
+.dispatch-container {
+  display: flex;
+  gap: 25px;
+  padding: 30px;
+  background-color: #0d1117;
+  min-height: calc(100vh - 70px);
+  color: #fff;
+}
+
+.catalog-selection {
+  flex: 1.5;
+}
+
+.catalog-selection h2,
+.dispatch-bill-desk h2 {
+  font-family: 'Playfair Display', serif;
+  color: #d4af37;
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.disp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+.disp-card {
+  background-color: #161b22;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 8px;
+  padding: 16px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.disp-card:hover {
+  transform: translateY(-3px);
+  border-color: #d4af37;
+}
+
+.disp-card h3 {
+  font-family: 'Playfair Display', serif;
+  margin: 6px 0;
+  font-size: 16px;
+}
+
+.disp-card p {
+  font-size: 11px;
+  color: #8b949e;
+}
+
+.card-ft {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #21262d;
+  font-size: 12px;
+}
+
+.card-ft span { color: #d4af37; font-weight: 600; }
+.card-ft strong { color: #8b949e; }
+
+/* Dispatch Bill Desk */
+.dispatch-bill-desk {
+  flex: 1;
+  background-color: #161b22;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.client-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.client-inputs label {
+  font-size: 11px;
+  color: #8b949e;
+}
+
+.client-inputs select,
+.client-inputs input {
+  background-color: #0d1117;
+  border: 1px solid #30363d;
+  color: #fff;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.cart-roll-list {
+  flex: 1;
+  overflow-y: auto;
+  border-top: 1px solid #21262d;
+  border-bottom: 1px solid #21262d;
+  padding: 15px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.empty-msg { text-align: center; color: #8b949e; padding: 20px; }
+
+.cart-roll-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #0d1117;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #21262d;
+}
+
+.cart-roll-item .info strong {
+  display: block;
+  font-size: 13px;
+}
+
+.cart-roll-item .info small {
+  color: #8b949e;
+  font-size: 11px;
+}
+
+.cart-roll-item .meters input {
+  width: 60px;
+  background: #161b22;
+  border: 1px solid #d4af37;
+  color: #fff;
+  padding: 4px;
+  text-align: center;
+  border-radius: 4px;
+}
+
+.tot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tot span {
+  font-weight: 600;
+  color: #d4af37;
+}
+
+.tot button {
+  background: transparent;
+  border: none;
+  color: #f85149;
+  cursor: pointer;
+}
+
+.summary-block {
+  margin-top: 15px;
+}
+
+.summary-block .row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #c9d1d9;
+  margin-bottom: 6px;
+}
+
+.summary-block .row.grand {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  border-top: 1px solid #30363d;
+  padding-top: 8px;
+  margin-top: 8px;
+}
+
+.gold-text { color: #d4af37; }
+
+.btn-dispatch-freight {
+  width: 100%;
+  margin-top: 15px;
+  background: linear-gradient(135deg, #d4af37, #aa820a);
+  color: #000;
+  font-weight: 700;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-dispatch-freight:hover {
+  background: #f3e5ab;
+}

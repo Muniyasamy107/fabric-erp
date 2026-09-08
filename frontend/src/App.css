@@ -1,0 +1,16 @@
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #0d1117;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-view {
+  margin-left: 260px; /* Aligns next to fixed sidebar */
+  flex: 1;
+}

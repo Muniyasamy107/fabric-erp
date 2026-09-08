@@ -1,0 +1,181 @@
+.client-page {
+  padding: 30px;
+  background-color: #0d1117;
+  min-height: calc(100vh - 70px);
+  color: #fff;
+}
+
+.client-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.client-header h1 {
+  font-family: 'Playfair Display', serif;
+  color: #d4af37;
+  font-size: 28px;
+  margin: 0;
+}
+
+.client-header p {
+  color: #8b949e;
+  font-size: 14px;
+  margin: 4px 0 0;
+}
+
+.client-search {
+  width: 100%;
+  max-width: 420px;
+  background: #161b22;
+  border: 1px solid #30363d;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-bottom: 25px;
+}
+
+.client-search:focus {
+  outline: none;
+  border-color: #d4af37;
+}
+
+.client-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.client-card {
+  background: #161b22;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.client-card:hover {
+  border-color: #d4af37;
+}
+
+.cc-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.segment-badge {
+  background: rgba(212, 175, 55, 0.15);
+  color: #f3e5ab;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+}
+
+.client-card h3 {
+  font-family: 'Playfair Display', serif;
+  margin: 0 0 10px;
+  font-size: 18px;
+  color: #fff;
+}
+
+.client-card .row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #c9d1d9;
+  font-size: 13px;
+  margin: 6px 0;
+}
+
+.gst-badge {
+  font-size: 11px;
+  color: #8b949e;
+  background: #0d1117;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-top: 10px;
+  display: inline-block;
+  border: 1px solid #21262d;
+}
+
+/* Modal */
+.c-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1300;
+}
+
+.c-modal {
+  width: 480px;
+  background: #161b22;
+  border: 1px solid #d4af37;
+  border-radius: 8px;
+  padding: 28px;
+  color: #fff;
+}
+
+.c-modal h2 {
+  font-family: 'Playfair Display', serif;
+  color: #d4af37;
+  margin-top: 0;
+}
+
+.c-modal label {
+  display: block;
+  font-size: 12px;
+  color: #8b949e;
+  margin: 10px 0 5px;
+}
+
+.c-modal input,
+.c-modal select,
+.c-modal textarea {
+  width: 100%;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  color: #fff;
+  padding: 10px;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.c-modal input:focus,
+.c-modal select:focus,
+.c-modal textarea:focus {
+  outline: none;
+  border-color: #d4af37;
+}
+
+.c-modal .actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-cancel {
+  background: transparent;
+  border: 1px solid #30363d;
+  color: #8b949e;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-gold {
+  background: #d4af37;
+  border: none;
+  color: #000;
+  font-weight: 700;
+  padding: 8px 18px;
+  border-radius: 4px;
+  cursor: pointer;
+}

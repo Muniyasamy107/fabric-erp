@@ -1,0 +1,31 @@
+:root {
+  /* Luxury Gold & Dark Theme */
+  --gold-primary: #d4af37;
+  --gold-hover: #b8972e;
+  --gold-light: #f3e5ab;
+  
+  --bg-main: #0d1117;
+  --bg-sidebar: #161b22;
+  --bg-card: #21262d;
+  
+  --text-primary: #ffffff;
+  --text-secondary: #8b949e;
+  --border-gold: rgba(212, 175, 55, 0.25);
+  
+  --font-luxury: 'Playfair Display', serif;
+  --font-regular: 'Poppins', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-regular);
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
