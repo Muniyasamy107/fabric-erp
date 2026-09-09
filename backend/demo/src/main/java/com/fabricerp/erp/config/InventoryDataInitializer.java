@@ -100,6 +100,15 @@ public class InventoryDataInitializer implements CommandLineRunner {
         addFabric("RF-SUT-003", "Cotton Twill 2/20s Stretch", "COTTON_HEAVY", 210,
                 new BigDecimal("180.00"), 990.0, "Rack B-03", "5208",
                 "Utility Range", "Chinos & Casual Trousers", "/fabrics/canvas-natural.jpg");
+        addFabric("RF-DNM-001", "Indigo Denim 3/1 Twill 10s", "COTTON_HEAVY", 320,
+                new BigDecimal("240.00"), 1450.0, "Rack B-04", "5209",
+                "Denim Works", "Jeans & Jackets", "/fabrics/denim-indigo.jpg");
+        addFabric("RF-TRY-001", "Terry Cotton Loop 20s", "COTTON_HEAVY", 380,
+                new BigDecimal("260.00"), 720.0, "Rack B-05", "5208",
+                "Home Textiles", "Towels & Bathrobes", "/fabrics/terry-white.jpg");
+        addFabric("RF-FLN-001", "Brushed Flannel Check", "COTTON_SHIRTING", 170,
+                new BigDecimal("205.00"), 640.0, "Rack A-06", "5208",
+                "Winter Comfort", "Flannel Shirts & Loungewear", "/fabrics/flannel-check.jpg");
 
         // One clearance remnant so the Remnant Clearance section has a live example
         FabricProduct remnant = fabricRepository.findByQualityCode("RF-COT-002").orElse(null);

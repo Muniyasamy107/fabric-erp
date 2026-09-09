@@ -52,7 +52,7 @@ CREATE DATABASE IF NOT EXISTS luxury_fabric_erp;
 cd backend/demo
 ./mvnw spring-boot:run        # Windows: .\mvnw.cmd spring-boot:run
 ```
-First start seeds: 4 user accounts, 17 fabric qualities with photos, 6 yarn lots, 6 suppliers and matching stock-ledger entries.
+First start seeds: 4 user accounts, 20 fabric qualities with photos, 6 yarn lots, 6 suppliers and matching stock-ledger entries.
 
 ### 3. Frontend (port 5173, proxies /api → 8083)
 ```bash
