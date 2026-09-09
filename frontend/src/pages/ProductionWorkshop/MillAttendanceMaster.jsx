@@ -267,6 +267,14 @@ const MillAttendanceMaster = () => {
                   <option value="DYE_HOUSE">Dye House & Color Kitchen</option>
                   <option value="FINISHING_STENTER">Stenter & Calendering Division</option>
                   <option value="QUALITY_INSPECT">Inspection & 4-Point Lab</option>
+              <option value="MAINTENANCE_FITTER">Maintenance & Fitter Bay</option>
+              <option value="PACKING_BAY">Packing & Dispatch Bay</option>
+              <option value="OFFICE_ADMINISTRATION">Office Administration</option>
+              <option value="PRODUCTION_OFFICE">Production Office</option>
+                  <option value="MAINTENANCE_FITTER">Maintenance & Fitter Bay</option>
+                  <option value="PACKING_BAY">Packing & Dispatch Bay</option>
+                  <option value="OFFICE_ADMINISTRATION">Office Administration</option>
+                  <option value="PRODUCTION_OFFICE">Production Office</option>
                 </select>
               </div>
             </div>
@@ -404,6 +412,10 @@ const MillAttendanceMaster = () => {
               <option value="DYE_HOUSE">Dye House & Color Kitchen</option>
               <option value="FINISHING_STENTER">Stenter & Calendering Division</option>
               <option value="QUALITY_INSPECT">Inspection & 4-Point Lab</option>
+              <option value="MAINTENANCE_FITTER">Maintenance & Fitter Bay</option>
+              <option value="PACKING_BAY">Packing & Dispatch Bay</option>
+              <option value="OFFICE_ADMINISTRATION">Office Administration</option>
+              <option value="PRODUCTION_OFFICE">Production Office</option>
             </select>
 
             <button type="submit">+ Register Employee</button>

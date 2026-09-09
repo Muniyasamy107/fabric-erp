@@ -416,3 +416,51 @@
 .kiosk-register-link:hover {
   background: rgba(212, 175, 55, 0.12);
 }
+
+/* Role chip + head layout */
+.kiosk-head-right {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.kiosk-status {
+  margin-left: 0;
+}
+
+.kiosk-role-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 4px 9px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+.kiosk-role-chip.office {
+  background: rgba(88, 166, 255, 0.15);
+  color: #58a6ff;
+  border: 1px solid rgba(88, 166, 255, 0.5);
+}
+
+.kiosk-role-chip.factory {
+  background: rgba(212, 175, 55, 0.15);
+  color: #d4af37;
+  border: 1px solid rgba(212, 175, 55, 0.5);
+}
+
+/* Office demo badges get a distinct style */
+.kiosk-demo-strip button.office-badge {
+  border-color: rgba(88, 166, 255, 0.45);
+  color: #58a6ff;
+}
+
+.kiosk-demo-strip button.office-badge:hover {
+  border-color: #58a6ff;
+  background: rgba(88, 166, 255, 0.1);
+}

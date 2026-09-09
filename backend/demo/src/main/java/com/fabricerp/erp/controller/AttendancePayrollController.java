@@ -1,6 +1,10 @@
 package com.fabricerp.erp.controller;
 
+import com.fabricerp.erp.entity.User;
+import com.fabricerp.erp.entity.Worker;
 import com.fabricerp.erp.entity.WorkerShiftAttendance;
+import com.fabricerp.erp.repository.UserRepository;
+import com.fabricerp.erp.repository.WorkerRepository;
 import com.fabricerp.erp.repository.WorkerShiftAttendanceRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +14,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,9 +24,89 @@ import java.util.Map;
 public class AttendancePayrollController {
 
     private final WorkerShiftAttendanceRepository attendanceRepository;
+    private final WorkerRepository workerRepository;
+    private final UserRepository userRepository;
 
-    public AttendancePayrollController(WorkerShiftAttendanceRepository attendanceRepository) {
+    public AttendancePayrollController(WorkerShiftAttendanceRepository attendanceRepository,
+                                       WorkerRepository workerRepository,
+                                       UserRepository userRepository) {
         this.attendanceRepository = attendanceRepository;
+        this.workerRepository = workerRepository;
+        this.userRepository = userRepository;
+    }
+
+    /**
+     * UNIVERSAL BIOMETRIC BADGE SCAN — works for everyone:
+     *  1. Factory worker badges (EMP-XXX roster)
+     *  2. Office/admin/staff ERP logins (scan their username as badge)
+     */
+    @GetMapping("/badge/{badge}")
+    public ResponseEntity<?> scanBadge(@PathVariable String badge) {
+        String q = badge != null ? badge.trim() : "";
+        if (q.isEmpty()) {
+            return ResponseEntity.badRequest().body("Badge is required");
+        }
+
+        // 1) Factory worker roster
+        Worker worker = workerRepository.findByBadgeNumber(q).orElse(null);
+        if (worker != null) {
+            if (worker.getActive() != null && !worker.getActive()) {
+                return ResponseEntity.status(403).body(Map.of("error", "This worker badge is disabled."));
+            }
+            Map<String, Object> res = new LinkedHashMap<>();
+            res.put("badgeNumber", worker.getBadgeNumber());
+            res.put("fullName", worker.getFullName());
+            res.put("plantDepartment", worker.getPlantDepartment());
+            res.put("baseDailyWage", worker.getBaseDailyWage());
+            res.put("assignedMachineCode", worker.getAssignedMachineCode());
+            res.put("active", true);
+            res.put("source", "WORKER");
+            res.put("role", "FACTORY WORKER");
+            return ResponseEntity.ok(res);
+        }
+
+        // 2) ERP login user — admin / supervisor / staff punch with their username
+        User user = userRepository.findByUsername(q)
+                .or(() -> userRepository.findByUsername(q.toLowerCase()))
+                .orElse(null);
+        if (user != null) {
+            if (user.getActive() != null && !user.getActive()) {
+                return ResponseEntity.status(403).body(Map.of("error", "This staff account is disabled."));
+            }
+            String role = user.getRole() != null ? user.getRole() : "WEAVER";
+            String dept;
+            BigDecimal wage;
+            String machine;
+            switch (role) {
+                case "ADMIN":
+                    dept = "OFFICE_ADMINISTRATION"; wage = BigDecimal.valueOf(1500); machine = "FRONT OFFICE"; break;
+                case "SUPERVISOR":
+                    dept = "PRODUCTION_OFFICE"; wage = BigDecimal.valueOf(1100); machine = "PLANNING OFFICE"; break;
+                case "DYEING_MASTER":
+                    dept = "DYE_HOUSE"; wage = BigDecimal.valueOf(720); machine = "DYE-JET-2"; break;
+                case "FINISHING_MASTER":
+                    dept = "FINISHING_STENTER"; wage = BigDecimal.valueOf(680); machine = "STENTER-1"; break;
+                case "FITTER":
+                    dept = "MAINTENANCE_FITTER"; wage = BigDecimal.valueOf(750); machine = "WORKSHOP-BAY"; break;
+                case "DISPATCHER":
+                    dept = "PACKING_BAY"; wage = BigDecimal.valueOf(600); machine = "DISPATCH DOCK"; break;
+                default:
+                    dept = "LOOM_HALL_WEAVING"; wage = BigDecimal.valueOf(650); machine = "LOOM-A01"; break;
+            }
+            Map<String, Object> res = new LinkedHashMap<>();
+            res.put("badgeNumber", user.getUsername().toUpperCase());
+            res.put("fullName", user.getFullName());
+            res.put("plantDepartment", dept);
+            res.put("baseDailyWage", wage);
+            res.put("assignedMachineCode", machine);
+            res.put("active", true);
+            res.put("source", "USER");
+            res.put("role", role.replace('_', ' '));
+            return ResponseEntity.ok(res);
+        }
+
+        return ResponseEntity.status(404)
+                .body(Map.of("error", "Badge not registered. Workers use their EMP badge; office staff scan their login username."));
     }
 
     @GetMapping("/logs")

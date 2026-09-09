@@ -18,6 +18,9 @@ export const punchWorkerOut = (data) =>
 export const getWorkerByBadge = (badge) =>
   API.get(`/workers/badge/${encodeURIComponent(badge)}`);
 
+export const scanKioskBadge = (badge) =>
+  API.get(`/attendance/badge/${encodeURIComponent(badge)}`);
+
 export const getWorkers = () =>
   API.get('/workers').catch(() => ({ data: [] }));
 

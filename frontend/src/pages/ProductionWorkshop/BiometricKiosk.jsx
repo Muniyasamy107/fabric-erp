@@ -3,13 +3,14 @@ import {
   getAttendanceByDate,
   punchWorkerAttendance,
   punchWorkerOut,
-  getWorkerByBadge
+  scanKioskBadge
 } from '../../services/attendanceService';
-import { Fingerprint, LogIn, LogOut, Clock, BadgeCheck, AlertOctagon, Users, ClipboardList } from 'lucide-react';
+import { Fingerprint, LogIn, LogOut, Clock, BadgeCheck, AlertOctagon, Users, ClipboardList, Briefcase } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import './BiometricKiosk.css';
 
-const DEMO_BADGES = [
+const OFFICE_BADGES = ['ADMIN', 'SUPERVISOR', 'WEAVER', 'DYER'];
+const FACTORY_BADGES = [
   'EMP-WEAVER-042', 'EMP-WEAVER-057', 'EMP-WARP-019', 'EMP-DYER-014',
   'EMP-FIN-021', 'EMP-QC-008', 'EMP-FIT-003', 'EMP-PACK-011'
 ];
@@ -91,12 +92,15 @@ const BiometricKiosk = () => {
     setWorker(null);
     try {
       await loadTodayPunches();
-      const res = await getWorkerByBadge(badge);
+      const res = await scanKioskBadge(badge);
       setWorker(res.data);
       setBadgeInput('');
       setTimeout(() => inputRef.current && inputRef.current.focus(), 50);
     } catch (err) {
-      setMessage({ type: 'error', text: err.response?.data?.error || 'Badge not registered in the mill roster.' });
+      const msg = typeof err.response?.data === 'string'
+        ? err.response.data
+        : err.response?.data?.error || 'Badge not registered.';
+      setMessage({ type: 'error', text: msg });
       setBadgeInput('');
     } finally {
       setBusy(false);
@@ -225,11 +229,18 @@ const BiometricKiosk = () => {
                 <p>{worker.badgeNumber} · {(worker.plantDepartment || '').replace(/_/g, ' ')}</p>
                 <p className="kiosk-machine">Machine: {worker.assignedMachineCode || '—'}</p>
               </div>
-              <span className={`kiosk-status st-${status.toLowerCase()}`}>
-                {status === 'IN' && 'NOT PUNCHED'}
-                {status === 'OUT' && `IN @ ${myRecord?.punchInTime}`}
-                {status === 'DONE' && 'SHIFT CLOSED'}
-              </span>
+              <div className="kiosk-head-right">
+                <span className={`kiosk-role-chip ${worker.source === 'USER' ? 'office' : 'factory'}`}>
+                  {worker.source === 'USER'
+                    ? <><Briefcase size={12} /> {worker.role || 'OFFICE STAFF'}</>
+                    : <><Users size={12} /> FACTORY WORKER</>}
+                </span>
+                <span className={`kiosk-status st-${status.toLowerCase()}`}>
+                  {status === 'IN' && 'NOT PUNCHED'}
+                  {status === 'OUT' && `IN @ ${myRecord?.punchInTime}`}
+                  {status === 'DONE' && 'SHIFT CLOSED'}
+                </span>
+              </div>
             </div>
 
             <div className="kiosk-actions">
@@ -254,8 +265,14 @@ const BiometricKiosk = () => {
         )}
 
         <div className="kiosk-demo-strip">
-          <span><Users size={13} /> Demo badges:</span>
-          {DEMO_BADGES.map((b) => (
+          <span><Briefcase size={13} /> Office / Staff (scan login username):</span>
+          {OFFICE_BADGES.map((b) => (
+            <button key={b} type="button" className="office-badge" onClick={() => scanBadge(b)} disabled={busy}>
+              {b}
+            </button>
+          ))}
+          <span><Users size={13} /> Factory workers (EMP badges):</span>
+          {FACTORY_BADGES.map((b) => (
             <button key={b} type="button" onClick={() => scanBadge(b)} disabled={busy}>
               {b}
             </button>
