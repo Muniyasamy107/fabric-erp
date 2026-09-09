@@ -122,7 +122,9 @@ const Navbar = () => {
           >
             <Bell size={18} />
             {notifications.length > 0 && (
-              <span className="bell-badge-count">{notifications.length}</span>
+              <span className="bell-badge-count">
+                {notifications.length > 99 ? '99+' : notifications.length}
+              </span>
             )}
           </button>
 
@@ -147,7 +149,13 @@ const Navbar = () => {
                     <p>All plant systems normal. No active alerts.</p>
                   </div>
                 ) : (
-                  notifications.map((n) => (
+                  <>
+                    {notifications.length > 25 && (
+                      <div className="notif-limit-note">
+                        Showing latest 25 of {notifications.length} alerts
+                      </div>
+                    )}
+                    {notifications.slice(0, 25).map((n) => (
                     <div
                       key={n.id}
                       className={`notif-item severity-${n.severity?.toLowerCase()}`}
@@ -167,7 +175,8 @@ const Navbar = () => {
                         </span>
                       </div>
                     </div>
-                  ))
+                    ))}
+                  </>
                 )}
               </div>
             </div>

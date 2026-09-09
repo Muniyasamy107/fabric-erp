@@ -25,6 +25,27 @@ public class DataInitializer implements CommandLineRunner {
         createIfMissing("supervisor", "super123", "Shift Production Supervisor", "SUPERVISOR");
         createIfMissing("weaver", "weaver123", "Loom Operator Weaver", "WEAVER");
         createIfMissing("dyer", "dyer123", "Color Lab Chemist", "DYEING_MASTER");
+        migrateLegacyNames();
+    }
+
+    /** Old boutique-era display names are replaced with factory titles. */
+    private void migrateLegacyNames() {
+        for (User u : userRepository.findAll()) {
+            String name = u.getFullName() != null ? u.getFullName() : "";
+            if (name.toLowerCase().contains("boutique") || name.toLowerCase().contains("tailor")) {
+                String replacement;
+                switch (u.getRole()) {
+                    case "ADMIN": replacement = "Plant General Manager"; break;
+                    case "SUPERVISOR": replacement = "Shift Production Supervisor"; break;
+                    case "WEAVER": replacement = "Loom Operator Weaver"; break;
+                    case "DYEING_MASTER": replacement = "Color Lab Chemist"; break;
+                    default: replacement = "Mill Employee"; break;
+                }
+                u.setFullName(replacement);
+                userRepository.save(u);
+                System.out.println("Legacy display name migrated for: " + u.getUsername());
+            }
+        }
     }
 
     private void createIfMissing(String username, String rawPassword, String fullName, String role) {

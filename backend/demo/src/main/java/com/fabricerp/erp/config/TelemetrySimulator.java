@@ -168,6 +168,35 @@ public class TelemetrySimulator {
     }
 
     // ------------------------------------------------------------------
+    // Notification housekeeping — hourly. Old unread alerts auto-archive and
+    // stale read alerts are pruned, so the bell never accumulates hundreds.
+    // ------------------------------------------------------------------
+    @Scheduled(fixedRate = 3600000, initialDelay = 45000)
+    public void notificationHousekeeping() {
+        LocalDateTime readCutoff = LocalDateTime.now().minusDays(2);
+        LocalDateTime deleteCutoff = LocalDateTime.now().minusDays(7);
+
+        List<SystemNotification> all = notificationRepository.findAll();
+        int archived = 0;
+        int deleted = 0;
+        for (SystemNotification n : all) {
+            LocalDateTime created = n.getCreatedAt() != null ? n.getCreatedAt() : LocalDateTime.now();
+            boolean isRead = Boolean.TRUE.equals(n.getIsRead());
+            if (isRead && created.isBefore(deleteCutoff)) {
+                notificationRepository.delete(n);
+                deleted++;
+            } else if (!isRead && created.isBefore(readCutoff)) {
+                n.setIsRead(true);
+                notificationRepository.save(n);
+                archived++;
+            }
+        }
+        if (archived + deleted > 0) {
+            System.out.println("Notification housekeeping: " + archived + " archived, " + deleted + " pruned");
+        }
+    }
+
+    // ------------------------------------------------------------------
     private void notify(String title, String message, String category, String severity, String actionUrl) {
         SystemNotification n = new SystemNotification();
         n.setTitle(title);

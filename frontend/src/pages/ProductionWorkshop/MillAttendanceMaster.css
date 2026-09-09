@@ -500,3 +500,10 @@
 .badge-gen-btn:hover {
   background: rgba(212, 175, 55, 0.25);
 }
+
+/* Badge input must stay usable next to the Auto button */
+.badge-input-row input {
+  flex: 1 1 140px;
+  min-width: 140px;
+  width: auto;
+}
