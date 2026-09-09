@@ -29,3 +29,17 @@ body {
   min-height: 100vh;
 }
 
+
+/* ============================================================
+   GLOBAL ALIGNMENT SAFETY (client-ready polish)
+   ============================================================ */
+
+/* Every modal box stays inside the viewport — overlays excluded */
+[class*='modal']:not([class*='overlay']):not([class*='actions']) {
+  max-width: 95vw;
+}
+
+/* Long text in table cells wraps instead of breaking layout */
+td, th {
+  overflow-wrap: anywhere;
+}

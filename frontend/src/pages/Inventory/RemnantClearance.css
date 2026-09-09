@@ -249,3 +249,9 @@
   right: 10px;
   background: rgba(13, 17, 23, 0.9);
 }
+
+/* Alignment safety: SKU + rack line wraps on narrow cards */
+.rem-card-top {
+  flex-wrap: wrap;
+  gap: 6px;
+}

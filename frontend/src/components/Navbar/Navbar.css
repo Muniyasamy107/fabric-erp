@@ -236,3 +236,12 @@
 .navbar-website-link:hover {
   background: rgba(212, 175, 55, 0.12);
 }
+
+/* Responsive search so navbar never overflows */
+@media (max-width: 1250px) {
+  .navbar-search input { width: 300px; }
+}
+@media (max-width: 1000px) {
+  .navbar-search input { width: 200px; }
+  .luxury-navbar { padding: 0 16px; }
+}

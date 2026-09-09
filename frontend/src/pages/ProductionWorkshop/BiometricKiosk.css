@@ -536,3 +536,9 @@
 .kiosk-worker-card.id-card .kiosk-done {
   margin-top: 0;
 }
+
+/* Alignment safety: worker head wraps on narrow screens */
+.kiosk-worker-head {
+  flex-wrap: wrap;
+  gap: 12px;
+}
