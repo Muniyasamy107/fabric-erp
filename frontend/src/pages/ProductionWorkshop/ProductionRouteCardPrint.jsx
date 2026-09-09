@@ -23,7 +23,7 @@ const ProductionRouteCardPrint = ({ plan, onClose }) => {
         <div className="route-paper" id="printable-route">
           <div className="rc-head">
             <div className="rc-brand">
-              <h1>ROYAL FABRIC WEAVING MILLS</h1>
+              <h1>KAK TEXTILE PROCESSING MILLS</h1>
               <p className="tag">OFFICIAL PRODUCTION TRAVELER ROUTE CARD & PROCESS CLEARANCE SHEET</p>
               <p className="addr">Production Planning & Control (PPC) Department | 24x7 Integrated Plant</p>
             </div>

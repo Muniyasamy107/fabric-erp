@@ -6,7 +6,7 @@ const NewPlanModal = ({ fabrics = [], onClose, onSuccess }) => {
   const [form, setForm] = useState({
     orderReferenceNumber: 'EXP-2026-9021',
     targetClientName: 'Armani Group Milan / Raymonds',
-    fabricProductName: fabrics[0]?.name || 'Royal Silk Crepe 900',
+    fabricProductName: fabrics[0]?.name || 'Cotton Poplin 60s x 60s',
     qualityCode: 'SATIN-SILK-900',
     targetMeterage: 25000.0,
     allocatedLoomsCount: 6,

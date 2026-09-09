@@ -21,6 +21,9 @@ const BoilerEnergyMaster = () => {
 
   useEffect(() => {
     load();
+    // Live refresh — data updates in real time
+    const interval = setInterval(load, 20000);
+    return () => clearInterval(interval);
   }, []);
 
   const totalSteamTons = logs.reduce((sum, l) => sum + Number(l.totalSteamGeneratedTons || 0), 0);

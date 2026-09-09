@@ -19,7 +19,7 @@ public class User {
     private String fullName;
 
     @Column(nullable = false)
-    private String role; // ADMIN, CASHIER, TAILOR
+    private String role; // ADMIN, SUPERVISOR, WEAVER, DYEING_MASTER, FINISHING_MASTER, FITTER, DISPATCHER
 
     private Boolean active = true;
 

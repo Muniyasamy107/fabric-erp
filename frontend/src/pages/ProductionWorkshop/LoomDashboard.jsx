@@ -36,6 +36,9 @@ const LoomDashboard = () => {
 
   useEffect(() => {
     loadData();
+    // Live refresh — loom statuses update from real-time telemetry
+    const interval = setInterval(loadData, 15000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleUpdateStatusSubmit = async (e) => {

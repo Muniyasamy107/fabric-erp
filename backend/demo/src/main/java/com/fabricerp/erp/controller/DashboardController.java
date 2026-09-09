@@ -94,7 +94,7 @@ public class DashboardController {
         stats.put("totalOrdersCount", allInvoices.size());
         stats.put("totalMetersSold", totalMetersShipped);
         stats.put("lowStockCount", lowStockList.size());
-        stats.put("activeTailoringCount", activeJobs);
+        stats.put("activeProductionJobs", activeJobs);
         stats.put("recentOrders", allInvoices.stream().limit(5).toList());
         stats.put("lowStockFabrics", lowStockList);
         stats.put("weeklyOeeTrends", weeklyOeeTrends);

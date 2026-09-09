@@ -26,8 +26,8 @@ const ZReportPrint = ({ shift, onClose }) => {
         {/* Printable Thermal/A4 Z-Report Slip */}
         <div className="zreport-paper" id="printable-zreport">
           <div className="z-head">
-            <h2>ROYAL FABRICS</h2>
-            <p className="z-sub">HAUTE COUTURE TEXTILE ATELIER</p>
+            <h2>KAK TEXTILE PROCESSING</h2>
+            <p className="z-sub">PREMIUM FABRIC MILL & WHOLESALE</p>
             <p className="z-addr">Luxury Avenue, Chennai - 600006</p>
             <div className="z-badge">OFFICIAL END-OF-DAY Z-REPORT</div>
           </div>
@@ -37,7 +37,7 @@ const ZReportPrint = ({ shift, onClose }) => {
           <div className="z-meta-grid">
             <div><span>Settlement Date:</span> <strong>{shift.shiftDate}</strong></div>
             <div><span>Closing Time:</span> <strong>{shift.closedAt ? new Date(shift.closedAt).toLocaleTimeString('en-IN') : new Date().toLocaleTimeString('en-IN')}</strong></div>
-            <div><span>Cashier / Mgr:</span> <strong>{shift.cashierFullName || 'Boutique Cashier'}</strong></div>
+            <div><span>Cashier / Mgr:</span> <strong>{shift.cashierFullName || 'Mill Cashier'}</strong></div>
             <div><span>Register Status:</span> <strong className="green">RECONCILED & CLOSED</strong></div>
           </div>
 

@@ -4,4 +4,14 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  server: {
+    host: true,
+    proxy: {
+      // Forward API calls to the Spring Boot backend during development
+      '/api': {
+        target: 'http://localhost:8083',
+        changeOrigin: true,
+      },
+    },
+  },
 })

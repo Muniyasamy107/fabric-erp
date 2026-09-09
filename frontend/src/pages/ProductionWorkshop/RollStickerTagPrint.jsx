@@ -22,7 +22,7 @@ const RollStickerTagPrint = ({ roll, onClose }) => {
         {/* Printable 4" x 6" Industrial Thermal Tag */}
         <div className="industrial-roll-tag" id="printable-tag">
           <div className="tag-header">
-            <div className="tag-mill">ROYAL FABRIC WEAVING MILLS</div>
+            <div className="tag-mill">KAK TEXTILE PROCESSING MILLS</div>
             <div className="tag-sub">PREMIUM EXPORT GRADE PACKED ROLL</div>
           </div>
 

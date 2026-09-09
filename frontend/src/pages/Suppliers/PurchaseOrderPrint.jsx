@@ -26,11 +26,11 @@ const PurchaseOrderPrint = ({ po, onClose }) => {
         <div className="po-paper" id="printable-po">
           <div className="po-header">
             <div className="po-brand">
-              <h1>ROYAL FABRICS</h1>
-              <p className="tag">HAUTE COUTURE & BESPOKE TEXTILES</p>
+              <h1>KAK TEXTILE PROCESSING</h1>
+              <p className="tag">PREMIUM WOVEN FABRICS & TEXTILES</p>
               <p className="addr">
                 No. 42, Luxury Avenue, High Street, Chennai - 600006<br />
-                GSTIN: 33AAAAA0000A1Z5 | procurement@royalfabrics.luxury
+                GSTIN: 33AAAAA0000A1Z5 | kaktextiles@gmail.com
               </p>
             </div>
             <div className="po-meta">
@@ -87,7 +87,7 @@ const PurchaseOrderPrint = ({ po, onClose }) => {
               <ul>
                 <li>Fabric rolls must be delivered in pristine moisture-sealed packaging.</li>
                 <li>Any weave flaw / color streak exceeding 0.5m must be flagged on consignment.</li>
-                <li>Invoice payment released upon boutique warehouse meter audit approval.</li>
+                <li>Invoice payment released upon mill warehouse meter audit approval.</li>
               </ul>
               {po.notes && <p className="custom-notes"><strong>Special Indent Instructions:</strong> {po.notes}</p>}
             </div>
@@ -105,7 +105,7 @@ const PurchaseOrderPrint = ({ po, onClose }) => {
           <div className="po-footer-sign">
             <div className="sign-col">
               <div className="line"></div>
-              <span>Boutique Procurement Head</span>
+              <span>Mill Procurement Head</span>
             </div>
             <div className="sign-col">
               <div className="line"></div>

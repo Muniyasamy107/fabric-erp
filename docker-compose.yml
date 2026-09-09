@@ -1,0 +1,50 @@
+# KAK Textile Processing ERP — full stack (MySQL + Spring Boot + React/Nginx)
+#
+# Usage:
+#   docker compose up --build
+# Then open http://localhost  (company website + ERP)
+#
+# Override secrets via environment or a .env file next to this file:
+#   DB_PASSWORD=...  JWT_SECRET=...  etc.
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: kak-textile-db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-munish2000}
+      MYSQL_DATABASE: luxury_fabric_erp
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${DB_PASSWORD:-munish2000}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  backend:
+    build: ./backend
+    container_name: kak-textile-backend
+    environment:
+      DB_URL: jdbc:mysql://db:3306/luxury_fabric_erp?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
+      DB_USERNAME: root
+      DB_PASSWORD: ${DB_PASSWORD:-munish2000}
+      JWT_SECRET: ${JWT_SECRET:-RoyalFabricERPSecretKeyMustBeAtLeast32CharsLong2026}
+    ports:
+      - "8083:8083"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    container_name: kak-textile-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  db-data:

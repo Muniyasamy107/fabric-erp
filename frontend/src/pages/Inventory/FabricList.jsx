@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { getFabrics, deleteFabric } from '../../services/fabricService';
 import AddFabricModal from './AddFabricModal';
 import BarcodeGenerator from './BarcodeGenerator';
 import { MapPin, Edit, Trash2, Tag } from 'lucide-react';
 import './FabricList.css';
 
-const DEFAULT_IMG = 'https://images.unsplash.com/photo-1618220179428-22790b461013?w=400&auto=format&fit=crop&q=80';
+const DEFAULT_IMG = '/fabrics/cotton-shirting.jpg';
 
 const FabricList = () => {
   const [fabrics, setFabrics] = useState([]);
   const [modalFabric, setModalFabric] = useState(undefined);
   const [tagFabric, setTagFabric] = useState(null);
-  const [search, setSearch] = useState('');
+  const [searchParams] = useSearchParams();
+  const [search, setSearch] = useState(searchParams.get('q') || '');
   const [viewMode, setViewMode] = useState('card');
+
+  // Sync search when navbar quick-search navigates here with ?q=
+  useEffect(() => {
+    const q = searchParams.get('q');
+    if (q !== null) setSearch(q);
+  }, [searchParams]);
 
   const load = async () => {
     try {
@@ -23,7 +31,12 @@ const FabricList = () => {
     }
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+    // Live refresh — data updates in real time
+    const interval = setInterval(load, 20000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleDelete = async (f) => {
     const name = f.fabricName || f.name;
@@ -74,7 +87,7 @@ const FabricList = () => {
           ) : filtered.map((f) => {
             const stock = Number(f.totalStockMeters ?? f.totalAvailableMeters ?? 0);
             const price = Number(f.wholesalePricePerMeter ?? f.pricePerMeter ?? 0);
-            const img = f.imageUrl && f.imageUrl.trim().startsWith('http') ? f.imageUrl.trim() : DEFAULT_IMG;
+            const img = f.imageUrl && f.imageUrl.trim() ? f.imageUrl.trim() : DEFAULT_IMG;
             const loc = f.warehouseBinLocation || f.rackLocation || 'Rack A-01';
             const alertLimit = Number(f.minStockAlert ?? 10);
             const isLow = stock <= alertLimit;
@@ -131,7 +144,7 @@ const FabricList = () => {
               ) : filtered.map((f) => {
                 const stock = Number(f.totalStockMeters ?? f.totalAvailableMeters ?? 0);
                 const price = Number(f.wholesalePricePerMeter ?? f.pricePerMeter ?? 0);
-                const img = f.imageUrl && f.imageUrl.trim().startsWith('http') ? f.imageUrl.trim() : DEFAULT_IMG;
+                const img = f.imageUrl && f.imageUrl.trim() ? f.imageUrl.trim() : DEFAULT_IMG;
                 const loc = f.warehouseBinLocation || f.rackLocation || 'Rack A-01';
                 const alertLimit = Number(f.minStockAlert ?? 10);
                 return (

@@ -117,7 +117,6 @@
 }
 .role-badge.admin { background: rgba(212, 175, 55, 0.15); color: #d4af37; }
 .role-badge.cashier { background: rgba(88, 166, 255, 0.15); color: #58a6ff; }
-.role-badge.tailor { background: rgba(210, 168, 255, 0.15); color: #d2a8ff; }
 
 .toggle-btn {
   background: transparent;
@@ -138,4 +137,27 @@
   .staff-layout {
     grid-template-columns: 1fr;
   }
+}
+/* Staff row actions */
+.staff-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.reset-btn {
+  background: transparent;
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  color: #d4af37;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.reset-btn:hover {
+  background: rgba(212, 175, 55, 0.12);
 }

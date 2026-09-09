@@ -37,6 +37,9 @@ const DayEndSettlement = () => {
 
   useEffect(() => {
     load();
+    // Live refresh — data updates in real time
+    const interval = setInterval(load, 20000);
+    return () => clearInterval(interval);
   }, []);
 
   // Calculate actual cash from denomination counter
@@ -64,7 +67,7 @@ const DayEndSettlement = () => {
       const payload = {
         shiftDate: liveSummary?.shiftDate,
         cashierUsername: user?.username || 'admin',
-        cashierFullName: user?.fullName || 'Boutique Manager',
+        cashierFullName: user?.fullName || 'Mill Manager',
         openingFloat: Number(openingFloat),
         cashSales: cashSales,
         cardSales: Number(liveSummary?.cardSales || 0),

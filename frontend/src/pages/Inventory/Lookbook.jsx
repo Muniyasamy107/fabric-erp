@@ -3,14 +3,18 @@ import { getFabrics } from '../../services/fabricService';
 import { Sparkles, MapPin } from 'lucide-react';
 import './Lookbook.css';
 
-const DEFAULT_IMG = 'https://images.unsplash.com/photo-1618220179428-22790b461013?w=600&auto=format&fit=crop&q=80';
+const DEFAULT_IMG = '/fabrics/cotton-shirting.jpg';
 
 const Lookbook = () => {
   const [fabrics, setFabrics] = useState([]);
   const [filter, setFilter] = useState('ALL');
 
   useEffect(() => {
-    getFabrics().then(res => setFabrics(res.data || [])).catch(console.error);
+    const refresh = () => getFabrics().then(res => setFabrics(res.data || [])).catch(console.error);
+    refresh();
+    // Live refresh
+    const interval = setInterval(refresh, 30000);
+    return () => clearInterval(interval);
   }, []);
 
   const types = ['ALL', ...Array.from(new Set(fabrics.map(f => f.fabricType).filter(Boolean)))];
@@ -36,7 +40,7 @@ const Lookbook = () => {
 
       <div className="lb-grid">
         {filtered.map(f => {
-          const img = f.imageUrl && f.imageUrl.trim().startsWith('http') ? f.imageUrl.trim() : DEFAULT_IMG;
+          const img = f.imageUrl && f.imageUrl.trim() ? f.imageUrl.trim() : DEFAULT_IMG;
           const price = Number(f.wholesalePricePerMeter ?? f.pricePerMeter ?? 0);
           const loc = f.warehouseBinLocation || f.rackLocation || 'Rack A-01';
           return (

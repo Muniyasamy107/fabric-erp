@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { getUnreadNotifications, markNotificationRead, markAllNotificationsRead } from '../../services/notificationService';
 import { useAuth } from '../../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Bell,
   UserCircle,
@@ -21,7 +21,15 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [notifications, setNotifications] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [quickSearch, setQuickSearch] = useState('');
   const dropdownRef = useRef(null);
+
+  const handleQuickSearch = (e) => {
+    if (e.key === 'Enter' && quickSearch.trim()) {
+      navigate(`/fabrics?q=${encodeURIComponent(quickSearch.trim())}`);
+      setQuickSearch('');
+    }
+  };
 
   const loadNotifications = async () => {
     try {
@@ -89,10 +97,21 @@ const Navbar = () => {
   return (
     <header className="luxury-navbar">
       <div className="navbar-search">
-        <input type="text" placeholder="Quick search fabric qualities, loom numbers, lot batches, B2B clients..." />
+        <input
+          type="text"
+          placeholder="Quick search fabric qualities — press Enter..."
+          value={quickSearch}
+          onChange={(e) => setQuickSearch(e.target.value)}
+          onKeyDown={handleQuickSearch}
+        />
       </div>
 
       <div className="navbar-profile">
+        {/* Public company website link */}
+        <Link to="/" className="navbar-website-link" title="View public company website">
+          <Globe size={15} /> Company Website
+        </Link>
+
         {/* Notification Bell Container */}
         <div className="notification-bell-container" ref={dropdownRef}>
           <button
@@ -103,7 +122,9 @@ const Navbar = () => {
           >
             <Bell size={18} />
             {notifications.length > 0 && (
-              <span className="bell-badge-count">{notifications.length}</span>
+              <span className="bell-badge-count">
+                {notifications.length > 99 ? '99+' : notifications.length}
+              </span>
             )}
           </button>
 
@@ -128,7 +149,13 @@ const Navbar = () => {
                     <p>All plant systems normal. No active alerts.</p>
                   </div>
                 ) : (
-                  notifications.map((n) => (
+                  <>
+                    {notifications.length > 25 && (
+                      <div className="notif-limit-note">
+                        Showing latest 25 of {notifications.length} alerts
+                      </div>
+                    )}
+                    {notifications.slice(0, 25).map((n) => (
                     <div
                       key={n.id}
                       className={`notif-item severity-${n.severity?.toLowerCase()}`}
@@ -148,7 +175,8 @@ const Navbar = () => {
                         </span>
                       </div>
                     </div>
-                  ))
+                    ))}
+                  </>
                 )}
               </div>
             </div>

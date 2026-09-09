@@ -24,6 +24,9 @@ const ProductionPlanningMaster = () => {
 
   useEffect(() => {
     load();
+    // LIVE AUTO-PILOT — refresh every 15s so stage progress animates in real time
+    const interval = setInterval(load, 15000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleStageChange = async (id, stage) => {
@@ -70,7 +73,12 @@ const ProductionPlanningMaster = () => {
             ) : (
               plans.map((p) => (
                 <tr key={p.id}>
-                  <td className="gold-code">{p.planNumber}</td>
+                  <td className="gold-code">
+                    {p.planNumber}
+                    {(p.remarks || '').includes('AUTO-REPLENISH') && (
+                      <div className="autopilot-badge">🤖 AUTO-PILOT</div>
+                    )}
+                  </td>
                   <td>
                     <strong>{p.targetClientName}</strong>
                     <div className="contract-sub">{p.orderReferenceNumber}</div>

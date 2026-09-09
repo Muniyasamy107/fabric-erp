@@ -21,15 +21,21 @@ const FinancialReport = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    API.get('/reports/financial-summary')
-      .then((res) => {
-        setReportData(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
+    const refresh = () => {
+      API.get('/reports/financial-summary')
+        .then((res) => {
+          setReportData(res.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error(err);
+          setLoading(false);
+        });
+    };
+    refresh();
+    // Live refresh
+    const interval = setInterval(refresh, 45000);
+    return () => clearInterval(interval);
   }, []);
 
   // --- 1. Export B2B Wholesale Invoices ---

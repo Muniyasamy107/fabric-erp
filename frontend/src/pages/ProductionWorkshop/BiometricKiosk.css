@@ -1,0 +1,544 @@
+/* ==========================================================================
+   BIOMETRIC PUNCH KIOSK — factory gate terminal look
+   ========================================================================== */
+
+.kiosk-page {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 20px;
+  padding: 26px;
+  background: #0d1117;
+  min-height: calc(100vh - 70px);
+  color: #fff;
+}
+
+/* ---------------- Terminal ---------------- */
+.kiosk-terminal {
+  background: #161b22;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 14px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: fit-content;
+}
+
+.kiosk-clock-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1px solid #21262d;
+  padding-bottom: 12px;
+}
+
+.kiosk-clock {
+  font-family: 'Courier New', monospace;
+  font-size: 44px;
+  font-weight: 800;
+  color: #d4af37;
+  letter-spacing: 2px;
+}
+
+.kiosk-date {
+  color: #8b949e;
+  font-size: 13px;
+  text-align: right;
+}
+
+.kiosk-shift-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  background: rgba(88, 166, 255, 0.1);
+  border: 1px solid rgba(88, 166, 255, 0.4);
+  color: #58a6ff;
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 7px 14px;
+  border-radius: 20px;
+}
+
+.kiosk-scan-box {
+  background: #0d1117;
+  border: 1px dashed rgba(212, 175, 55, 0.45);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+}
+
+.kiosk-scan-title {
+  font-size: 17px;
+  font-weight: 800;
+  margin-top: 8px;
+  letter-spacing: 1px;
+}
+
+.kiosk-scan-sub {
+  color: #8b949e;
+  font-size: 12px;
+  margin: 4px 0 16px;
+}
+
+.kiosk-scan-box input {
+  width: 100%;
+  max-width: 380px;
+  background: #161b22;
+  border: 2px solid #30363d;
+  color: #d4af37;
+  font-family: 'Courier New', monospace;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-align: center;
+  padding: 13px;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.kiosk-scan-box input:focus {
+  outline: none;
+  border-color: #d4af37;
+  box-shadow: 0 0 14px rgba(212, 175, 55, 0.25);
+}
+
+/* ---------------- Messages ---------------- */
+.kiosk-msg {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13.5px;
+  font-weight: 700;
+  padding: 12px 16px;
+  border-radius: 8px;
+  line-height: 1.4;
+}
+
+.kiosk-msg.success {
+  background: rgba(63, 185, 80, 0.12);
+  border: 1px solid rgba(63, 185, 80, 0.5);
+  color: #3fb950;
+}
+
+.kiosk-msg.error {
+  background: rgba(248, 81, 73, 0.12);
+  border: 1px solid rgba(248, 81, 73, 0.5);
+  color: #f85149;
+}
+
+/* ---------------- Worker card ---------------- */
+.kiosk-worker-card {
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  padding: 18px;
+  background: #0d1117;
+}
+
+.kiosk-worker-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.kiosk-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #d4af37, #aa820a);
+  color: #000;
+  font-size: 24px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.kiosk-worker-head h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.kiosk-worker-head p {
+  margin: 2px 0 0;
+  color: #8b949e;
+  font-size: 12px;
+}
+
+.kiosk-machine {
+  color: #f3e5ab !important;
+}
+
+.kiosk-status {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.kiosk-status.st-in {
+  background: rgba(227, 179, 65, 0.15);
+  color: #e3b341;
+  border: 1px solid rgba(227, 179, 65, 0.5);
+}
+
+.kiosk-status.st-out {
+  background: rgba(63, 185, 80, 0.15);
+  color: #3fb950;
+  border: 1px solid rgba(63, 185, 80, 0.5);
+}
+
+.kiosk-status.st-done {
+  background: rgba(139, 148, 158, 0.15);
+  color: #8b949e;
+  border: 1px solid rgba(139, 148, 158, 0.5);
+}
+
+.kiosk-actions {
+  margin-top: 16px;
+}
+
+.kiosk-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  padding: 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.2s;
+}
+
+.kiosk-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.kiosk-btn.in {
+  background: linear-gradient(135deg, #3fb950, #238636);
+  color: #fff;
+  box-shadow: 0 4px 18px rgba(63, 185, 80, 0.3);
+}
+
+.kiosk-btn.out {
+  background: linear-gradient(135deg, #e3b341, #aa820a);
+  color: #000;
+  box-shadow: 0 4px 18px rgba(227, 179, 65, 0.3);
+}
+
+.kiosk-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.kiosk-done {
+  text-align: center;
+  color: #3fb950;
+  font-weight: 700;
+  padding: 12px;
+  border: 1px dashed rgba(63, 185, 80, 0.4);
+  border-radius: 8px;
+}
+
+/* ---------------- Demo badges ---------------- */
+.kiosk-demo-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  border-top: 1px solid #21262d;
+  padding-top: 14px;
+}
+
+.kiosk-demo-strip > span {
+  color: #8b949e;
+  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.kiosk-demo-strip button {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  color: #c9d1d9;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.kiosk-demo-strip button:hover {
+  border-color: #d4af37;
+  color: #d4af37;
+}
+
+/* ---------------- Live feed ---------------- */
+.kiosk-feed {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 14px;
+  padding: 22px;
+  height: fit-content;
+}
+
+.kiosk-feed h3 {
+  margin: 0 0 14px;
+  font-size: 15px;
+  color: #d4af37;
+  letter-spacing: 1px;
+}
+
+.kiosk-feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.kiosk-feed-empty {
+  color: #8b949e;
+  font-size: 13px;
+}
+
+.kiosk-feed-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #0d1117;
+  border: 1px solid #21262d;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.feed-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.feed-dot.open {
+  background: #3fb950;
+  box-shadow: 0 0 8px rgba(63, 185, 80, 0.8);
+  animation: feed-pulse 1.6s ease-in-out infinite;
+}
+
+.feed-dot.closed {
+  background: #8b949e;
+}
+
+@keyframes feed-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.feed-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.feed-main strong {
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.feed-main span {
+  color: #8b949e;
+  font-size: 11px;
+}
+
+.feed-times {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  color: #f3e5ab;
+}
+
+/* ---------------- Responsive ---------------- */
+@media (max-width: 1000px) {
+  .kiosk-page {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Top bar with register link */
+.kiosk-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.kiosk-terminal-label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #8b949e;
+}
+
+.kiosk-register-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  color: #d4af37;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 7px 13px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.kiosk-register-link:hover {
+  background: rgba(212, 175, 55, 0.12);
+}
+
+/* Role chip + head layout */
+.kiosk-head-right {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.kiosk-status {
+  margin-left: 0;
+}
+
+.kiosk-role-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 4px 9px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+.kiosk-role-chip.office {
+  background: rgba(88, 166, 255, 0.15);
+  color: #58a6ff;
+  border: 1px solid rgba(88, 166, 255, 0.5);
+}
+
+.kiosk-role-chip.factory {
+  background: rgba(212, 175, 55, 0.15);
+  color: #d4af37;
+  border: 1px solid rgba(212, 175, 55, 0.5);
+}
+
+/* Office demo badges get a distinct style */
+.kiosk-demo-strip button.office-badge {
+  border-color: rgba(88, 166, 255, 0.45);
+  color: #58a6ff;
+}
+
+.kiosk-demo-strip button.office-badge:hover {
+  border-color: #58a6ff;
+  background: rgba(88, 166, 255, 0.1);
+}
+
+/* Live stats row */
+.kiosk-stats-row {
+  display: flex;
+  gap: 12px;
+}
+
+.kiosk-stat {
+  flex: 1;
+  background: #0d1117;
+  border: 1px solid #21262d;
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat-num {
+  font-family: 'Courier New', monospace;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.stat-num.green { color: #3fb950; }
+.stat-num.gold { color: #d4af37; }
+.stat-num.blue { color: #58a6ff; }
+
+.stat-lbl {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: #8b949e;
+  font-weight: 700;
+}
+
+/* ID card band */
+.kiosk-worker-card.id-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.id-card-band {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(90deg, rgba(212, 175, 55, 0.18), rgba(212, 175, 55, 0.05));
+  border-bottom: 1px solid rgba(212, 175, 55, 0.35);
+  padding: 9px 16px;
+  flex-wrap: wrap;
+}
+
+.id-band-title {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #d4af37;
+}
+
+.kiosk-worker-card.id-card .kiosk-worker-head {
+  padding: 18px;
+}
+
+.kiosk-worker-card.id-card .kiosk-actions {
+  padding: 0 18px 18px;
+  margin-top: 4px;
+}
+
+.kiosk-worker-card.id-card .kiosk-done {
+  margin-top: 0;
+}
+
+/* Alignment safety: worker head wraps on narrow screens */
+.kiosk-worker-head {
+  flex-wrap: wrap;
+  gap: 12px;
+}

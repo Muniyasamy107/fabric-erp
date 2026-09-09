@@ -445,3 +445,8 @@
   padding: 40px;
   font-size: 13px;
 }
+/* Alignment safety: stock alert rows keep breathing room */
+.stock-alert-item {
+  gap: 10px;
+  flex-wrap: wrap;
+}

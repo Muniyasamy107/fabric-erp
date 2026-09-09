@@ -5,7 +5,7 @@ import './NewCostSheetModal.css';
 const NewCostSheetModal = ({ fabrics = [], onClose, onSuccess }) => {
   const [form, setForm] = useState({
     qualityCode: 'SATIN-SILK-900',
-    fabricName: fabrics[0]?.name || 'Royal Silk Crepe',
+    fabricName: fabrics[0]?.name || 'Cotton Poplin 60s x 60s',
     weaveType: 'Satin Weave',
     reedWidthInches: 62.0,
     finishedWidthInches: 58.0,

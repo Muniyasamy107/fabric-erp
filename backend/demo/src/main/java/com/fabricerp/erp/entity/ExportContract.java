@@ -61,7 +61,7 @@ public class ExportContract {
         if (this.tradeCurrency == null) this.tradeCurrency = "USD";
         if (this.incoterms == null) this.incoterms = "FOB_CHENNAI";
         if (this.portOfLoading == null) this.portOfLoading = "Chennai Port (INMAA)";
-        if (this.bankSwiftCode == null) this.bankSwiftCode = "ROYALINBB001";
+        if (this.bankSwiftCode == null) this.bankSwiftCode = "KAKTINBB001";
         if (this.expectedShipmentDate == null) this.expectedShipmentDate = LocalDate.now().plusDays(45);
     }
 

@@ -6,7 +6,7 @@ const NewBeamModal = ({ fabrics = [], yarns = [], looms = [], onClose, onSuccess
   const [form, setForm] = useState({
     beamNumber: '',
     qualityCode: 'SATIN-SILK-900',
-    fabricProductName: fabrics[0]?.name || 'Royal Silk Crepe',
+    fabricProductName: fabrics[0]?.name || 'Cotton Poplin 60s x 60s',
     yarnLotNumber: yarns[0]?.yarnLotNumber || 'YARN-LOT-8821',
     yarnCountSpecification: 'Cotton 80/1 Ne Combed Giza',
     totalWarpEnds: 4800,

@@ -10,7 +10,7 @@ const NewGatePassModal = ({ invoices = [], onClose, onSuccess }) => {
     driverName: 'Driver Palanisamy',
     driverPhone: '+91 98421 88921',
     destinationOrSourceParty: 'Armani Garments / Raymond Mills',
-    referenceInvoiceOrPoNumber: invoices[0]?.invoiceNumber || 'ROYAL-DISPATCH-9901',
+    referenceInvoiceOrPoNumber: invoices[0]?.invoiceNumber || 'KAK-DISPATCH-9901',
     eWayBillNumber: 'EWB-331908821094',
     totalPackagesCount: 24,
     totalMeterageQuantity: 1200.0,

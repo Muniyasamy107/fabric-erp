@@ -114,3 +114,21 @@
   color: #8b949e;
   padding: 40px;
 }
+/* AUTO-PILOT live badge */
+.autopilot-badge {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #0d1117;
+  background: linear-gradient(135deg, #d4af37, #f0d97a);
+  border-radius: 4px;
+  padding: 2px 7px;
+  animation: autopilot-glow 2s ease-in-out infinite;
+}
+
+@keyframes autopilot-glow {
+  0%, 100% { box-shadow: 0 0 4px rgba(212, 175, 55, 0.4); }
+  50% { box-shadow: 0 0 12px rgba(212, 175, 55, 0.9); }
+}

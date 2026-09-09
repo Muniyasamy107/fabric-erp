@@ -21,6 +21,9 @@ const CadDesignStudioMaster = () => {
 
   useEffect(() => {
     load();
+    // Live refresh — data updates in real time
+    const interval = setInterval(load, 20000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleStatusChange = async (id, status, curMeters) => {
@@ -47,7 +50,7 @@ const CadDesignStudioMaster = () => {
     <div className="cad-page">
       <div className="cad-header">
         <div>
-          <span className="cad-kicker"><Sparkles size={14} /> MILL R&D & CAD TEXTILE DESIGN ATELIER</span>
+          <span className="cad-kicker"><Sparkles size={14} /> MILL R&D & CAD TEXTILE DESIGN STUDIO</span>
           <h1 className="cad-title">CAD Weave Studio & Buyer Sample Strike-Offs</h1>
           <p className="cad-sub">Draft new weave architectures, Dobby shaft lifting plans, and track buyer sample approvals</p>
         </div>

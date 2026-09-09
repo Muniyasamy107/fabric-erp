@@ -15,7 +15,7 @@ public class WholesaleInvoice {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String invoiceNumber; // e.g. ROYAL-DISPATCH-90214
+    private String invoiceNumber; // e.g. KAK-DISPATCH-90214
 
     private String clientCompanyName;
     private String clientPhone;
