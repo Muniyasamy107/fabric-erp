@@ -11,6 +11,7 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/attendance")
@@ -89,6 +90,61 @@ public class AttendancePayrollController {
             }
         }
         return null;
+    }
+
+    /**
+     * BIOMETRIC PUNCH-OUT — closes the shift for a worker who already punched in.
+     * Recalculates overtime and gross pay from the final out-time.
+     */
+    @PutMapping("/punch-out")
+    public ResponseEntity<?> punchOut(@RequestBody Map<String, String> body) {
+        String badge = body.get("badgeNumber");
+        String shift = body.get("designatedShift");
+        String dateStr = body.get("attendanceDate");
+        String outTime = body.get("punchOutTime");
+
+        if (badge == null || shift == null || dateStr == null) {
+            return ResponseEntity.badRequest().body("badgeNumber, designatedShift and attendanceDate are required");
+        }
+
+        LocalDate date;
+        try {
+            date = LocalDate.parse(dateStr.trim());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Invalid attendance date");
+        }
+
+        double otHours = 0;
+        try {
+            otHours = Double.parseDouble(body.getOrDefault("overtimeHours", "0"));
+        } catch (Exception ignored) {
+        }
+
+        List<WorkerShiftAttendance> sameDay =
+                attendanceRepository.findByAttendanceDateOrderByPlantDepartmentAsc(date);
+        if (sameDay != null) {
+            for (WorkerShiftAttendance record : sameDay) {
+                if (!sameText(record.getWorkerBadgeNumber(), badge)) continue;
+                if (!sameText(record.getDesignatedShift(), shift)) continue;
+
+                record.setPunchOutTime(outTime);
+                record.setOvertimeHours(otHours);
+
+                BigDecimal dailyWage = record.getRegularDailyWage() != null
+                        ? record.getRegularDailyWage() : BigDecimal.valueOf(650.0);
+                BigDecimal hourlyRate = dailyWage.divide(BigDecimal.valueOf(8.0), 2, RoundingMode.HALF_UP);
+                BigDecimal otEarned = hourlyRate.multiply(BigDecimal.valueOf(2.0))
+                        .multiply(BigDecimal.valueOf(otHours)).setScale(2, RoundingMode.HALF_UP);
+                record.setOvertimeWagesEarned(otEarned);
+                record.setTotalGrossEarned("ABSENT".equalsIgnoreCase(record.getAttendanceStatus())
+                        ? BigDecimal.ZERO : dailyWage.add(otEarned));
+
+                return ResponseEntity.ok(attendanceRepository.save(record));
+            }
+        }
+
+        return ResponseEntity.status(404)
+                .body("No punch-in found for this badge and shift today. Punch IN first.");
     }
 
     /** True when the two records describe the same worker, same day, same shift (badge match, or name+machine match). */

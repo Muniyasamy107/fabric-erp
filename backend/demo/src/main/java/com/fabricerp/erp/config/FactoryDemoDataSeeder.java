@@ -47,6 +47,7 @@ public class FactoryDemoDataSeeder implements CommandLineRunner {
     private final CadSampleDesignRepository cadRepository;
     private final PurchaseOrderRepository poRepository;
     private final FabricRepository fabricRepository;
+    private final WorkerRepository workerRepository;
 
     public FactoryDemoDataSeeder(WeavingLoomRepository loomRepository,
                                  ProductionJobRepository jobRepository,
@@ -71,7 +72,8 @@ public class FactoryDemoDataSeeder implements CommandLineRunner {
                                  DailyShiftSettlementRepository settlementRepository,
                                  CadSampleDesignRepository cadRepository,
                                  PurchaseOrderRepository poRepository,
-                                 FabricRepository fabricRepository) {
+                                 FabricRepository fabricRepository,
+                                 WorkerRepository workerRepository) {
         this.loomRepository = loomRepository;
         this.jobRepository = jobRepository;
         this.planRepository = planRepository;
@@ -96,12 +98,14 @@ public class FactoryDemoDataSeeder implements CommandLineRunner {
         this.cadRepository = cadRepository;
         this.poRepository = poRepository;
         this.fabricRepository = fabricRepository;
+        this.workerRepository = workerRepository;
     }
 
     @Override
     public void run(String... args) {
         try {
             seedRemnantIfMissing();
+            seedWorkerRoster();
             seedLooms();
             seedClients();
             seedPurchaseOrders();
@@ -131,18 +135,29 @@ public class FactoryDemoDataSeeder implements CommandLineRunner {
         }
     }
 
-    // ---------------- REMNANT (works even when catalog already exists) ----------------
+    // ---------------- REMNANTS (works even when catalog already exists) ----------------
     private void seedRemnantIfMissing() {
         if (!fabricRepository.findByIsRemnantTrue().isEmpty()) return;
         if (fabricRepository.findByQualityCode("RF-COT-002-R1").isPresent()) return;
 
+        addRemnant("RF-COT-002-R1", "Cotton Cambric 40s (End-Bit Roll)", "COTTON_SHIRTING", 105,
+                "110.00", 42.5, 15.0, "/fabrics/cotton-cambric.jpg");
+        addRemnant("RF-SLK-003-R1", "Silk Organza 18/20D (End-Bit Roll)", "SILK_PREMIUM", 48,
+                "580.00", 12.0, 35.0, "/fabrics/silk-organza.jpg");
+        addRemnant("RF-DNM-001-R1", "Denim Indigo 11oz (End-Bit Roll)", "DENIM_UTILITY", 340,
+                "240.00", 18.5, 25.0, "/fabrics/denim-indigo.jpg");
+        log.info("Demo Remnants Seeded: 3 clearance rolls");
+    }
+
+    private void addRemnant(String code, String name, String type, Integer gsm, String price,
+                            Double meters, Double discount, String image) {
         FabricProduct clearance = new FabricProduct();
-        clearance.setQualityCode("RF-COT-002-R1");
-        clearance.setFabricName("Cotton Cambric 40s (Remnant Piece)");
-        clearance.setFabricType("COTTON_SHIRTING");
-        clearance.setGsm(105);
-        clearance.setWholesalePricePerMeter(new BigDecimal("110.00"));
-        clearance.setTotalStockMeters(42.5);
+        clearance.setQualityCode(code);
+        clearance.setFabricName(name);
+        clearance.setFabricType(type);
+        clearance.setGsm(gsm);
+        clearance.setWholesalePricePerMeter(new BigDecimal(price));
+        clearance.setTotalStockMeters(meters);
         clearance.setMinStockAlert(0.0);
         clearance.setGstRate(5.0);
         clearance.setHsnCode("5208");
@@ -150,10 +165,34 @@ public class FactoryDemoDataSeeder implements CommandLineRunner {
         clearance.setRecommendedGarment("Sample & Job-work Lots");
         clearance.setWarehouseBinLocation("Remnant Rack R-01");
         clearance.setIsRemnant(true);
-        clearance.setRemnantDiscountPct(15.0);
-        clearance.setImageUrl("/fabrics/cotton-cambric.jpg");
+        clearance.setRemnantDiscountPct(discount);
+        clearance.setImageUrl(image);
         fabricRepository.save(clearance);
-        log.info("Demo Remnant Seeded: RF-COT-002-R1 (42.5 m, 15% clearance)");
+    }
+
+    // ---------------- WORKER ROSTER (biometric kiosk) ----------------
+    private void seedWorkerRoster() {
+        if (workerRepository.count() > 0) return;
+        addWorker("EMP-WEAVER-042", "Murugesan K", "LOOM_HALL_WEAVING", "LOOM-A01 to A03", 650.0);
+        addWorker("EMP-WEAVER-057", "Selvam R", "LOOM_HALL_WEAVING", "LOOM-A04 to A06", 650.0);
+        addWorker("EMP-WARP-019", "Kumar S", "WARPING_SIZING", "WARP-M1", 640.0);
+        addWorker("EMP-DYER-014", "Priya D", "DYE_HOUSE", "DYE-JET-2", 720.0);
+        addWorker("EMP-FIN-021", "Dinesh K", "FINISHING_STENTER", "STENTER-1", 680.0);
+        addWorker("EMP-QC-008", "Lakshmi N", "QUALITY_INSPECT", "QC-BENCH-1", 600.0);
+        addWorker("EMP-FIT-003", "Ramesh Fitter", "MAINTENANCE_FITTER", "WORKSHOP-BAY", 750.0);
+        addWorker("EMP-PACK-011", "Suresh M", "PACKING_BAY", "FG-BAY-1", 580.0);
+        log.info("Demo Worker Roster Seeded: 8 biometric badges");
+    }
+
+    private void addWorker(String badge, String name, String dept, String machine, Double wage) {
+        Worker w = new Worker();
+        w.setBadgeNumber(badge);
+        w.setFullName(name);
+        w.setPlantDepartment(dept);
+        w.setAssignedMachineCode(machine);
+        w.setBaseDailyWage(BigDecimal.valueOf(wage));
+        w.setActive(true);
+        workerRepository.save(w);
     }
 
     // ---------------- LOOMS ----------------

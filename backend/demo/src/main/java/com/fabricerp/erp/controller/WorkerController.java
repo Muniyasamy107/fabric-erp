@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/workers")
@@ -23,6 +24,16 @@ public class WorkerController {
     public List<Worker> getAll() {
         List<Worker> list = workerRepository.findAll();
         return list != null ? list : new ArrayList<>();
+    }
+
+    /** Biometric kiosk badge scan lookup. */
+    @GetMapping("/badge/{badge}")
+    public ResponseEntity<?> getByBadge(@PathVariable String badge) {
+        Worker worker = workerRepository.findByBadgeNumber(badge != null ? badge.trim() : "").orElse(null);
+        if (worker == null) {
+            return ResponseEntity.status(404).body(Map.of("error", "Badge not registered in the mill roster."));
+        }
+        return ResponseEntity.ok(worker);
     }
 
     @GetMapping("/department/{dept}")

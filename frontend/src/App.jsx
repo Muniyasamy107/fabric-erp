@@ -24,6 +24,7 @@ import QualityInspectionList from './pages/ProductionWorkshop/QualityInspectionL
 import EtpSustainabilityMaster from './pages/ProductionWorkshop/EtpSustainabilityMaster';
 import RollPackingMaster from './pages/ProductionWorkshop/RollPackingMaster';
 import MachineMaintenanceMaster from './pages/ProductionWorkshop/MachineMaintenanceMaster';
+import BiometricKiosk from './pages/ProductionWorkshop/BiometricKiosk';
 import MillAttendanceMaster from './pages/ProductionWorkshop/MillAttendanceMaster';
 import ExportContractMaster from './pages/B2BClients/ExportContractMaster';
 import GatePassMaster from './pages/WholesaleDispatch/GatePassMaster';
@@ -65,6 +66,7 @@ function MainLayout() {
             <Route path="/roll-packing" element={<RollPackingMaster />} />
             <Route path="/maintenance" element={<MachineMaintenanceMaster />} />
             <Route path="/attendance-muster" element={<MillAttendanceMaster />} />
+            <Route path="/biometric" element={<BiometricKiosk />} />
             <Route path="/gate-pass" element={<GatePassMaster />} />
             <Route path="/exports" element={<ExportContractMaster />} />
             <Route path="/clients" element={<ClientDirectory />} />

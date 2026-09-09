@@ -12,6 +12,12 @@ export const saveBulkAttendance = (recordsList) =>
 export const punchWorkerAttendance = (data) =>
   API.post('/attendance/punch', data);
 
+export const punchWorkerOut = (data) =>
+  API.put('/attendance/punch-out', data);
+
+export const getWorkerByBadge = (badge) =>
+  API.get(`/workers/badge/${encodeURIComponent(badge)}`);
+
 export const getWorkers = () =>
   API.get('/workers').catch(() => ({ data: [] }));
 
