@@ -199,6 +199,21 @@ const BiometricKiosk = () => {
           <Clock size={15} /> {SHIFT_LABELS[currentShift]}
         </div>
 
+        <div className="kiosk-stats-row">
+          <div className="kiosk-stat">
+            <span className="stat-num green">{todayPunches.filter((p) => !p.punchOutTime).length}</span>
+            <span className="stat-lbl">ON DUTY NOW</span>
+          </div>
+          <div className="kiosk-stat">
+            <span className="stat-num gold">{todayPunches.length}</span>
+            <span className="stat-lbl">PUNCHED TODAY</span>
+          </div>
+          <div className="kiosk-stat">
+            <span className="stat-num blue">{todayPunches.filter((p) => p.punchOutTime).length}</span>
+            <span className="stat-lbl">SHIFT CLOSED</span>
+          </div>
+        </div>
+
         <div className="kiosk-scan-box">
           <Fingerprint size={30} color="#d4af37" />
           <div className="kiosk-scan-title">Scan Worker Badge</div>
@@ -221,7 +236,16 @@ const BiometricKiosk = () => {
         )}
 
         {worker && (
-          <div className="kiosk-worker-card">
+          <div className="kiosk-worker-card id-card">
+            <div className="id-card-band">
+              <span className="id-band-title">KAK TEXTILE PROCESSING · EMPLOYEE IDENTITY</span>
+              <span className={`kiosk-role-chip ${worker.source === 'USER' ? 'office' : 'factory'}`}>
+                {worker.source === 'USER'
+                  ? <><Briefcase size={12} /> {worker.role || 'OFFICE STAFF'}</>
+                  : <><Users size={12} /> FACTORY WORKER</>}
+              </span>
+            </div>
+
             <div className="kiosk-worker-head">
               <div className="kiosk-avatar">{(worker.fullName || '?').charAt(0)}</div>
               <div>
@@ -230,11 +254,6 @@ const BiometricKiosk = () => {
                 <p className="kiosk-machine">Machine: {worker.assignedMachineCode || '—'}</p>
               </div>
               <div className="kiosk-head-right">
-                <span className={`kiosk-role-chip ${worker.source === 'USER' ? 'office' : 'factory'}`}>
-                  {worker.source === 'USER'
-                    ? <><Briefcase size={12} /> {worker.role || 'OFFICE STAFF'}</>
-                    : <><Users size={12} /> FACTORY WORKER</>}
-                </span>
                 <span className={`kiosk-status st-${status.toLowerCase()}`}>
                   {status === 'IN' && 'NOT PUNCHED'}
                   {status === 'OUT' && `IN @ ${myRecord?.punchInTime}`}

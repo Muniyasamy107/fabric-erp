@@ -464,3 +464,75 @@
   border-color: #58a6ff;
   background: rgba(88, 166, 255, 0.1);
 }
+
+/* Live stats row */
+.kiosk-stats-row {
+  display: flex;
+  gap: 12px;
+}
+
+.kiosk-stat {
+  flex: 1;
+  background: #0d1117;
+  border: 1px solid #21262d;
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat-num {
+  font-family: 'Courier New', monospace;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.stat-num.green { color: #3fb950; }
+.stat-num.gold { color: #d4af37; }
+.stat-num.blue { color: #58a6ff; }
+
+.stat-lbl {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: #8b949e;
+  font-weight: 700;
+}
+
+/* ID card band */
+.kiosk-worker-card.id-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.id-card-band {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(90deg, rgba(212, 175, 55, 0.18), rgba(212, 175, 55, 0.05));
+  border-bottom: 1px solid rgba(212, 175, 55, 0.35);
+  padding: 9px 16px;
+  flex-wrap: wrap;
+}
+
+.id-band-title {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #d4af37;
+}
+
+.kiosk-worker-card.id-card .kiosk-worker-head {
+  padding: 18px;
+}
+
+.kiosk-worker-card.id-card .kiosk-actions {
+  padding: 0 18px 18px;
+  margin-top: 4px;
+}
+
+.kiosk-worker-card.id-card .kiosk-done {
+  margin-top: 0;
+}

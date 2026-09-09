@@ -37,6 +37,18 @@ const DEFAULT_DEMO_WORKERS = [
 const MillAttendanceMaster = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('BULK_SHEET');
+
+  const DEPT_BADGE_CODES = {
+    LOOM_HALL_WEAVING: 'WEAVER',
+    WARPING_SIZING: 'WARP',
+    DYE_HOUSE: 'DYER',
+    FINISHING_STENTER: 'FIN',
+    QUALITY_INSPECT: 'QC',
+    MAINTENANCE_FITTER: 'FIT',
+    PACKING_BAY: 'PACK',
+    OFFICE_ADMINISTRATION: 'OFF',
+    PRODUCTION_OFFICE: 'PRD'
+  };
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().slice(0, 10));
   const [selectedShift, setSelectedShift] = useState('SHIFT_A_MORNING');
   const [selectedDept, setSelectedDept] = useState('LOOM_HALL_WEAVING');
@@ -132,11 +144,25 @@ const MillAttendanceMaster = () => {
     }
   }, [selectedDept, selectedShift, activeTab, selectedDate, workers]);
 
+  const generateBadge = () => {
+    const code = DEPT_BADGE_CODES[newWorker.plantDepartment] || 'GEN';
+    let candidate;
+    do {
+      candidate = `EMP-${code}-${Math.floor(100 + Math.random() * 900)}`;
+    } while (workers.some((w) => (w.badgeNumber || '').toUpperCase() === candidate));
+    setNewWorker({ ...newWorker, badgeNumber: candidate });
+  };
+
   const handleRegisterWorker = async (e) => {
     e.preventDefault();
+    const badge = (newWorker.badgeNumber || '').trim().toUpperCase();
+    if (workers.some((w) => (w.badgeNumber || '').toUpperCase() === badge)) {
+      triggerToast('This badge number is already registered. Use ⚡ Auto or a different badge.', 'error');
+      return;
+    }
     try {
-      await registerWorker(newWorker);
-      triggerToast(`Operator "${newWorker.fullName}" registered successfully!`, 'success');
+      await registerWorker({ ...newWorker, badgeNumber: badge });
+      triggerToast(`Operator "${newWorker.fullName}" registered — badge ${badge} is now active at the Biometric Kiosk!`, 'success');
       setNewWorker({
         badgeNumber: '',
         fullName: '',
@@ -267,10 +293,6 @@ const MillAttendanceMaster = () => {
                   <option value="DYE_HOUSE">Dye House & Color Kitchen</option>
                   <option value="FINISHING_STENTER">Stenter & Calendering Division</option>
                   <option value="QUALITY_INSPECT">Inspection & 4-Point Lab</option>
-              <option value="MAINTENANCE_FITTER">Maintenance & Fitter Bay</option>
-              <option value="PACKING_BAY">Packing & Dispatch Bay</option>
-              <option value="OFFICE_ADMINISTRATION">Office Administration</option>
-              <option value="PRODUCTION_OFFICE">Production Office</option>
                   <option value="MAINTENANCE_FITTER">Maintenance & Fitter Bay</option>
                   <option value="PACKING_BAY">Packing & Dispatch Bay</option>
                   <option value="OFFICE_ADMINISTRATION">Office Administration</option>
@@ -375,12 +397,17 @@ const MillAttendanceMaster = () => {
             />
 
             <label>Employee Badge Number</label>
-            <input
-              value={newWorker.badgeNumber}
-              onChange={(e) => setNewWorker({ ...newWorker, badgeNumber: e.target.value })}
-              required
-              placeholder="e.g. EMP-WEAVER-102"
-            />
+            <div className="badge-input-row">
+              <input
+                value={newWorker.badgeNumber}
+                onChange={(e) => setNewWorker({ ...newWorker, badgeNumber: e.target.value.toUpperCase() })}
+                required
+                placeholder="e.g. EMP-WEAVER-102"
+              />
+              <button type="button" className="badge-gen-btn" onClick={generateBadge} title="Generate a badge ID from the selected department">
+                ⚡ Auto
+              </button>
+            </div>
 
             <div className="form-row">
               <div className="form-group flex-1">

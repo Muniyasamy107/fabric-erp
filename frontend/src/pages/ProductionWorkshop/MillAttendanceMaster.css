@@ -472,3 +472,31 @@
   transform: translateY(-2px);
   box-shadow: 0 5px 16px rgba(212, 175, 55, 0.35);
 }
+
+/* Badge auto-generate row */
+.badge-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.badge-input-row input {
+  flex: 1;
+}
+
+.badge-gen-btn {
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.55);
+  color: #d4af37;
+  font-weight: 800;
+  font-size: 12px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+
+.badge-gen-btn:hover {
+  background: rgba(212, 175, 55, 0.25);
+}
