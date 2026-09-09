@@ -104,7 +104,8 @@ public class FactoryDemoDataSeeder implements CommandLineRunner {
     @Override
     public void run(String... args) {
         try {
-            seedRemnantIfMissing();
+            ensureRemnantShowcase();
+            ensureLowStockShowcase();
             seedWorkerRoster();
             seedLooms();
             seedClients();
@@ -135,29 +136,31 @@ public class FactoryDemoDataSeeder implements CommandLineRunner {
         }
     }
 
-    // ---------------- REMNANTS (works even when catalog already exists) ----------------
-    private void seedRemnantIfMissing() {
-        if (!fabricRepository.findByIsRemnantTrue().isEmpty()) return;
-        if (fabricRepository.findByQualityCode("RF-COT-002-R1").isPresent()) return;
-
-        addRemnant("RF-COT-002-R1", "Cotton Cambric 40s (End-Bit Roll)", "COTTON_SHIRTING", 105,
+    // ---------------- REMNANTS (upsert per quality code — always 3 demo rolls) ----------------
+    private void ensureRemnantShowcase() {
+        upsertRemnant("RF-COT-002-R1", "Cotton Cambric 40s (End-Bit Roll)", "COTTON_SHIRTING", 105,
                 "110.00", 42.5, 15.0, "/fabrics/cotton-cambric.jpg");
-        addRemnant("RF-SLK-003-R1", "Silk Organza 18/20D (End-Bit Roll)", "SILK_PREMIUM", 48,
+        upsertRemnant("RF-SLK-003-R1", "Silk Organza 18/20D (End-Bit Roll)", "SILK_PREMIUM", 48,
                 "580.00", 12.0, 35.0, "/fabrics/silk-organza.jpg");
-        addRemnant("RF-DNM-001-R1", "Denim Indigo 11oz (End-Bit Roll)", "DENIM_UTILITY", 340,
+        upsertRemnant("RF-DNM-001-R1", "Denim Indigo 11oz (End-Bit Roll)", "DENIM_UTILITY", 340,
                 "240.00", 18.5, 25.0, "/fabrics/denim-indigo.jpg");
-        log.info("Demo Remnants Seeded: 3 clearance rolls");
+        log.info("Demo Remnant Showcase ensured: 3 clearance rolls");
     }
 
-    private void addRemnant(String code, String name, String type, Integer gsm, String price,
-                            Double meters, Double discount, String image) {
-        FabricProduct clearance = new FabricProduct();
+    private void upsertRemnant(String code, String name, String type, Integer gsm, String price,
+                               Double meters, Double discount, String image) {
+        FabricProduct clearance = fabricRepository.findByQualityCode(code).orElse(null);
+        boolean isNew = clearance == null;
+        if (isNew) clearance = new FabricProduct();
+
         clearance.setQualityCode(code);
         clearance.setFabricName(name);
         clearance.setFabricType(type);
         clearance.setGsm(gsm);
         clearance.setWholesalePricePerMeter(new BigDecimal(price));
-        clearance.setTotalStockMeters(meters);
+        if (isNew || clearance.getTotalStockMeters() == null || clearance.getTotalStockMeters() <= 0) {
+            clearance.setTotalStockMeters(meters);
+        }
         clearance.setMinStockAlert(0.0);
         clearance.setGstRate(5.0);
         clearance.setHsnCode("5208");
@@ -168,6 +171,54 @@ public class FactoryDemoDataSeeder implements CommandLineRunner {
         clearance.setRemnantDiscountPct(discount);
         clearance.setImageUrl(image);
         fabricRepository.save(clearance);
+    }
+
+    // ---------------- LOW STOCK SHOWCASE (dashboard alerts + bell + AUTO-PILOT loop) ----------------
+    private void ensureLowStockShowcase() {
+        int alreadyLow = 0;
+        for (FabricProduct f : fabricRepository.findAll()) {
+            if (Boolean.TRUE.equals(f.getIsRemnant())) continue;
+            double stock = f.getTotalStockMeters() != null ? f.getTotalStockMeters() : 0;
+            double min = f.getMinStockAlert() != null ? f.getMinStockAlert() : 0;
+            if (min > 0 && stock < min) alreadyLow++;
+        }
+        if (alreadyLow >= 2) return;
+
+        upsertLowStock("RF-COT-006", "Cotton Poplin 2/100s Superfine Pinstripe", "COTTON_SHIRTING",
+                100, "285.00", 35.0, 100.0, "Winter 2026", "Premium Shirts",
+                "BAY-1 / SHELF-C", "/fabrics/poplin-stripe.jpg");
+        upsertLowStock("RF-SLK-003", "Silk Organza 18/20D", "SILK_PREMIUM",
+                48, "580.00", 18.0, 100.0, "Wedding 2026", "Evening Wear & Overlay Panels",
+                "VAULT-2 / SHELF-A", "/fabrics/silk-organza.jpg");
+        log.info("Demo Low-Stock Showcase ensured: dashboard alerts + AUTO-PILOT loop armed");
+    }
+
+    private void upsertLowStock(String code, String name, String type, Integer gsm, String price,
+                                Double stock, Double min, String season, String garment,
+                                String bin, String image) {
+        FabricProduct fabric = fabricRepository.findByQualityCode(code).orElse(null);
+        boolean isNew = fabric == null;
+        if (isNew) fabric = new FabricProduct();
+
+        fabric.setQualityCode(code);
+        fabric.setFabricName(name);
+        fabric.setFabricType(type);
+        fabric.setGsm(gsm);
+        fabric.setWholesalePricePerMeter(new BigDecimal(price));
+        fabric.setMinStockAlert(min);
+        fabric.setGstRate(5.0);
+        fabric.setHsnCode("5208");
+        fabric.setSeasonCollection(season);
+        fabric.setRecommendedGarment(garment);
+        fabric.setWarehouseBinLocation(bin);
+        fabric.setImageUrl(image);
+        fabric.setIsRemnant(false);
+
+        double current = fabric.getTotalStockMeters() != null ? fabric.getTotalStockMeters() : 0;
+        if (isNew || current >= min) {
+            fabric.setTotalStockMeters(Math.round(min * 0.35 * 10.0) / 10.0);
+        }
+        fabricRepository.save(fabric);
     }
 
     // ---------------- WORKER ROSTER (biometric kiosk) ----------------

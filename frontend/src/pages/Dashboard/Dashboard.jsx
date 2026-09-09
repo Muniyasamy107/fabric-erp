@@ -243,11 +243,11 @@ const Dashboard = () => {
                 <div key={f.id} className="stock-alert-item">
                   <div>
                     <strong>{f.fabricName}</strong>
-                    <div className="f-sku">{f.qualityCode} • {f.weaveType}</div>
+                    <div className="f-sku">{f.qualityCode} • {(f.fabricType || '').replace(/_/g, ' ')}</div>
                   </div>
                   <div className="stock-right">
-                    <span className="red-stock">{f.totalStockMeters} m left</span>
-                    <small>Alert at: {f.reorderAlertLevel} m</small>
+                    <span className="red-stock">{Number(f.totalStockMeters || 0).toFixed(1)} m left</span>
+                    <small>Alert at: {Number(f.minStockAlert || 0).toFixed(0)} m</small>
                   </div>
                 </div>
               ))
