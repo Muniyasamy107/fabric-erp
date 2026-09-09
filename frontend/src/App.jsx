@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './routes/ProtectedRoute';
 import Sidebar from './components/Sidebar/Sidebar';
@@ -99,8 +99,9 @@ function App() {
                 <MainLayout />
               </ProtectedRoute>
             }
-          />
-        </Routes>
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
       </AuthProvider>
     </Router>
   );

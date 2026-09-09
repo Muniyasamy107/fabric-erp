@@ -5,7 +5,7 @@ import './NewDyeRecipeModal.css';
 
 const NewDyeRecipeModal = ({ onClose, onSuccess }) => {
   const [form, setForm] = useState({
-    shadeName: 'Royal Midnight Navy',
+    shadeName: 'Midnight Navy',
     pantoneTcxCode: '19-4052 TCX',
     colorHex: '#1B2A4A',
     dyeClass: 'Reactive Dye for Cotton/Silk',
@@ -51,7 +51,7 @@ const NewDyeRecipeModal = ({ onClose, onSuccess }) => {
               <input
                 value={form.shadeName}
                 onChange={(e) => setForm({ ...form, shadeName: e.target.value })}
-                placeholder="e.g. Royal Midnight Navy"
+                placeholder="e.g. Midnight Navy"
                 required
               />
             </div>

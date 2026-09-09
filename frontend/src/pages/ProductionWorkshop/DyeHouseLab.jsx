@@ -9,7 +9,7 @@ import './DyeHouseLab.css';
 // Default Master Recipes to seed if empty
 const DEFAULT_RECIPES = [
   {
-    shadeName: 'Royal Midnight Navy',
+    shadeName: 'Midnight Navy',
     pantoneTcxCode: '19-4052 TCX',
     colorHex: '#1B2A4A',
     dyeClass: 'Reactive Dye for Cotton/Silk',

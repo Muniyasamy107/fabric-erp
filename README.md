@@ -2,6 +2,16 @@
 
 A complete digital mill for a real fabric manufacturing company: **yarn procurement → weaving → dyeing & finishing → quality → packing → wholesale & export dispatch → day-end settlement**, with a public company website for clients.
 
+## ⚡ Real-Time Engines (built-in)
+
+- **Live loom SCADA** — RPM / meters / efficiency move every 5 s, random warp/weft breakdowns with auto-repair, alerts in the navbar bell
+- **AUTO-PILOT closed loop** — low stock fires an alert → auto production plan → stages advance yarn → warping → weaving → dyeing → packing → stock auto-refills (≈4 min)
+- **Live wholesale demand** — counter cut orders consume stock continuously, so the low-stock → manufacturing → replenishment loop never stops
+- **Stock audit shortage** — when all stock is healthy, a physical-audit shortage is discovered so there is always a live story to follow
+- **Biometric Punch Kiosk** — universal badge scan for factory workers (EMP badges) and admin/office staff (their login username), live ID card, on-duty counters, duplicate block, auto OT (2x)
+- **Live everywhere** — every page auto-refreshes (10–45 s), no manual reload needed
+- **Demo data seeder** — every module is populated with realistic records on a fresh database (23 tables)
+
 | Layer    | Technology                              |
 |----------|------------------------------------------|
 | Frontend | React 19 + Vite + React Router + Axios   |
@@ -31,7 +41,7 @@ A complete digital mill for a real fabric manufacturing company: **yarn procurem
 - Security Gate Pass · Yarn Suppliers · Purchase Orders · Stock Inward
 
 **People & Money**
-- Shift Staff & roles · Worker Attendance & OT · Weaver Payroll
+- Shift Staff & roles · Biometric Punch Kiosk · Attendance Register & OT · Weaver Payroll
 - Day-End Drawer Settlement with printable Z-Report · Financial Reports
 
 ---

@@ -67,7 +67,7 @@ const BarcodeGenerator = ({ fabric, onClose }) => {
             </div>
 
             <div className="tag-footer">
-              <span>Origin: Imported Luxury Mills</span>
+              <span>Origin: KAK Textile Processing, Tirupur</span>
               <span>100% Genuine Certified</span>
             </div>
           </div>

@@ -427,3 +427,15 @@
   .landing-links { display: none; }
   .landing-nav { padding: 12px 20px; }
 }
+
+/* Clickable contact links */
+.footer-col a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-col a:hover {
+  color: #d4af37;
+  text-decoration: underline;
+}

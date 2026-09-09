@@ -13,7 +13,7 @@ const AddFabricModal = ({ fabric, onClose, onSuccess }) => {
     gsm: fabric?.gsm ?? '',
     warehouseBinLocation: fabric?.warehouseBinLocation || fabric?.rackLocation || 'Rack A-01',
     hsnCode: fabric?.hsnCode || '5007',
-    seasonCollection: fabric?.seasonCollection || 'Royal Wedding 2026',
+    seasonCollection: fabric?.seasonCollection || 'Wedding 2026',
     recommendedGarment: fabric?.recommendedGarment || '3-Piece Tuxedo',
     imageUrl: fabric?.imageUrl || '',
     wholesalePricePerMeter: fabric?.wholesalePricePerMeter ?? fabric?.pricePerMeter ?? '',
@@ -121,7 +121,7 @@ const AddFabricModal = ({ fabric, onClose, onSuccess }) => {
                 <option value="Mulberry Silk">Mulberry Silk</option>
                 <option value="Italian Linen">Italian Linen</option>
                 <option value="Cashmere / Merino Wool">Cashmere / Merino Wool</option>
-                <option value="Royal Velvet">Royal Velvet</option>
+                <option value="Velvet">Velvet</option>
                 <option value="Egyptian Giza Cotton">Egyptian Giza Cotton</option>
                 <option value="Varanasi Brocade">Varanasi Brocade</option>
               </select>
@@ -165,7 +165,7 @@ const AddFabricModal = ({ fabric, onClose, onSuccess }) => {
             <div className="form-group flex-1">
               <label>Season Collection</label>
               <select name="seasonCollection" value={formData.seasonCollection} onChange={handleChange}>
-                <option value="Royal Wedding 2026">Royal Wedding 2026</option>
+                <option value="Wedding 2026">Wedding 2026</option>
                 <option value="Fall/Winter Milano">Fall/Winter Milano</option>
                 <option value="Spring/Summer Riviera">Spring/Summer Riviera</option>
                 <option value="Classic Formal">Classic Formal</option>

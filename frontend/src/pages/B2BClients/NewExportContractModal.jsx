@@ -7,7 +7,7 @@ const NewExportContractModal = ({ fabrics = [], onClose, onSuccess }) => {
     buyerCompanyName: 'Armani Group S.p.A',
     buyerCountry: 'Italy',
     buyerContactEmail: 'procurement@armani.it',
-    fabricProductName: fabrics[0]?.name || 'Royal Silk Crepe 900',
+    fabricProductName: fabrics[0]?.name || 'Cotton Poplin 60s x 60s',
     contractedMeters: 10000.0,
     tradeCurrency: 'USD',
     pricePerMeterForeignCurrency: 4.80,

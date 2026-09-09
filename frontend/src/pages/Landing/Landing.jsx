@@ -211,14 +211,14 @@ const Landing = () => {
           </div>
           <div className="footer-col">
             <h4>Merchandising & Sales</h4>
-            <p><Phone size={14} /> +91 98422 86862</p>
-            <p><Mail size={14} /> kaktextiles@gmail.com</p>
+            <p><Phone size={14} /> <a href="tel:+919842286862">+91 98422 86862</a></p>
+            <p><Mail size={14} /> <a href="mailto:kaktextiles@gmail.com">kaktextiles@gmail.com</a></p>
           </div>
           <div className="footer-col">
             <h4>Contact Person</h4>
             <p><UserCheck size={14} /> Mr. K. Govindaraj</p>
-            <p><Phone size={14} /> +91 98422 86862</p>
-            <p><Mail size={14} /> kaktextiles@gmail.com</p>
+            <p><Phone size={14} /> <a href="tel:+919842286862">+91 98422 86862</a></p>
+            <p><Mail size={14} /> <a href="mailto:kaktextiles@gmail.com">kaktextiles@gmail.com</a></p>
           </div>
         </div>
         <div className="footer-bottom">
