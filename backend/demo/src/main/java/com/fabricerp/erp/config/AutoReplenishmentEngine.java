@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,6 +61,45 @@ public class AutoReplenishmentEngine {
     public void runAutoPilot() {
         startNewReplenishments();
         advanceActivePlans();
+    }
+
+    /**
+     * LIVE WHOLESALE DEMAND — every 90 seconds a counter/wholesale cut order
+     * consumes a few meters of a random quality. When stock falls below the
+     * safety level the low-stock sweep raises the alert and AUTO-PILOT closes
+     * the loop by manufacturing it back up. The factory never sits still.
+     */
+    @Scheduled(fixedRate = 90000, initialDelay = 60000)
+    public void simulateWholesaleDemand() {
+        List<FabricProduct> candidates = new ArrayList<>();
+        for (FabricProduct f : fabricRepository.findAll()) {
+            if (Boolean.TRUE.equals(f.getIsRemnant())) continue;
+            double stock = f.getTotalStockMeters() != null ? f.getTotalStockMeters() : 0;
+            if (stock > 60) candidates.add(f);
+        }
+        if (candidates.isEmpty()) return;
+
+        FabricProduct fabric = candidates.get((int) (Math.random() * candidates.size()));
+        double cut = Math.round((5 + Math.random() * 20) * 10.0) / 10.0;
+        double stock = fabric.getTotalStockMeters() != null ? fabric.getTotalStockMeters() : 0;
+        if (cut >= stock) return;
+
+        double newStock = Math.round((stock - cut) * 10.0) / 10.0;
+        fabric.setTotalStockMeters(newStock);
+        fabricRepository.save(fabric);
+
+        StockMovement movement = new StockMovement();
+        movement.setFabricId(fabric.getId());
+        movement.setItemCode(fabric.getQualityCode());
+        movement.setFabricName(fabric.getFabricName());
+        movement.setMovementType("SALE_CUT");
+        movement.setMeters(cut);
+        movement.setBalanceAfter(newStock);
+        movement.setReferenceNumber("WHOLESALE-CUT-" + System.currentTimeMillis() % 1000000);
+        movement.setNotes("Counter wholesale cut order (live demand)");
+        movementRepository.save(movement);
+
+        log.info("LIVE DEMAND: {} cut {} m — balance {} m", fabric.getQualityCode(), cut, newStock);
     }
 
     /** Detect low-stock fabrics and launch a fresh AUTO-REPLENISH plan for each. */
@@ -159,7 +199,7 @@ public class AutoReplenishmentEngine {
                 plan.getPlanNumber() + " finished: +" + String.format("%.0f", produced)
                         + " m added. Stock now " + String.format("%.0f", newStock)
                         + " m (safety level restored).",
-                "INFO", "/inventory");
+                "INFO", "/fabrics");
 
         log.info("AUTO-PILOT: completed {} — stock {} m", plan.getPlanNumber(), newStock);
     }

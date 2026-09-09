@@ -46,6 +46,7 @@ public class FactoryDemoDataSeeder implements CommandLineRunner {
     private final DailyShiftSettlementRepository settlementRepository;
     private final CadSampleDesignRepository cadRepository;
     private final PurchaseOrderRepository poRepository;
+    private final FabricRepository fabricRepository;
 
     public FactoryDemoDataSeeder(WeavingLoomRepository loomRepository,
                                  ProductionJobRepository jobRepository,
@@ -69,7 +70,8 @@ public class FactoryDemoDataSeeder implements CommandLineRunner {
                                  WeaverWageRepository wageRepository,
                                  DailyShiftSettlementRepository settlementRepository,
                                  CadSampleDesignRepository cadRepository,
-                                 PurchaseOrderRepository poRepository) {
+                                 PurchaseOrderRepository poRepository,
+                                 FabricRepository fabricRepository) {
         this.loomRepository = loomRepository;
         this.jobRepository = jobRepository;
         this.planRepository = planRepository;
@@ -93,11 +95,13 @@ public class FactoryDemoDataSeeder implements CommandLineRunner {
         this.settlementRepository = settlementRepository;
         this.cadRepository = cadRepository;
         this.poRepository = poRepository;
+        this.fabricRepository = fabricRepository;
     }
 
     @Override
     public void run(String... args) {
         try {
+            seedRemnantIfMissing();
             seedLooms();
             seedClients();
             seedPurchaseOrders();
@@ -125,6 +129,31 @@ public class FactoryDemoDataSeeder implements CommandLineRunner {
         } catch (Exception e) {
             log.error("Demo seeder issue (non-fatal): {}", e.getMessage());
         }
+    }
+
+    // ---------------- REMNANT (works even when catalog already exists) ----------------
+    private void seedRemnantIfMissing() {
+        if (!fabricRepository.findByIsRemnantTrue().isEmpty()) return;
+        if (fabricRepository.findByQualityCode("RF-COT-002-R1").isPresent()) return;
+
+        FabricProduct clearance = new FabricProduct();
+        clearance.setQualityCode("RF-COT-002-R1");
+        clearance.setFabricName("Cotton Cambric 40s (Remnant Piece)");
+        clearance.setFabricType("COTTON_SHIRTING");
+        clearance.setGsm(105);
+        clearance.setWholesalePricePerMeter(new BigDecimal("110.00"));
+        clearance.setTotalStockMeters(42.5);
+        clearance.setMinStockAlert(0.0);
+        clearance.setGstRate(5.0);
+        clearance.setHsnCode("5208");
+        clearance.setSeasonCollection("Clearance Lots");
+        clearance.setRecommendedGarment("Sample & Job-work Lots");
+        clearance.setWarehouseBinLocation("Remnant Rack R-01");
+        clearance.setIsRemnant(true);
+        clearance.setRemnantDiscountPct(15.0);
+        clearance.setImageUrl("/fabrics/cotton-cambric.jpg");
+        fabricRepository.save(clearance);
+        log.info("Demo Remnant Seeded: RF-COT-002-R1 (42.5 m, 15% clearance)");
     }
 
     // ---------------- LOOMS ----------------
