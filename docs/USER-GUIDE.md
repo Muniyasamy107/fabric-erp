@@ -309,3 +309,44 @@ Fields: Type `Dispatch`, Vehicle `TN 39 AB 1234`, Transporter, Driver+phone, Inv
 ---
 
 **KAK Textile Processing, Tirupur — Happy Manufacturing! 🏭**
+
+---
+
+## 🧭 SIDEBAR — ALL 31 ITEMS (quick reference)
+
+| # | Item | Purpose | ADMIN | CASHIER |
+|---|------|---------|:-----:|:-------:|
+| 1 | Mill Dashboard | One-glance live KPIs + stock alerts | ✅ | ✅ |
+| 2 | Fabric Catalog | Finished fabric inventory + photos + low stock | ✅ | ✅ |
+| 3 | Swatch Gallery | Client photo gallery | ✅ | ✅ |
+| 4 | Remnant Clearance | Discount end-bit rolls | ✅ | ✅ |
+| 5 | CAD Weave Studio | New weave design specs | ✅ | ✅ |
+| 6 | Production Planning | Order plans + stage tracking (AUTO-PILOT live) | ✅ | ✅ |
+| 7 | Yarn & Dye House | Yarn stock + dye color recipes | ✅ | ✅ |
+| 8 | Warping & Sizing | Warp beam preparation logs | ✅ | ✅ |
+| 9 | Loom 2D Floor Matrix | Live factory floor map (10s) | ✅ | ✅ |
+| 10 | Loom Control Room | Weaving jobs + batch updates | ✅ | ✅ |
+| 11 | Shift Yield & OEE | Shift performance report | ✅ | ✅ |
+| 12 | Fabric Costing & BOM | Cost/meter calc + price suggestion | ✅ | ✅ |
+| 13 | Boiler & Steam Power | Steam plant daily log | ✅ | ✅ |
+| 14 | Stenter & Finishing | Finishing treatment logs | ✅ | ✅ |
+| 15 | QC & Lab Test | 4-point inspection + grade verdict | ✅ | ✅ |
+| 16 | ETP & Water Recycling | Pollution compliance log | ✅ | ✅ |
+| 17 | Roll Packing & Bales | Roll/bale packing + barcode | ✅ | ✅ |
+| 18 | Plant Maintenance | Breakdown/service tickets | ✅ | ✅ |
+| 19 | Attendance Register & OT | HR: bulk sheet, worker register, Form 25 | ✅ | ✅ |
+| 20 | Biometric Punch Kiosk | Gate punch terminal (everyone) | ✅ | ✅ |
+| 21 | Security Gate Pass | Goods-out vehicle pass | ✅ | ✅ |
+| 22 | Global B2B Exports | Foreign contracts (LC, Incoterms) | ✅ | ✅ |
+| 23 | B2B Wholesale Clients | Buyer database | ✅ | ✅ |
+| 24 | Wholesale Dispatch | Invoice + dispatch (stock auto-cut) | ✅ | ✅ |
+| 25 | Weaver Payroll | Piece-rate salary calc | ✅ | ❌ |
+| 26 | Day-End Settlement | Cash close + Z-report | ✅ | ✅ |
+| 27 | Stock Movement Ledger | Every meter movement history | ✅ | ✅ |
+| 28 | Purchase Orders | Yarn PO to suppliers | ✅ | ❌ |
+| 29 | Yarn Suppliers | Vendor master | ✅ | ❌ |
+| 30 | Shift Staff | Login accounts manage | ✅ | ❌ |
+| 31 | Production Reports | Summaries + prints | ✅ | ❌ |
+
+Top: brand block "KAK TEXTILE PROCESSING". Bottom: logged-in name + role + red Logout.
+Active page = gold highlight.
