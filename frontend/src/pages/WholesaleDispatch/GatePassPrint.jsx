@@ -25,7 +25,7 @@ const GatePassPrint = ({ pass, onClose }) => {
         <div className="gp-paper" id="printable-gatepass">
           <div className="gp-head">
             <div className="gp-brand">
-              <h1>ROYAL FABRICS PLANT SECURITY</h1>
+              <h1>KAK TEXTILE PROCESSING PLANT SECURITY</h1>
               <p className="tag">OFFICIAL FACTORY VEHICLE OUTWARD / INWARD SECURITY PASS</p>
               <p className="addr">Mill Main Security Gate 01 | CCTV Monitored Weighbridge Terminal</p>
             </div>

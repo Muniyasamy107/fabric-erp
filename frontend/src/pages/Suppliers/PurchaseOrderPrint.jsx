@@ -26,11 +26,11 @@ const PurchaseOrderPrint = ({ po, onClose }) => {
         <div className="po-paper" id="printable-po">
           <div className="po-header">
             <div className="po-brand">
-              <h1>ROYAL FABRICS</h1>
+              <h1>KAK TEXTILE PROCESSING</h1>
               <p className="tag">PREMIUM WOVEN FABRICS & TEXTILES</p>
               <p className="addr">
                 No. 42, Luxury Avenue, High Street, Chennai - 600006<br />
-                GSTIN: 33AAAAA0000A1Z5 | procurement@royalfabrics.luxury
+                GSTIN: 33AAAAA0000A1Z5 | kaktextiles@gmail.com
               </p>
             </div>
             <div className="po-meta">

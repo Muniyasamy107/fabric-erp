@@ -37,7 +37,7 @@ public class WholesaleDispatchController {
     @Transactional
     public ResponseEntity<?> dispatchConsignment(@RequestBody WholesaleInvoice invoice) {
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMMddHHmmss"));
-        invoice.setInvoiceNumber("ROYAL-DISPATCH-" + timestamp);
+        invoice.setInvoiceNumber("KAK-DISPATCH-" + timestamp);
 
         BigDecimal taxable = BigDecimal.ZERO;
 

@@ -23,7 +23,7 @@ const FinishingBatchPrint = ({ batch, onClose }) => {
         <div className="fb-paper" id="printable-finishing">
           <div className="fb-head">
             <div className="fb-brand">
-              <h1>ROYAL FABRICS FINISHING DIVISION</h1>
+              <h1>KAK TEXTILE PROCESSING FINISHING DIVISION</h1>
               <p className="tag">STENTER THERMOFIXATION & CALENDERING BATCH TICKET</p>
               <p className="addr">Textile Wet & Dry Finishing Complex | Machine Line: {batch.machineLine}</p>
             </div>

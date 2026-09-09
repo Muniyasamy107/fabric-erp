@@ -23,7 +23,7 @@ const DyeRecipePrint = ({ recipe, onClose }) => {
         <div className="recipe-paper" id="printable-recipe">
           <div className="r-head">
             <div className="r-brand">
-              <h1>ROYAL FABRICS DYEING DIVISION</h1>
+              <h1>KAK TEXTILE PROCESSING DYEING DIVISION</h1>
               <p className="r-tag">CENTRAL COLOR KITCHEN & CHEMICAL RECIPE BATCH CARD</p>
               <p className="r-addr">Textile Wet Processing Complex | Shade Matching Lab</p>
             </div>

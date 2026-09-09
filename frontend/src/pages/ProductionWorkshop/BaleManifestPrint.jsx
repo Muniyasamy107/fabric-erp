@@ -28,7 +28,7 @@ const BaleManifestPrint = ({ baleNumber, rolls = [], onClose }) => {
         <div className="manifest-paper" id="printable-manifest">
           <div className="mf-head">
             <div className="mf-brand">
-              <h1>ROYAL FABRIC WEAVING MILLS</h1>
+              <h1>KAK TEXTILE PROCESSING MILLS</h1>
               <p className="tag">OFFICIAL BALE PACKING LIST & SHIPPING CONTAINER MANIFEST</p>
               <p className="addr">Weaving & Export Terminal | GSTIN: 33AAAAA0000A1Z5</p>
             </div>

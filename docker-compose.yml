@@ -1,4 +1,4 @@
-# Royal Fabrics ERP — full stack (MySQL + Spring Boot + React/Nginx)
+# KAK Textile Processing ERP — full stack (MySQL + Spring Boot + React/Nginx)
 #
 # Usage:
 #   docker compose up --build
@@ -10,7 +10,7 @@
 services:
   db:
     image: mysql:8.0
-    container_name: royal-fabrics-db
+    container_name: kak-textile-db
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-munish2000}
       MYSQL_DATABASE: luxury_fabric_erp
@@ -26,7 +26,7 @@ services:
 
   backend:
     build: ./backend
-    container_name: royal-fabrics-backend
+    container_name: kak-textile-backend
     environment:
       DB_URL: jdbc:mysql://db:3306/luxury_fabric_erp?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
       DB_USERNAME: root
@@ -40,7 +40,7 @@ services:
 
   frontend:
     build: ./frontend
-    container_name: royal-fabrics-frontend
+    container_name: kak-textile-frontend
     ports:
       - "80:80"
     depends_on:

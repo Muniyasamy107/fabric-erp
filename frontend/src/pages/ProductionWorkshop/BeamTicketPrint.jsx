@@ -23,7 +23,7 @@ const BeamTicketPrint = ({ beam, onClose }) => {
         <div className="beam-paper" id="printable-beam">
           <div className="bm-head">
             <div className="bm-brand">
-              <h1>ROYAL FABRICS WEAVING DIVISION</h1>
+              <h1>KAK TEXTILE PROCESSING WEAVING DIVISION</h1>
               <p className="bm-tag">WARPING, SIZING & WEAVER'S BEAM IDENTIFICATION TICKET</p>
               <p className="bm-addr">Loom Beam Preparation Section | High-Speed Creel Floor</p>
             </div>

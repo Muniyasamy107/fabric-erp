@@ -86,8 +86,8 @@ const Sidebar = () => {
   return (
     <aside className="luxury-sidebar">
       <div className="sidebar-brand">
-        <h2 className="brand-gold">ROYAL MILLS</h2>
-        <span className="brand-sub">Fabric Weaving ERP</span>
+        <h2 className="brand-gold">KAK TEXTILE PROCESSING</h2>
+        <span className="brand-sub">Textile Processing ERP</span>
       </div>
 
       <nav className="sidebar-menu">

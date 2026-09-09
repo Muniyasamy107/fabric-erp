@@ -16,7 +16,8 @@ import {
   Ruler,
   CheckCircle2,
   Award,
-  Recycle
+  Recycle,
+  UserCheck
 } from 'lucide-react';
 import './Landing.css';
 
@@ -75,7 +76,7 @@ const Landing = () => {
       <header className="landing-nav">
         <div className="landing-logo">
           <Sparkles size={18} />
-          <span>ROYAL FABRICS</span>
+          <span>KAK TEXTILE PROCESSING</span>
         </div>
         <nav className="landing-links">
           <a href="#collections">Collections</a>
@@ -89,11 +90,11 @@ const Landing = () => {
       {/* ---------- Hero ---------- */}
       <section className="landing-hero">
         <div className="hero-inner">
-          <span className="hero-kicker">Premium Fabric Manufacturer · Coimbatore, India</span>
-          <h1>Weaving Excellence<br />for the World.</h1>
+          <span className="hero-kicker">Integrated Textile Processing Unit · Tirupur, India</span>
+          <h1>Processing Excellence<br />for the World.</h1>
           <p className="hero-sub">
-            From certified combed yarn to export-grade finished fabric — Royal Fabrics operates a
-            fully integrated weaving, dyeing and finishing mill with live digital traceability on
+            From greige fabric to export-grade finished cloth — KAK Textile Processing operates
+            dyeing, finishing and quality control divisions with live digital traceability on
             every single roll.
           </p>
           <div className="hero-ctas">
@@ -193,31 +194,35 @@ const Landing = () => {
           <div>
             <div className="landing-logo">
               <Sparkles size={18} />
-              <span>ROYAL FABRICS</span>
+              <span>KAK TEXTILE PROCESSING</span>
             </div>
             <p className="footer-blurb">
-              Integrated weaving, dyeing and finishing mill serving shirting, suiting,
-              silk and utility fabric buyers across 25+ countries since 1998.
+              Integrated textile processing unit serving shirting, suiting, silk and utility
+              fabric buyers across India and abroad.
             </p>
           </div>
           <div className="footer-col">
-            <h4>Mill Office</h4>
-            <p><MapPin size={14} /> SIDCO Industrial Estate, Kurichi,<br />Coimbatore – 641021, Tamil Nadu</p>
+            <h4>Factory Address</h4>
+            <p>
+              <MapPin size={14} /> 210/2, Murugampalayam,<br />
+              Iduvampalayam (Po),<br />
+              Tirupur – 641687, Tamil Nadu
+            </p>
           </div>
           <div className="footer-col">
             <h4>Merchandising & Sales</h4>
-            <p><Phone size={14} /> +91 422 450 8800</p>
-            <p><Mail size={14} /> sales@royalfabrics.in</p>
+            <p><Phone size={14} /> +91 98422 86862</p>
+            <p><Mail size={14} /> kaktextiles@gmail.com</p>
           </div>
           <div className="footer-col">
-            <h4>Export Division</h4>
-            <p><Globe2 size={14} /> exports@royalfabrics.in</p>
-            <p><Globe2 size={14} /> IEC 0498012345</p>
-            <p><Globe2 size={14} /> GSTIN 33AABCR1234A1Z5</p>
+            <h4>Contact Person</h4>
+            <p><UserCheck size={14} /> Mr. K. Govindaraj</p>
+            <p><Phone size={14} /> +91 98422 86862</p>
+            <p><Mail size={14} /> kaktextiles@gmail.com</p>
           </div>
         </div>
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} Royal Fabrics Pvt Ltd. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} KAK Textile Processing. All rights reserved.</span>
           <Link to="/login">Staff Login</Link>
         </div>
       </footer>

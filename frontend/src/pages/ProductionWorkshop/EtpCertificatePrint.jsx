@@ -25,7 +25,7 @@ const EtpCertificatePrint = ({ log, onClose }) => {
         <div className="etp-paper" id="printable-etp">
           <div className="ep-head">
             <div className="ep-brand">
-              <h1>ROYAL FABRICS ZERO LIQUID DISCHARGE DIVISION</h1>
+              <h1>KAK TEXTILE PROCESSING ZERO LIQUID DISCHARGE DIVISION</h1>
               <p className="ep-tag">OFFICIAL EFFLUENT TREATMENT PLANT (ETP) & WATER QUALITY COMPLIANCE CERTIFICATE</p>
               <p className="ep-addr">Central Water Reclamation Complex | ISO 14001:2015 & ZDHC Level 3 Certified</p>
             </div>

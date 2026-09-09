@@ -23,7 +23,7 @@ const BoilerLogPrint = ({ log, onClose }) => {
         <div className="boiler-paper" id="printable-boiler">
           <div className="bp-head">
             <div className="bp-brand">
-              <h1>ROYAL FABRICS THERMAL POWER & BOILER DIVISION</h1>
+              <h1>KAK TEXTILE PROCESSING THERMAL POWER & BOILER DIVISION</h1>
               <p className="bp-tag">OFFICIAL INDUSTRIAL STEAM GENERATION & BIOMASS ENERGY AUDIT REPORT</p>
               <p className="bp-addr">High-Pressure Steam Generation Plant | Unit: {log.boilerUnitCode}</p>
             </div>

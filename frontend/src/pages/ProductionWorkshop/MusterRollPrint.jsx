@@ -26,7 +26,7 @@ const MusterRollPrint = ({ logs = [], date, onClose }) => {
         <div className="muster-paper" id="printable-muster">
           <div className="mp-head">
             <div className="mp-brand">
-              <h1>ROYAL FABRIC WEAVING MILLS</h1>
+              <h1>KAK TEXTILE PROCESSING MILLS</h1>
               <p className="tag">STATUTORY MUSTER ROLL & DAILY OVERTIME WAGE REGISTER (FORM NO. 25)</p>
               <p className="addr">Factories Act 1948 Compliance | Weaving, Sizing & Processing Plant</p>
             </div>

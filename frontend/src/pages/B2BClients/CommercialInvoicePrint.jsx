@@ -26,7 +26,7 @@ const CommercialInvoicePrint = ({ contract, onClose }) => {
         <div className="cinv-paper" id="printable-cinv">
           <div className="ci-head">
             <div className="ci-brand">
-              <h1>ROYAL FABRICS EXPORT HOUSE</h1>
+              <h1>KAK TEXTILE PROCESSING EXPORT HOUSE</h1>
               <p className="ci-tag">GOVERNMENT OF INDIA RECOGNIZED STAR EXPORT TEXTILE MILL</p>
               <p className="ci-addr">
                 Export Processing Zone, Chennai - 600006, India<br />
@@ -109,7 +109,7 @@ const CommercialInvoicePrint = ({ contract, onClose }) => {
           <div className="ci-sign-row">
             <div className="sign-col">
               <div className="line"></div>
-              <span>For ROYAL FABRICS EXPORT DIVISION</span>
+              <span>For KAK TEXTILE PROCESSING EXPORT DIVISION</span>
               <small>Authorized Signatory & Seal</small>
             </div>
           </div>

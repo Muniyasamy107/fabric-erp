@@ -26,7 +26,7 @@ const BarcodeGenerator = ({ fabric, onClose }) => {
         {/* Physical Roll Tag (Printable) */}
         <div className="luxury-fabric-tag" id="printable-tag">
           <div className="tag-header">
-            <span className="tag-brand">ROYAL FABRICS</span>
+            <span className="tag-brand">KAK TEXTILE PROCESSING</span>
             <span className="tag-edition">PREMIUM FABRIC</span>
           </div>
 

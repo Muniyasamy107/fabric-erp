@@ -1,4 +1,4 @@
-#  Royal Fabrics — Integrated Fabric Manufacturing ERP
+#  KAK Textile Processing — Integrated Fabric Manufacturing ERP
 
 A complete digital mill for a real fabric manufacturing company: **yarn procurement → weaving → dyeing & finishing → quality → packing → wholesale & export dispatch → day-end settlement**, with a public company website for clients.
 
@@ -108,4 +108,4 @@ frontend/src/
   components/    sidebar, navbar, tables, modals, toasts
 ```
 
-© Royal Fabrics Pvt Ltd — Coimbatore, Tamil Nadu.
+© KAK Textile Processing — Tirupur, Tamil Nadu.

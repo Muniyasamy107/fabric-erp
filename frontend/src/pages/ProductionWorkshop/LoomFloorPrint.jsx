@@ -28,7 +28,7 @@ const LoomFloorPrint = ({ looms = [], onClose }) => {
         <div className="floor-paper" id="printable-floor">
           <div className="fp-head">
             <div className="fp-brand">
-              <h1>ROYAL FABRICS WEAVING DIVISION</h1>
+              <h1>KAK TEXTILE PROCESSING WEAVING DIVISION</h1>
               <p className="tag">LOOM SHED 2D TELEMETRY FLOOR STATUS & MACHINE EFFICIENCY AUDIT</p>
               <p className="addr">High-Speed Weaving Hall A & B | 24x7 Real-Time Telemetry Log</p>
             </div>

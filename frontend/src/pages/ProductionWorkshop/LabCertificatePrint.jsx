@@ -26,7 +26,7 @@ const LabCertificatePrint = ({ report, onClose }) => {
         <div className="cert-paper" id="printable-cert">
           <div className="cert-head">
             <div className="cert-brand">
-              <h1>ROYAL FABRIC WEAVING MILLS</h1>
+              <h1>KAK TEXTILE PROCESSING MILLS</h1>
               <p className="cert-tagline">CENTRAL TEXTILE TESTING LABORATORY & QUALITY ASSURANCE DIVISION</p>
               <p className="cert-addr">Weaving Complex, Phase II, Textile City, Chennai - 600006 | ISO 9001:2015 Certified</p>
             </div>

@@ -23,7 +23,7 @@ const CostSheetPrint = ({ sheet, onClose }) => {
         <div className="cost-paper" id="printable-costing">
           <div className="cs-head">
             <div className="cs-brand">
-              <h1>ROYAL FABRIC WEAVING MILLS</h1>
+              <h1>KAK TEXTILE PROCESSING MILLS</h1>
               <p className="tag">OFFICIAL FABRIC COST OF PRODUCTION (COP) & BOM TECHNICAL SHEET</p>
               <p className="addr">Mill Costing & Commercial Merchandising Division | Chennai Complex</p>
             </div>

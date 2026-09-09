@@ -25,7 +25,7 @@ const ShiftOeePrint = ({ log, onClose }) => {
         <div className="oee-paper" id="printable-oee">
           <div className="oe-head">
             <div className="oe-brand">
-              <h1>ROYAL FABRIC WEAVING MILLS</h1>
+              <h1>KAK TEXTILE PROCESSING MILLS</h1>
               <p className="tag">OFFICIAL MILL SHIFT PRODUCTION YIELD & WEAVING OEE AUDIT</p>
               <p className="addr">Loom Hall Management Wing | 24x7 Continuous Weaving Plant</p>
             </div>

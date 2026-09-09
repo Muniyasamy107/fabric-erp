@@ -23,7 +23,7 @@ const SampleTechSheetPrint = ({ design, onClose }) => {
         <div className="sample-paper" id="printable-sample">
           <div className="sp-head">
             <div className="sp-brand">
-              <h1>ROYAL FABRICS MILL R&D STUDIO</h1>
+              <h1>KAK TEXTILE PROCESSING MILL R&D STUDIO</h1>
               <p className="sp-tag">OFFICIAL CAD WEAVE SPECIFICATION & BUYER SAMPLE STRIKE-OFF CARD</p>
               <p className="sp-addr">Central Design & Product Development Studio | Milan & Paris Export Desk</p>
             </div>

@@ -88,8 +88,8 @@ const Login = () => {
       {/* Left branding panel */}
       <div className="login-brand-panel">
         <div className="brand-inner">
-          <span className="brand-kicker">ROYAL FABRICS · COIMBATORE</span>
-          <h1>Premium Fabric<br />Manufacturing ERP</h1>
+          <span className="brand-kicker">KAK TEXTILE PROCESSING · TIRUPUR</span>
+          <h1>Textile Processing<br />& Manufacturing ERP</h1>
           <p>
             Integrated mill management — weaving, dyeing, finishing,
             quality and dispatch with live loom telemetry.

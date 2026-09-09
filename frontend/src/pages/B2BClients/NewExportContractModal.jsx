@@ -19,7 +19,7 @@ const NewExportContractModal = ({ fabrics = [], onClose, onSuccess }) => {
     lcIssuingBank: 'HSBC Bank London Plc',
     lcExpiryDate: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
     expectedShipmentDate: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
-    bankSwiftCode: 'ROYALINBB001',
+    bankSwiftCode: 'KAKTINBB001',
     customDeclarationRemarks: '100% Mulberry Silk Woven Piece Goods. Export under Duty Drawback.'
   });
   const [loading, setLoading] = useState(false);
