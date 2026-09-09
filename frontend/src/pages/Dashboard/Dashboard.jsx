@@ -19,7 +19,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    API.get('/dashboard/stats')
+    const load = () => API.get('/dashboard/stats')
       .then((res) => {
         setStats(res.data);
         setLoading(false);
@@ -28,6 +28,11 @@ const Dashboard = () => {
         console.error(err);
         setLoading(false);
       });
+
+    load();
+    // Live executive dashboard — refresh every 30 seconds
+    const interval = setInterval(load, 30000);
+    return () => clearInterval(interval);
   }, []);
 
   if (loading) {

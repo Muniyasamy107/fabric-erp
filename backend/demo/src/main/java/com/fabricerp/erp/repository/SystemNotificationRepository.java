@@ -11,4 +11,5 @@ public interface SystemNotificationRepository extends JpaRepository<SystemNotifi
     List<SystemNotification> findByIsReadFalseOrderByCreatedAtDesc();
     List<SystemNotification> findAllByOrderByCreatedAtDesc();
     long countByIsReadFalse();
+    boolean existsByTitleAndIsReadFalse(String title);
 }
