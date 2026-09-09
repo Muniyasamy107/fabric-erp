@@ -34,7 +34,7 @@ public class NotificationController {
         if (notificationRepository.count() == 0) {
             seedDefaultNotifications();
         }
-        return notificationRepository.findByIsReadFalseOrderByCreatedAtDesc();
+        return notificationRepository.findTop100ByIsReadFalseOrderByCreatedAtDesc();
     }
 
     @GetMapping("/all")

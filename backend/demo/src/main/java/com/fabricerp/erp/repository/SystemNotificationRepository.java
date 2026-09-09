@@ -9,6 +9,7 @@ import java.util.List;
 @Repository
 public interface SystemNotificationRepository extends JpaRepository<SystemNotification, Long> {
     List<SystemNotification> findByIsReadFalseOrderByCreatedAtDesc();
+    List<SystemNotification> findTop100ByIsReadFalseOrderByCreatedAtDesc();
     List<SystemNotification> findAllByOrderByCreatedAtDesc();
     long countByIsReadFalse();
     boolean existsByTitleAndIsReadFalse(String title);
