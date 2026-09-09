@@ -82,6 +82,11 @@
   border-bottom: 1px solid rgba(212, 175, 55, 0.2);
   padding-bottom: 15px;
   margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .att-kicker {
@@ -445,4 +450,25 @@
   text-align: center;
   color: #8b949e;
   padding: 40px;
+}
+/* Kiosk shortcut button */
+.att-kiosk-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #d4af37, #aa820a);
+  border: none;
+  color: #000;
+  font-weight: 800;
+  font-size: 13px;
+  padding: 11px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.2s;
+  white-space: nowrap;
+}
+
+.att-kiosk-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 16px rgba(212, 175, 55, 0.35);
 }

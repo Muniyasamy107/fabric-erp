@@ -63,7 +63,7 @@ const Sidebar = () => {
     { name: 'ETP & Water Recycling', path: '/etp-sustainability', icon: <Droplets size={20} />, roles: ['ADMIN', 'CASHIER'] },
     { name: 'Roll Packing & Bales', path: '/roll-packing', icon: <PackageCheck size={20} />, roles: ['ADMIN', 'CASHIER'] },
     { name: 'Plant Maintenance', path: '/maintenance', icon: <Wrench size={20} />, roles: ['ADMIN', 'CASHIER'] },
-    { name: 'Worker Attendance & OT', path: '/attendance-muster', icon: <ClipboardList size={20} />, roles: ['ADMIN', 'CASHIER'] },
+    { name: 'Attendance Register & OT', path: '/attendance-muster', icon: <ClipboardList size={20} />, roles: ['ADMIN', 'CASHIER'] },
     { name: 'Biometric Punch Kiosk', path: '/biometric', icon: <Fingerprint size={20} />, roles: ['ADMIN', 'CASHIER'] },
     { name: 'Security Gate Pass', path: '/gate-pass', icon: <DoorClosed size={20} />, roles: ['ADMIN', 'CASHIER'] },
     { name: 'Global B2B Exports', path: '/exports', icon: <Globe size={20} />, roles: ['ADMIN', 'CASHIER'] },

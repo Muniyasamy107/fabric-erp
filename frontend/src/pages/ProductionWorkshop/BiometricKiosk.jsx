@@ -5,7 +5,8 @@ import {
   punchWorkerOut,
   getWorkerByBadge
 } from '../../services/attendanceService';
-import { Fingerprint, LogIn, LogOut, Clock, BadgeCheck, AlertOctagon, Users } from 'lucide-react';
+import { Fingerprint, LogIn, LogOut, Clock, BadgeCheck, AlertOctagon, Users, ClipboardList } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import './BiometricKiosk.css';
 
 const DEMO_BADGES = [
@@ -39,6 +40,7 @@ const parseTimeToMinutes = (t) => {
 };
 
 const BiometricKiosk = () => {
+  const navigate = useNavigate();
   const [now, setNow] = useState(new Date());
   const [badgeInput, setBadgeInput] = useState('');
   const [worker, setWorker] = useState(null);
@@ -175,6 +177,13 @@ const BiometricKiosk = () => {
     <div className="kiosk-page">
       {/* ---------------- Left: scan terminal ---------------- */}
       <div className="kiosk-terminal">
+        <div className="kiosk-topbar">
+          <span className="kiosk-terminal-label">BIOMETRIC PUNCH TERMINAL · GATE 1</span>
+          <button type="button" className="kiosk-register-link" onClick={() => navigate('/attendance-muster')}>
+            <ClipboardList size={14} /> Attendance Register & OT
+          </button>
+        </div>
+
         <div className="kiosk-clock-row">
           <div className="kiosk-clock">{nowTimeString(now)}</div>
           <div className="kiosk-date">

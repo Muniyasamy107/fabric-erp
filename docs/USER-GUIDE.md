@@ -339,6 +339,21 @@ Machine breakdown/service record.
 
 ---
 
+## 👷 ATTENDANCE — RENDU PAGES, RENDU PURPOSE
+
+### ⏱️ Biometric Punch Kiosk (`/biometric`) — WORKERS use pannuvanga
+Factory gate terminal: live clock, auto shift detect, badge scan → PUNCH IN / PUNCH OUT.
+OT 8 hours ku mela automatic ah 2x rate la calculate aagum. Duplicate entry block.
+
+### 📋 Attendance Register & OT (`/attendance-muster`) — HR/ADMIN use pannuvanga
+- **Bulk Attendance Sheet** — department/shift select panni full team attendance oru thadava save
+- **Master Worker Directory** — workers add/remove
+- **Daily Muster Logs** — history + total payroll, OT hours, present count + Form 25 print
+
+> Rendu pages um linked: kiosk la "Attendance Register & OT" button, register la
+> "Open Biometric Punch Kiosk" button irukku. Kiosk la punch pannina entries
+> automatic ah register history la varum.
+
 ## 👷 WORKER ATTENDANCE & OT (`/attendance-muster`)
 Daily attendance + overtime record.
 

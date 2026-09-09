@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   getAttendanceByDate,
   getWorkers,
@@ -20,7 +21,8 @@ import {
   Database,
   Check,
   AlertCircle,
-  X
+  X,
+  Fingerprint
 } from 'lucide-react';
 import './MillAttendanceMaster.css';
 
@@ -33,6 +35,7 @@ const DEFAULT_DEMO_WORKERS = [
 ];
 
 const MillAttendanceMaster = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('BULK_SHEET');
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().slice(0, 10));
   const [selectedShift, setSelectedShift] = useState('SHIFT_A_MORNING');
@@ -207,6 +210,9 @@ const MillAttendanceMaster = () => {
           <h1 className="att-title">Worker Muster Roll & Bulk Attendance</h1>
           <p className="att-sub">Manage factory workforce, log bulk shift attendance, and generate statutory Form 25 registers</p>
         </div>
+        <button type="button" className="att-kiosk-btn" onClick={() => navigate('/biometric')}>
+          <Fingerprint size={16} /> Open Biometric Punch Kiosk
+        </button>
       </div>
 
       <div className="att-tabs">
