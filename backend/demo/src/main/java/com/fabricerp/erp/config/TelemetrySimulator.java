@@ -31,6 +31,7 @@ public class TelemetrySimulator {
     private final SystemNotificationRepository notificationRepository;
     private final FabricRepository fabricRepository;
     private final Random random = new Random();
+    private volatile LocalDateTime lastRemnantAlertAt = null;
 
     public TelemetrySimulator(LoomTelemetryRepository loomRepository,
                               SystemNotificationRepository notificationRepository,
@@ -133,6 +134,37 @@ public class TelemetrySimulator {
                 }
             }
         }
+        remnantYardAlert();
+    }
+
+    /**
+     * Remnant Clearance yard digest — reminds sales that discounted end-bit
+     * rolls are available. Throttled to once every 30 minutes.
+     */
+    private void remnantYardAlert() {
+        if (lastRemnantAlertAt != null
+                && lastRemnantAlertAt.isAfter(LocalDateTime.now().minusMinutes(30))) {
+            return;
+        }
+        List<FabricProduct> remnants = fabricRepository.findByIsRemnantTrue();
+        if (remnants.isEmpty()) return;
+
+        double meters = 0;
+        double value = 0;
+        for (FabricProduct r : remnants) {
+            double m = orDefaultD(r.getTotalStockMeters(), 0);
+            double price = r.getWholesalePricePerMeter() != null
+                    ? r.getWholesalePricePerMeter().doubleValue() : 0;
+            double disc = orDefaultD(r.getRemnantDiscountPct(), 0);
+            meters += m;
+            value += m * price * (1 - disc / 100.0);
+        }
+
+        notify("Remnant Clearance Yard — " + remnants.size() + " rolls ready",
+                String.format("%.1f", meters) + " m of end-bit rolls available at clearance discounts ("
+                        + String.format("%.0f", value) + " recoverable). Offer them to job-work buyers.",
+                "DISPATCH", "INFO", "/remnant-clearance");
+        lastRemnantAlertAt = LocalDateTime.now();
     }
 
     // ------------------------------------------------------------------

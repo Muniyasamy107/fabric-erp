@@ -64,6 +64,54 @@ public class AutoReplenishmentEngine {
     }
 
     /**
+     * GUARANTEED LOW-STOCK STORY — whenever nothing in the warehouse is
+     * below its safety level, a physical stock audit discovers a shortage
+     * on one healthy quality. That immediately fires the LOW_STOCK alert,
+     * the AUTO-PILOT manufacturing loop and the final replenishment, so
+     * there is always a live end-to-end story to follow on the bell.
+     * Runs every 10 minutes, only when no low-stock situation is active.
+     */
+    @Scheduled(fixedRate = 600000, initialDelay = 30000)
+    public void ensureLiveLowStockStory() {
+        boolean anyLow = false;
+        List<FabricProduct> candidates = new ArrayList<>();
+
+        for (FabricProduct f : fabricRepository.findAll()) {
+            if (Boolean.TRUE.equals(f.getIsRemnant())) continue;
+            double stock = f.getTotalStockMeters() != null ? f.getTotalStockMeters() : 0;
+            double min = f.getMinStockAlert() != null ? f.getMinStockAlert() : 0;
+            if (min <= 0) continue;
+            if (stock < min) {
+                anyLow = true;
+            } else if (stock > min * 1.5 && stock > 100) {
+                candidates.add(f);
+            }
+        }
+
+        if (anyLow || candidates.isEmpty()) return;
+
+        FabricProduct fabric = candidates.get((int) (Math.random() * candidates.size()));
+        double oldStock = fabric.getTotalStockMeters();
+        double newStock = Math.round(fabric.getMinStockAlert() * 0.35 * 10.0) / 10.0;
+        fabric.setTotalStockMeters(newStock);
+        fabricRepository.save(fabric);
+
+        StockMovement movement = new StockMovement();
+        movement.setFabricId(fabric.getId());
+        movement.setItemCode(fabric.getQualityCode());
+        movement.setFabricName(fabric.getFabricName());
+        movement.setMovementType("ADJUSTMENT");
+        movement.setMeters(Math.round((newStock - oldStock) * 10.0) / 10.0);
+        movement.setBalanceAfter(newStock);
+        movement.setReferenceNumber("AUDIT-ADJ-" + System.currentTimeMillis() % 1000000);
+        movement.setNotes("Physical stock audit found shortage — book stock corrected to actual count");
+        movementRepository.save(movement);
+
+        log.info("STOCK AUDIT: {} corrected {} m -> {} m (LOW_STOCK alert will fire)",
+                fabric.getQualityCode(), oldStock, newStock);
+    }
+
+    /**
      * LIVE WHOLESALE DEMAND — every 90 seconds a counter/wholesale cut order
      * consumes a few meters of a random quality. When stock falls below the
      * safety level the low-stock sweep raises the alert and AUTO-PILOT closes
