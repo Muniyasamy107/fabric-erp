@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @RestController
@@ -78,6 +80,26 @@ public class UserController {
 
         return ResponseEntity.ok(new UserResponse(
                 user.getId(), user.getUsername(), user.getFullName(), user.getRole(), user.getActive()
+        ));
+    }
+
+    /**
+     * ADMIN-only: issue a one-time temporary password for a staff account.
+     */
+    @PutMapping("/{id}/reset-password")
+    public ResponseEntity<?> resetPassword(@PathVariable Long id) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String tempPassword = "RF-" + (100000 + new Random().nextInt(900000));
+        user.setPassword(passwordEncoder.encode(tempPassword));
+        userRepository.save(user);
+
+        return ResponseEntity.ok(Map.of(
+                "username", user.getUsername(),
+                "tempPassword", tempPassword
         ));
     }
 }

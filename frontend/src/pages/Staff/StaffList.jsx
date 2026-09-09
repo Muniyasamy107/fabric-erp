@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getUsers, createUser, toggleUser } from '../../services/userService';
+import { getUsers, createUser, toggleUser, resetUserPassword } from '../../services/userService';
 import { useAuth } from '../../context/AuthContext';
 import './StaffList.css';
 
@@ -53,6 +53,19 @@ const StaffList = () => {
       await loadStaff();
     } catch (err) {
       alert(err.response?.data || 'Failed to update operator state');
+    }
+  };
+
+  const handleReset = async (id, name) => {
+    if (!window.confirm(`Issue a one-time temporary password for ${name}? Their current password will stop working.`)) return;
+    try {
+      const res = await resetUserPassword(id);
+      window.prompt(
+        `Temporary password for ${res.data.username} — share it securely and ask them to change it after login:`,
+        res.data.tempPassword
+      );
+    } catch (err) {
+      alert('Failed to reset password. Admin privilege required.');
     }
   };
 
@@ -160,9 +173,14 @@ const StaffList = () => {
                       )}
                     </td>
                     <td>
-                      <button className="toggle-btn" onClick={() => handleToggle(s.id)}>
-                        {s.active ? 'Disable' : 'Enable'}
-                      </button>
+                      <div className="staff-actions">
+                        <button className="toggle-btn" onClick={() => handleToggle(s.id)}>
+                          {s.active ? 'Disable' : 'Enable'}
+                        </button>
+                        <button className="reset-btn" onClick={() => handleReset(s.id, s.fullName)}>
+                          Reset PW
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))
