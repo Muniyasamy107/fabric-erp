@@ -2,7 +2,9 @@ package com.fabricerp.erp.controller;
 
 import com.fabricerp.erp.dto.request.LoginRequest;
 import com.fabricerp.erp.dto.response.AuthResponse;
+import com.fabricerp.erp.entity.SystemNotification;
 import com.fabricerp.erp.entity.User;
+import com.fabricerp.erp.repository.SystemNotificationRepository;
 import com.fabricerp.erp.repository.UserRepository;
 import com.fabricerp.erp.security.JwtUtil;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +21,14 @@ public class AuthController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final SystemNotificationRepository notificationRepository;
 
-    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                          JwtUtil jwtUtil, SystemNotificationRepository notificationRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
+        this.notificationRepository = notificationRepository;
     }
 
     @PostMapping("/login")
@@ -76,8 +81,24 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(tempPassword));
         userRepository.save(user);
 
+        notifyAdmins("🔑 Password Reset — " + user.getFullName(),
+                "Staff account '" + user.getUsername() + "' (" + user.getRole()
+                        + ") verified identity and received a one-time password. Please set a permanent password from Shift Staff.",
+                "INFO", "/staff");
+
         return ResponseEntity.ok(Map.of(
                 "tempPassword", tempPassword,
                 "message", "Identity verified. Use this one-time password to sign in."));
+    }
+
+    private void notifyAdmins(String title, String message, String severity, String actionUrl) {
+        SystemNotification n = new SystemNotification();
+        n.setTitle(title);
+        n.setMessage(message);
+        n.setAlertCategory("QC_ALERT");
+        n.setSeverity(severity);
+        n.setIsRead(false);
+        n.setActionUrl(actionUrl);
+        notificationRepository.save(n);
     }
 }
