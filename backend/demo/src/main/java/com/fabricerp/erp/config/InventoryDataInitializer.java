@@ -110,6 +110,14 @@ public class InventoryDataInitializer implements CommandLineRunner {
                 new BigDecimal("205.00"), 640.0, "Rack A-06", "5208",
                 "Winter Comfort", "Flannel Shirts & Loungewear", "/fabrics/flannel-check.jpg");
 
+        // ---- LOW STOCK ALERT EXAMPLES (stock below min alert level) ----
+        addFabric("RF-COT-006", "Cotton Poplin 2/100s Superfine Pinstripe", "COTTON_SHIRTING", 95,
+                new BigDecimal("285.00"), 35.0, "Rack A-07", "5208",
+                "Festive Lustre", "Premium Wedding Shirts", "/fabrics/poplin-stripe.jpg");
+        addFabric("RF-SLK-003", "Silk Organza 18/20D", "PURE_SILK", 55,
+                new BigDecimal("580.00"), 18.0, "Rack C-03", "5007",
+                "Heritage Silk", "Designer Blouses & Overlays", "/fabrics/silk-organza.jpg");
+
         // One clearance remnant so the Remnant Clearance section has a live example
         FabricProduct remnant = fabricRepository.findByQualityCode("RF-COT-002").orElse(null);
         if (remnant != null) {
