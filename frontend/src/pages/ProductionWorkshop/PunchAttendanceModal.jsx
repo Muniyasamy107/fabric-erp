@@ -18,10 +18,12 @@ const PunchAttendanceModal = ({ onClose, onSuccess }) => {
     supervisorNotes: 'Punctual in-shift. Zero loom stoppage under his bay.'
   });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError('');
     try {
       const res = await punchWorkerAttendance({
         ...form,
@@ -31,7 +33,10 @@ const PunchAttendanceModal = ({ onClose, onSuccess }) => {
       alert(`Attendance & Wages Recorded Successfully!\nGross Earned: ₹${res.data.totalGrossEarned}`);
       onSuccess(res.data);
     } catch (err) {
-      alert(err.response?.data || 'Failed to record attendance');
+      const msg = typeof err.response?.data === 'string'
+        ? err.response.data
+        : 'Failed to record attendance';
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -141,6 +146,8 @@ const PunchAttendanceModal = ({ onClose, onSuccess }) => {
               </div>
             </div>
           </div>
+
+          {error && <div className="punch-duplicate-error">⛔ {error}</div>}
 
           <div className="modal-actions">
             <button type="button" className="btn-cancel" onClick={onClose}>Cancel</button>

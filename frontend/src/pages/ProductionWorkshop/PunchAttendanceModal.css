@@ -115,3 +115,15 @@
   border-radius: 4px;
   cursor: pointer;
 }
+/* Duplicate attendance block message */
+.punch-duplicate-error {
+  background: rgba(248, 81, 73, 0.12);
+  border: 1px solid rgba(248, 81, 73, 0.55);
+  color: #f85149;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+  padding: 12px 14px;
+  border-radius: 8px;
+  margin: 14px 0 4px;
+}

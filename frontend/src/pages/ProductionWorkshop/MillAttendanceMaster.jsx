@@ -175,7 +175,10 @@ const MillAttendanceMaster = () => {
       loadData();
       setActiveTab('HISTORY');
     } catch (err) {
-      triggerToast(err.response?.data?.message || 'Failed to save bulk attendance.', 'error');
+      const msg = typeof err.response?.data === 'string' && err.response.data
+        ? err.response.data
+        : err.response?.data?.message || 'Failed to save bulk attendance.';
+      triggerToast(msg, 'error');
     }
   };
 

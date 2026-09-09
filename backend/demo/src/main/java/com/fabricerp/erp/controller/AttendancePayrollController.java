@@ -46,6 +46,12 @@ public class AttendancePayrollController {
             return ResponseEntity.badRequest().body("Worker name is required");
         }
 
+        // DUPLICATE GUARD — same day + same shift + same badge (or same name on same machine)
+        WorkerShiftAttendance duplicate = findDuplicate(record);
+        if (duplicate != null) {
+            return ResponseEntity.status(409).body(duplicateMessage(duplicate));
+        }
+
         BigDecimal dailyWage = record.getRegularDailyWage() != null ? record.getRegularDailyWage() : BigDecimal.valueOf(650.0);
         double otHours = record.getOvertimeHours() != null ? record.getOvertimeHours() : 0.0;
 
@@ -64,11 +70,86 @@ public class AttendancePayrollController {
         return ResponseEntity.ok(attendanceRepository.save(record));
     }
 
+    /**
+     * Duplicate detection: a worker cannot be registered twice for the same
+     * date + shift with the same badge, nor twice with the same name on the
+     * same machine. Returns the conflicting existing record (if any).
+     */
+    private WorkerShiftAttendance findDuplicate(WorkerShiftAttendance record) {
+        if (record.getAttendanceDate() == null || record.getDesignatedShift() == null) {
+            return null;
+        }
+        List<WorkerShiftAttendance> sameDay =
+                attendanceRepository.findByAttendanceDateOrderByPlantDepartmentAsc(record.getAttendanceDate());
+        if (sameDay == null) return null;
+
+        for (WorkerShiftAttendance existing : sameDay) {
+            if (matchesDuplicate(existing, record)) {
+                return existing;
+            }
+        }
+        return null;
+    }
+
+    /** True when the two records describe the same worker, same day, same shift (badge match, or name+machine match). */
+    private boolean matchesDuplicate(WorkerShiftAttendance existing, WorkerShiftAttendance record) {
+        if (existing.getAttendanceDate() == null || record.getAttendanceDate() == null) return false;
+        if (!existing.getAttendanceDate().equals(record.getAttendanceDate())) return false;
+        if (!sameText(existing.getDesignatedShift(), record.getDesignatedShift())) return false;
+
+        boolean badgeMatch = sameText(existing.getWorkerBadgeNumber(), record.getWorkerBadgeNumber());
+        boolean nameMatch = sameText(existing.getWorkerFullName(), record.getWorkerFullName());
+        boolean machineMatch = sameText(existing.getAssignedMachineCode(), record.getAssignedMachineCode());
+
+        return badgeMatch || (nameMatch && machineMatch);
+    }
+
+    private boolean sameText(String a, String b) {
+        String x = a == null ? "" : a.trim();
+        String y = b == null ? "" : b.trim();
+        return !x.isEmpty() && x.equalsIgnoreCase(y);
+    }
+
+    private String duplicateMessage(WorkerShiftAttendance existing) {
+        String who = existing.getWorkerFullName() != null ? existing.getWorkerFullName().trim() : "This worker";
+        String badge = existing.getWorkerBadgeNumber() != null && !existing.getWorkerBadgeNumber().isBlank()
+                ? " (" + existing.getWorkerBadgeNumber().trim() + ")" : "";
+        String machine = existing.getAssignedMachineCode() != null && !existing.getAssignedMachineCode().isBlank()
+                ? " on machine " + existing.getAssignedMachineCode().trim() : "";
+        return "DUPLICATE BLOCKED: " + who + badge + " is already registered for "
+                + existing.getDesignatedShift() + " on " + existing.getAttendanceDate() + machine
+                + ". One attendance entry per worker per shift is allowed.";
+    }
+
     @PostMapping("/bulk-punch")
     @Transactional
     public ResponseEntity<?> saveBulkAttendance(@RequestBody List<WorkerShiftAttendance> records) {
         if (records == null || records.isEmpty()) {
             return ResponseEntity.badRequest().body("No attendance records provided");
+        }
+
+        // DUPLICATE GUARD — check against existing records AND inside the batch itself
+        List<String> duplicates = new ArrayList<>();
+        List<WorkerShiftAttendance> seenInBatch = new ArrayList<>();
+        for (WorkerShiftAttendance record : records) {
+            WorkerShiftAttendance existing = findDuplicate(record);
+            if (existing != null) {
+                duplicates.add(duplicateMessage(existing));
+                continue;
+            }
+            boolean inBatchDup = false;
+            for (WorkerShiftAttendance seen : seenInBatch) {
+                if (matchesDuplicate(seen, record)) { inBatchDup = true; break; }
+            }
+            if (inBatchDup) {
+                duplicates.add("DUPLICATE INSIDE BATCH: " + record.getWorkerFullName()
+                        + " appears more than once for the same shift.");
+                continue;
+            }
+            seenInBatch.add(record);
+        }
+        if (!duplicates.isEmpty()) {
+            return ResponseEntity.status(409).body(String.join(" | ", duplicates));
         }
 
         for (WorkerShiftAttendance record : records) {

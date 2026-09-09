@@ -352,6 +352,10 @@ Daily attendance + overtime record.
 | Base Wage (₹) | Daily salary | `650` |
 | OT Hours (@ 2x) | Overtime | `2` |
 
+> ⛔ **DUPLICATE BLOCK**: Same day + same shift + same badge (or same name on same machine)
+> irundha 2nd time register panna **mudiyadhu** — red error message kaatum.
+> Bulk sheet la save pannumbodhu duplicate irundha full batch reject aagum.
+
 ---
 
 ## 🚪 SECURITY GATE PASS (`/gate-pass`)
