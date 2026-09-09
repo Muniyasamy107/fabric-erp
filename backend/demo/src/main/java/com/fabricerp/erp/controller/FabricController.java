@@ -23,6 +23,24 @@ public class FabricController {
         return fabricRepository.findAll();
     }
 
+    @GetMapping("/remnants")
+    public List<FabricProduct> getRemnantFabrics() {
+        return fabricRepository.findByIsRemnantTrue();
+    }
+
+    @PutMapping("/{id}/toggle-remnant")
+    public ResponseEntity<?> toggleRemnant(@PathVariable Long id,
+                                           @RequestParam(required = false) Double discountPct) {
+        return fabricRepository.findById(id)
+                .map(fabric -> {
+                    boolean nowRemnant = !Boolean.TRUE.equals(fabric.getIsRemnant());
+                    fabric.setIsRemnant(nowRemnant);
+                    fabric.setRemnantDiscountPct(nowRemnant ? (discountPct != null ? discountPct : 10.0) : null);
+                    return ResponseEntity.ok(fabricRepository.save(fabric));
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @GetMapping("/sku/{qualityCode}")
     public ResponseEntity<?> getBySku(@PathVariable String qualityCode) {
         return fabricRepository.findByQualityCode(qualityCode)

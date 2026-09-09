@@ -189,7 +189,7 @@ const StockReport = () => {
                 onChange={(e) => setWastageForm({ ...wastageForm, referenceNumber: e.target.value })}
               />
 
-              <label>Reason & Tailor/Cutter Notes</label>
+              <label>Reason & Cutter Notes</label>
               <textarea
                 rows="3"
                 placeholder="e.g. Weave defect near roll core / oil stain from loom"

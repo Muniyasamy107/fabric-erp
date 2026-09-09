@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { getUnreadNotifications, markNotificationRead, markAllNotificationsRead } from '../../services/notificationService';
 import { useAuth } from '../../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Bell,
   UserCircle,
@@ -21,7 +21,15 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [notifications, setNotifications] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [quickSearch, setQuickSearch] = useState('');
   const dropdownRef = useRef(null);
+
+  const handleQuickSearch = (e) => {
+    if (e.key === 'Enter' && quickSearch.trim()) {
+      navigate(`/fabrics?q=${encodeURIComponent(quickSearch.trim())}`);
+      setQuickSearch('');
+    }
+  };
 
   const loadNotifications = async () => {
     try {
@@ -89,10 +97,21 @@ const Navbar = () => {
   return (
     <header className="luxury-navbar">
       <div className="navbar-search">
-        <input type="text" placeholder="Quick search fabric qualities, loom numbers, lot batches, B2B clients..." />
+        <input
+          type="text"
+          placeholder="Quick search fabric qualities — press Enter..."
+          value={quickSearch}
+          onChange={(e) => setQuickSearch(e.target.value)}
+          onKeyDown={handleQuickSearch}
+        />
       </div>
 
       <div className="navbar-profile">
+        {/* Public company website link */}
+        <Link to="/" className="navbar-website-link" title="View public company website">
+          <Globe size={15} /> Company Website
+        </Link>
+
         {/* Notification Bell Container */}
         <div className="notification-bell-container" ref={dropdownRef}>
           <button

@@ -1,0 +1,16 @@
+# Generated scratch / AI-prompt artifacts
+clean_files.txt
+my_tree.txt
+
+# Node
+node_modules/
+dist/
+
+# Env files with secrets
+.env
+.env.*
+!.env.example
+
+# OS junk
+.DS_Store
+Thumbs.db

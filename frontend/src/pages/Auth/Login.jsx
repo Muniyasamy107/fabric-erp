@@ -17,7 +17,7 @@ const Login = () => {
     setLoading(true);
     try {
       await login(username, password);
-      navigate('/');
+      navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data || 'Login failed. Check backend port 8083.');
     } finally {
@@ -28,9 +28,9 @@ const Login = () => {
   return (
     <div className="login-page">
       <div className="login-card">
-        <p className="login-kicker">HAUTE COUTURE ERP</p>
+        <p className="login-kicker">LUXURY FABRIC MILL ERP</p>
         <h1>ROYAL FABRICS</h1>
-        <p className="login-sub">Boutique Manager Access</p>
+        <p className="login-sub">Mill Manager Access</p>
 
         <form onSubmit={handleSubmit}>
           <label>Username</label>
@@ -42,12 +42,12 @@ const Login = () => {
           {error && <div className="login-error">{String(error)}</div>}
 
           <button type="submit" disabled={loading}>
-            {loading ? 'Signing in...' : 'Enter Atelier'}
+            {loading ? 'Signing in...' : 'Enter Mill'}
           </button>
         </form>
 
         <div className="login-hint">
-          admin / admin123 · cashier / cashier123 · tailor / tailor123
+          admin / admin123 · supervisor / super123 · weaver / weaver123 · dyer / dyer123
         </div>
       </div>
     </div>

@@ -27,7 +27,7 @@ const BarcodeGenerator = ({ fabric, onClose }) => {
         <div className="luxury-fabric-tag" id="printable-tag">
           <div className="tag-header">
             <span className="tag-brand">ROYAL FABRICS</span>
-            <span className="tag-edition">HAUTE COUTURE</span>
+            <span className="tag-edition">PREMIUM FABRIC</span>
           </div>
 
           <div className="tag-divider"></div>

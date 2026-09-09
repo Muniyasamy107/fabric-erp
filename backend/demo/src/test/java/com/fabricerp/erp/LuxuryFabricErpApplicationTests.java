@@ -1,10 +1,10 @@
-package com.fabricERP.demo;
+package com.fabricerp.erp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DemoApplicationTests {
+class LuxuryFabricErpApplicationTests {
 
 	@Test
 	void contextLoads() {

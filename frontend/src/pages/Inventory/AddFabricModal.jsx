@@ -168,7 +168,7 @@ const AddFabricModal = ({ fabric, onClose, onSuccess }) => {
                 <option value="Royal Wedding 2026">Royal Wedding 2026</option>
                 <option value="Fall/Winter Milano">Fall/Winter Milano</option>
                 <option value="Spring/Summer Riviera">Spring/Summer Riviera</option>
-                <option value="Classic Bespoke Formal">Classic Bespoke Formal</option>
+                <option value="Classic Formal">Classic Formal</option>
                 <option value="Heritage Handloom Guild">Heritage Handloom Guild</option>
               </select>
             </div>

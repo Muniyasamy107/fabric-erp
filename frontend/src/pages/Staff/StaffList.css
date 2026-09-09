@@ -117,7 +117,6 @@
 }
 .role-badge.admin { background: rgba(212, 175, 55, 0.15); color: #d4af37; }
 .role-badge.cashier { background: rgba(88, 166, 255, 0.15); color: #58a6ff; }
-.role-badge.tailor { background: rgba(210, 168, 255, 0.15); color: #d2a8ff; }
 
 .toggle-btn {
   background: transparent;

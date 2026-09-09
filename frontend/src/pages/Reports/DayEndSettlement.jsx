@@ -64,7 +64,7 @@ const DayEndSettlement = () => {
       const payload = {
         shiftDate: liveSummary?.shiftDate,
         cashierUsername: user?.username || 'admin',
-        cashierFullName: user?.fullName || 'Boutique Manager',
+        cashierFullName: user?.fullName || 'Mill Manager',
         openingFloat: Number(openingFloat),
         cashSales: cashSales,
         cardSales: Number(liveSummary?.cardSales || 0),

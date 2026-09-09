@@ -18,7 +18,7 @@ public class CadSampleDesign {
     @Column(nullable = false)
     private String designName; // e.g. "Royal Italian Silk Herringbone Twill"
 
-    private String targetBuyerBrand; // e.g. "Armani Group Milan / Raymond Bespoke"
+    private String targetBuyerBrand; // e.g. "Armani Group Milan / Raymond Suiting"
     private String seasonCollection; // e.g. "Fall/Winter 2026", "Royal Wedding Collection"
 
     // Technical Weave Parameters
