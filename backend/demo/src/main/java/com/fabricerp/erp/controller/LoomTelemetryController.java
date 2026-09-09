@@ -38,7 +38,7 @@ public class LoomTelemetryController {
                 log.setCurrentPicksCounter(350000L + (i * 12000));
                 log.setCurrentWovenMeters(280.0 + (i * 10));
                 log.setCurrentLotBatchNumber("LOT-2026-" + (80 + i));
-                log.setFabricQualityName(i % 2 == 0 ? "Royal Silk Crepe 900" : "Cotton Oxford 80s");
+                log.setFabricQualityName(i % 2 == 0 ? "Silk Crepe 20/22D" : "Oxford Shirting 40s x 40s");
                 log.setAllocatedWeaverName("Weaver " + (i <= 8 ? "Palani Bay 1" : "Muthu Bay 2"));
                 log.setLiveStatus(i == 3 ? "WARP_BREAK_STOP" : i == 7 ? "WEFT_FEEDER_STOP" : i == 11 ? "BEAM_GAITING_CHANGE" : "ACTIVE_RUNNING");
                 log.setCurrentShiftEfficiencyPct(94.5 - (i * 0.3));

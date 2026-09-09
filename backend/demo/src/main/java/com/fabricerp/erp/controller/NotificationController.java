@@ -73,7 +73,7 @@ public class NotificationController {
 
         SystemNotification n2 = new SystemNotification();
         n2.setTitle("Low Warehouse Safety Stock");
-        n2.setMessage("Royal Silk Crepe 900 stock is nearing safety reorder level.");
+        n2.setMessage("Silk Crepe 20/22D stock is nearing safety reorder level.");
         n2.setAlertCategory("LOW_STOCK");
         n2.setSeverity("WARNING");
         n2.setActionUrl("/fabrics");
