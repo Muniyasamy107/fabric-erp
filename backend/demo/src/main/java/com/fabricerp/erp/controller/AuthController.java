@@ -52,10 +52,12 @@ public class AuthController {
      */
     @GetMapping("/forgot-password/{username}")
     public ResponseEntity<?> forgotCheck(@PathVariable String username) {
-        return userRepository.findByUsername(username)
-                .map(u -> ResponseEntity.ok(Map.of("exists", true)))
-                .orElseGet(() -> ResponseEntity.status(404)
-                        .body(Map.of("error", "No account found for this username.")));
+        User user = userRepository.findByUsername(username != null ? username.trim() : "").orElse(null);
+        if (user == null) {
+            return ResponseEntity.status(404)
+                    .body(Map.of("error", "No account found for this username."));
+        }
+        return ResponseEntity.ok(Map.of("exists", true));
     }
 
     /**
