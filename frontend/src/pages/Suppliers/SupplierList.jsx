@@ -19,6 +19,9 @@ const SupplierList = () => {
 
   useEffect(() => {
     loadSuppliers();
+    // Live refresh
+    const interval = setInterval(loadSuppliers, 30000);
+    return () => clearInterval(interval);
   }, []);
 
   return (

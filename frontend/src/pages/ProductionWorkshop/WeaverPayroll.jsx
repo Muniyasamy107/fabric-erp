@@ -20,7 +20,12 @@ const WeaverPayroll = () => {
     }
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+    // Live refresh — data updates in real time
+    const interval = setInterval(load, 20000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleJobChange = (jobId) => {
     const matched = jobs.find(j => String(j.id) === String(jobId));

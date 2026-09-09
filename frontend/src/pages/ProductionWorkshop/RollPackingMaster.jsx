@@ -27,6 +27,9 @@ const RollPackingMaster = () => {
 
   useEffect(() => {
     load();
+    // Live refresh — data updates in real time
+    const interval = setInterval(load, 20000);
+    return () => clearInterval(interval);
   }, []);
 
   const totalPackedMeters = rolls.reduce((sum, r) => sum + Number(r.netLengthMeters || 0), 0);

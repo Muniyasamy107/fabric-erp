@@ -483,6 +483,10 @@ Click panna → related page ku direct pogum. **Mark all read** button = ellam c
 | Dashboard stats refresh | 30 seconds |
 | Loom Floor Matrix refresh | 10 seconds |
 | Bell notifications poll | 15 seconds |
+| **ALL other pages** (Catalog, Ledger, QC, Packing, Dispatch, Dye House, etc.) | **15–30 seconds auto refresh** |
+
+**EVERY page in the ERP now auto-refreshes** — neenga etha open pannalum
+data live ah update aagum. Manual refresh (F5) thevai illa!
 
 ---
 

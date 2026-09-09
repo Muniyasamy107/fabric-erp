@@ -77,6 +77,9 @@ const MillAttendanceMaster = () => {
 
   useEffect(() => {
     loadData();
+    // Live refresh
+    const interval = setInterval(loadData, 30000);
+    return () => clearInterval(interval);
   }, [selectedDate]);
 
   const loadBulkSheet = async () => {

@@ -10,7 +10,11 @@ const Lookbook = () => {
   const [filter, setFilter] = useState('ALL');
 
   useEffect(() => {
-    getFabrics().then(res => setFabrics(res.data || [])).catch(console.error);
+    const refresh = () => getFabrics().then(res => setFabrics(res.data || [])).catch(console.error);
+    refresh();
+    // Live refresh
+    const interval = setInterval(refresh, 30000);
+    return () => clearInterval(interval);
   }, []);
 
   const types = ['ALL', ...Array.from(new Set(fabrics.map(f => f.fabricType).filter(Boolean)))];

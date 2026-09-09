@@ -24,6 +24,9 @@ const FinishingMaster = () => {
 
   useEffect(() => {
     load();
+    // Live refresh — data updates in real time
+    const interval = setInterval(load, 20000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleStatusChange = async (id, newStatus, currentInputMeters) => {

@@ -73,6 +73,9 @@ const DyeHouseLab = () => {
 
   useEffect(() => {
     load();
+    // Live refresh — data updates in real time
+    const interval = setInterval(load, 20000);
+    return () => clearInterval(interval);
   }, []);
 
   const totalYarnWeight = yarnList.reduce((sum, y) => sum + Number(y.totalWeightKg || 0), 0);

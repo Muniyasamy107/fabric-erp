@@ -14,8 +14,14 @@ const DispatchInvoicing = () => {
   const [paymentTerms, setPaymentTerms] = useState('CREDIT_30_DAYS');
 
   useEffect(() => {
-    getFabrics().then(res => setFabrics(res.data || []));
-    getWholesaleClients().then(res => setClients(res.data || []));
+    const refresh = () => {
+      getFabrics().then(res => setFabrics(res.data || []));
+      getWholesaleClients().then(res => setClients(res.data || []));
+    };
+    refresh();
+    // Live refresh — fabric stock changes in real time
+    const interval = setInterval(refresh, 30000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleClientSelect = (clientId) => {

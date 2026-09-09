@@ -31,7 +31,12 @@ const FabricList = () => {
     }
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+    // Live refresh — data updates in real time
+    const interval = setInterval(load, 20000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleDelete = async (f) => {
     const name = f.fabricName || f.name;
