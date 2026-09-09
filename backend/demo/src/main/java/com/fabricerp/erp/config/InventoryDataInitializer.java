@@ -57,31 +57,31 @@ public class InventoryDataInitializer implements CommandLineRunner {
                 "All-Season Classic", "Formal Shirts", "/fabrics/cotton-shirting.jpg");
         addFabric("RF-COT-002", "Cotton Cambric 40s x 40s", "COTTON_SHIRTING", 105,
                 new BigDecimal("110.00"), 2400.0, "Rack A-02", "5208",
-                "All-Season Classic", "Kurtas & Casual Shirts", "/fabrics/cotton-shirting.jpg");
+                "All-Season Classic", "Kurtas & Casual Shirts", "/fabrics/cotton-cambric.jpg");
         addFabric("RF-COT-003", "Oxford Shirting 40s x 40s", "COTTON_SHIRTING", 140,
                 new BigDecimal("160.00"), 1320.0, "Rack A-03", "5208",
                 "Autumn Weaves", "Oxford Shirts", "/fabrics/oxford-blue.jpg");
         addFabric("RF-COT-004", "Cotton Voile 80s x 80s", "COTTON_SHIRTING", 80,
                 new BigDecimal("175.00"), 760.0, "Rack A-04", "5208",
-                "Summer Breeze", "Summer Shirts & Dresses", "/fabrics/cotton-shirting.jpg");
+                "Summer Breeze", "Summer Shirts & Dresses", "/fabrics/cotton-voile.jpg");
         addFabric("RF-COT-005", "Cotton Satin 60s", "COTTON_SHIRTING", 130,
                 new BigDecimal("195.00"), 940.0, "Rack A-05", "5208",
-                "Festive Lustre", "Premium Shirts", "/fabrics/cotton-shirting.jpg");
+                "Festive Lustre", "Premium Shirts", "/fabrics/cotton-satin.jpg");
         addFabric("RF-COT-010", "Cotton Canvas 10s x 10s", "COTTON_HEAVY", 285,
                 new BigDecimal("185.00"), 1150.0, "Rack B-01", "5208",
                 "Utility Range", "Bags, Upholstery & Jackets", "/fabrics/canvas-natural.jpg");
         addFabric("RF-COT-011", "Cotton Drill 3/1 Twill", "COTTON_HEAVY", 245,
                 new BigDecimal("170.00"), 880.0, "Rack B-02", "5208",
-                "Utility Range", "Workwear & Trousers", "/fabrics/canvas-natural.jpg");
+                "Utility Range", "Workwear & Trousers", "/fabrics/cotton-drill.jpg");
         addFabric("RF-SLK-001", "Silk Crepe 20/22D", "PURE_SILK", 70,
                 new BigDecimal("520.00"), 420.0, "Rack C-01", "5007",
                 "Heritage Silk", "Sarees & Occasion Wear", "/fabrics/silk-crepe.jpg");
         addFabric("RF-SLK-002", "Silk Charmeuse 22 Momme", "PURE_SILK", 92,
                 new BigDecimal("640.00"), 260.0, "Rack C-02", "5007",
-                "Heritage Silk", "Evening Wear & Linings", "/fabrics/silk-crepe.jpg");
+                "Heritage Silk", "Evening Wear & Linings", "/fabrics/silk-charmeuse.jpg");
         addFabric("RF-BLD-001", "Poly-Cotton Poplin 65/35", "BLENDED", 110,
                 new BigDecimal("85.00"), 3200.0, "Rack D-01", "5513",
-                "Value Volume", "Uniforms & Daily Wear", "/fabrics/poly-crepe.jpg");
+                "Value Volume", "Uniforms & Daily Wear", "/fabrics/polycotton-poplin.jpg");
         addFabric("RF-BLD-002", "Viscose Crepe 30s", "BLENDED", 125,
                 new BigDecimal("130.00"), 1540.0, "Rack D-02", "5516",
                 "Monsoon Drape", "Kurtis & Dresses", "/fabrics/viscose-floral.jpg");
@@ -96,10 +96,10 @@ public class InventoryDataInitializer implements CommandLineRunner {
                 "Executive Range", "Suits & Blazers", "/fabrics/suiting-charcoal.jpg");
         addFabric("RF-SUT-002", "Poly-Wool Suiting 80/20", "SUITING", 230,
                 new BigDecimal("480.00"), 540.0, "Rack E-02", "5112",
-                "Executive Range", "Office Suits", "/fabrics/suiting-charcoal.jpg");
+                "Executive Range", "Office Suits", "/fabrics/polywool-suiting.jpg");
         addFabric("RF-SUT-003", "Cotton Twill 2/20s Stretch", "COTTON_HEAVY", 210,
                 new BigDecimal("180.00"), 990.0, "Rack B-03", "5208",
-                "Utility Range", "Chinos & Casual Trousers", "/fabrics/canvas-natural.jpg");
+                "Utility Range", "Chinos & Casual Trousers", "/fabrics/stretch-twill.jpg");
         addFabric("RF-DNM-001", "Indigo Denim 3/1 Twill 10s", "COTTON_HEAVY", 320,
                 new BigDecimal("240.00"), 1450.0, "Rack B-04", "5209",
                 "Denim Works", "Jeans & Jackets", "/fabrics/denim-indigo.jpg");
@@ -128,7 +128,7 @@ public class InventoryDataInitializer implements CommandLineRunner {
             clearance.setWarehouseBinLocation("Remnant Rack R-01");
             clearance.setIsRemnant(true);
             clearance.setRemnantDiscountPct(15.0);
-            clearance.setImageUrl("/fabrics/cotton-shirting.jpg");
+            clearance.setImageUrl("/fabrics/cotton-cambric.jpg");
             fabricRepository.save(clearance);
         }
 
