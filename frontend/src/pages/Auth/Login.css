@@ -161,11 +161,11 @@
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45), 0 0 40px rgba(212, 175, 55, 0.05);
 }
 
-/* ---------- Tabs (Admin | Staff | Create Account) ---------- */
+/* ---------- Tabs (Admin | Staff) ---------- */
 .auth-tabs {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr 1fr;
   background: #0d1117;
   border: 1px solid #262d36;
   border-radius: 10px;
@@ -179,13 +179,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 7px;
   background: transparent;
   border: none;
   color: #8b949e;
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 700;
-  padding: 9px 4px;
+  padding: 9px 6px;
   border-radius: 7px;
   cursor: pointer;
   transition: color 0.25s;
@@ -205,18 +205,14 @@
   top: 4px;
   bottom: 4px;
   left: 4px;
-  width: calc((100% - 8px) / 3);
+  width: calc(50% - 4px);
   border-radius: 7px;
   background: linear-gradient(135deg, #d4af37, #c29a1f);
   transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.auth-tab-slider.mid {
-  transform: translateX(100%);
-}
-
 .auth-tab-slider.right {
-  transform: translateX(200%);
+  transform: translateX(100%);
 }
 
 /* ---------- Role hint below the tab headline ---------- */
@@ -582,14 +578,13 @@
   }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 420px) {
   .auth-card {
     padding: 24px 18px;
   }
 
   .auth-tab {
-    font-size: 11px;
-    gap: 4px;
+    font-size: 12px;
   }
 
   .role-hint {

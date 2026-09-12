@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Lock,
@@ -9,9 +9,7 @@ import {
   CheckCircle2,
   Eye,
   EyeOff,
-  UserPlus,
   LogIn,
-  IdCard,
   Factory,
   HardHat
 } from 'lucide-react';
@@ -63,10 +61,10 @@ const LOGIN_TABS = {
 };
 
 const Login = () => {
-  const { login, register, logout, token, user } = useAuth();
+  const { login, logout, token, user } = useAuth();
   const navigate = useNavigate();
 
-  const [mode, setMode] = useState('admin'); // admin | staff | signup
+  const [mode, setMode] = useState('admin'); // admin | staff
 
   // -------- Sign in state --------
   const [username, setUsername] = useState(() => readRemembered('admin'));
@@ -75,15 +73,6 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(() => Boolean(readRemembered('admin')));
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-
-  // -------- Sign up state --------
-  const [suFullName, setSuFullName] = useState('');
-  const [suUsername, setSuUsername] = useState('');
-  const [suPassword, setSuPassword] = useState('');
-  const [suConfirm, setSuConfirm] = useState('');
-  const [suShowPassword, setSuShowPassword] = useState(false);
-  const [suError, setSuError] = useState('');
-  const [suLoading, setSuLoading] = useState(false);
 
   // -------- Forgot password modal state --------
   const [showForgot, setShowForgot] = useState(false);
@@ -129,26 +118,11 @@ const Login = () => {
   const switchMode = (next) => {
     setMode(next);
     setError('');
-    setSuError('');
-    if (next === 'admin' || next === 'staff') {
-      const saved = readRemembered(next);
-      setUsername(saved);
-      setRememberMe(Boolean(saved));
-      setPassword('');
-    }
+    const saved = readRemembered(next);
+    setUsername(saved);
+    setRememberMe(Boolean(saved));
+    setPassword('');
   };
-
-  const passwordStrength = useMemo(() => {
-    if (!suPassword) return null;
-    let score = 0;
-    if (suPassword.length >= 6) score += 1;
-    if (suPassword.length >= 10) score += 1;
-    if (/[A-Z]/.test(suPassword) && /[a-z]/.test(suPassword)) score += 1;
-    if (/\d/.test(suPassword) || /[^A-Za-z0-9]/.test(suPassword)) score += 1;
-    if (score <= 1) return { label: 'Weak', cls: 'weak' };
-    if (score <= 3) return { label: 'Good', cls: 'good' };
-    return { label: 'Strong', cls: 'strong' };
-  }, [suPassword]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -164,7 +138,7 @@ const Login = () => {
       const data = await login(username.trim(), password);
       const role = normalizeRole(data?.role);
 
-      // Tab ↔ role guard: the Admin tab accepts ADMIN only, the Staff tab
+      // Tab <-> role guard: the Admin tab accepts ADMIN only, the Staff tab
       // accepts every shop-floor role and rejects admin accounts.
       if (mode === 'admin' && role !== ADMIN_ROLE) {
         logout();
@@ -188,40 +162,6 @@ const Login = () => {
       setError(typeof data === 'string' ? data : data?.error || 'Login failed. Please check your credentials.');
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleSignup = async (e) => {
-    e.preventDefault();
-    setSuError('');
-
-    if (suFullName.trim().length < 3) {
-      setSuError('Please enter your full name as per HR records.');
-      return;
-    }
-    if (!/^[A-Za-z0-9._-]{3,30}$/.test(suUsername.trim())) {
-      setSuError('Username must be 3-30 characters (letters, numbers, dot, dash, underscore).');
-      return;
-    }
-    if (suPassword.length < 6) {
-      setSuError('Password must be at least 6 characters long.');
-      return;
-    }
-    if (suPassword !== suConfirm) {
-      setSuError('Passwords do not match. Please re-enter.');
-      return;
-    }
-
-    setSuLoading(true);
-    try {
-      const data = await register(suFullName.trim(), suUsername.trim(), suPassword);
-      // New accounts open with shop-floor (WEAVER) access.
-      navigate(getRoleLanding(normalizeRole(data?.role)) || '/login', { replace: true });
-    } catch (err) {
-      const data = err.response?.data;
-      setSuError(typeof data === 'string' ? data : data?.error || 'Sign up failed. Please try again.');
-    } finally {
-      setSuLoading(false);
     }
   };
 
@@ -326,179 +266,80 @@ const Login = () => {
             >
               <HardHat size={15} /> Staff
             </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={mode === 'signup'}
-              className={`auth-tab ${mode === 'signup' ? 'active' : ''}`}
-              onClick={() => switchMode('signup')}
-            >
-              <UserPlus size={15} /> Create Account
-            </button>
-            <span
-              className={`auth-tab-slider ${mode === 'staff' ? 'mid' : ''} ${mode === 'signup' ? 'right' : ''}`}
-            />
+            <span className={`auth-tab-slider ${mode === 'staff' ? 'right' : ''}`} />
           </div>
 
-          {mode !== 'signup' ? (
-            <>
-              <p className="auth-kicker">{loginTab.kicker}</p>
-              <h2>{loginTab.heading}</h2>
-              <p className="auth-sub">{loginTab.sub}</p>
+          <>
+            <p className="auth-kicker">{loginTab.kicker}</p>
+            <h2>{loginTab.heading}</h2>
+            <p className="auth-sub">{loginTab.sub}</p>
 
-              <div className="role-hint">
-                {mode === 'admin' ? <ShieldCheck size={14} /> : <HardHat size={14} />}
-                <span>{loginTab.hint}</span>
+            <div className="role-hint">
+              {mode === 'admin' ? <ShieldCheck size={14} /> : <HardHat size={14} />}
+              <span>{loginTab.hint}</span>
+            </div>
+
+            <form onSubmit={handleSubmit} noValidate>
+              <label htmlFor="login-username">Username</label>
+              <div className="input-icon-wrap">
+                <UserIcon size={15} />
+                <input
+                  id="login-username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder={loginTab.placeholder}
+                  autoComplete="username"
+                  required
+                />
               </div>
 
-              <form onSubmit={handleSubmit} noValidate>
-                <label htmlFor="login-username">Username</label>
-                <div className="input-icon-wrap">
-                  <UserIcon size={15} />
-                  <input
-                    id="login-username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder={loginTab.placeholder}
-                    autoComplete="username"
-                    required
-                  />
-                </div>
-
-                <label htmlFor="login-password">Password</label>
-                <div className="input-icon-wrap">
-                  <Lock size={15} />
-                  <input
-                    id="login-password"
-                    type={showPassword ? 'text' : 'password'}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Your password"
-                    autoComplete="current-password"
-                    required
-                  />
-                  <button
-                    type="button"
-                    className="eye-toggle"
-                    onClick={() => setShowPassword((v) => !v)}
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
-                  >
-                    {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
-                  </button>
-                </div>
-
-                <div className="auth-row">
-                  <label className="remember-wrap">
-                    <input
-                      type="checkbox"
-                      checked={rememberMe}
-                      onChange={(e) => setRememberMe(e.target.checked)}
-                    />
-                    Remember me
-                  </label>
-                  <button type="button" className="forgot-link" onClick={openForgot}>
-                    <KeyRound size={13} /> Forgot password?
-                  </button>
-                </div>
-
-                {error && <div className="auth-error">{String(error)}</div>}
-
+              <label htmlFor="login-password">Password</label>
+              <div className="input-icon-wrap">
+                <Lock size={15} />
+                <input
+                  id="login-password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Your password"
+                  autoComplete="current-password"
+                  required
+                />
                 <button
-                  type="submit"
-                  className="auth-submit"
-                  disabled={loading || !username.trim() || !password}
+                  type="button"
+                  className="eye-toggle"
+                  onClick={() => setShowPassword((v) => !v)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
-                  {loading ? 'Signing in…' : (mode === 'admin' ? <><LogIn size={15} /> {loginTab.submitLabel}</> : <><LogIn size={15} /> {loginTab.submitLabel}</>)}
+                  {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
                 </button>
-              </form>
-            </>
-          ) : (
-            <>
-              <p className="auth-kicker">NEW STAFF ACCOUNT</p>
-              <h2>Create your account</h2>
-              <p className="auth-sub">Accounts open with shop-floor access. The plant admin can re-assign your role after signup.</p>
+              </div>
 
-              <form onSubmit={handleSignup} noValidate>
-                <label htmlFor="su-fullname">Full Name</label>
-                <div className="input-icon-wrap">
-                  <IdCard size={15} />
+              <div className="auth-row">
+                <label className="remember-wrap">
                   <input
-                    id="su-fullname"
-                    value={suFullName}
-                    onChange={(e) => setSuFullName(e.target.value)}
-                    placeholder="e.g. Kumar Selvam"
-                    autoComplete="name"
-                    required
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
                   />
-                </div>
-
-                <label htmlFor="su-username">Username</label>
-                <div className="input-icon-wrap">
-                  <UserIcon size={15} />
-                  <input
-                    id="su-username"
-                    value={suUsername}
-                    onChange={(e) => setSuUsername(e.target.value)}
-                    placeholder="e.g. kumar.s"
-                    autoComplete="username"
-                    required
-                  />
-                </div>
-
-                <label htmlFor="su-password">Password</label>
-                <div className="input-icon-wrap">
-                  <Lock size={15} />
-                  <input
-                    id="su-password"
-                    type={suShowPassword ? 'text' : 'password'}
-                    value={suPassword}
-                    onChange={(e) => setSuPassword(e.target.value)}
-                    placeholder="Minimum 6 characters"
-                    autoComplete="new-password"
-                    required
-                  />
-                  <button
-                    type="button"
-                    className="eye-toggle"
-                    onClick={() => setSuShowPassword((v) => !v)}
-                    aria-label={suShowPassword ? 'Hide password' : 'Show password'}
-                  >
-                    {suShowPassword ? <EyeOff size={15} /> : <Eye size={15} />}
-                  </button>
-                </div>
-                {passwordStrength && (
-                  <div className={`strength-meter ${passwordStrength.cls}`}>
-                    <span className="strength-bar"><i /></span>
-                    <span className="strength-label">{passwordStrength.label}</span>
-                  </div>
-                )}
-
-                <label htmlFor="su-confirm">Confirm Password</label>
-                <div className="input-icon-wrap">
-                  <Lock size={15} />
-                  <input
-                    id="su-confirm"
-                    type={suShowPassword ? 'text' : 'password'}
-                    value={suConfirm}
-                    onChange={(e) => setSuConfirm(e.target.value)}
-                    placeholder="Re-enter password"
-                    autoComplete="new-password"
-                    required
-                  />
-                </div>
-
-                {suError && <div className="auth-error">{suError}</div>}
-
-                <button
-                  type="submit"
-                  className="auth-submit"
-                  disabled={suLoading || !suFullName.trim() || !suUsername.trim() || !suPassword || !suConfirm}
-                >
-                  {suLoading ? 'Creating account…' : 'Create Account & Sign In'}
+                  Remember me
+                </label>
+                <button type="button" className="forgot-link" onClick={openForgot}>
+                  <KeyRound size={13} /> Forgot password?
                 </button>
-              </form>
-            </>
-          )}
+              </div>
+
+              {error && <div className="auth-error">{String(error)}</div>}
+
+              <button
+                type="submit"
+                className="auth-submit"
+                disabled={loading || !username.trim() || !password}
+              >
+                {loading ? 'Signing in…' : <><LogIn size={15} /> {loginTab.submitLabel}</>}
+              </button>
+            </form>
+          </>
         </div>
       </div>
 
