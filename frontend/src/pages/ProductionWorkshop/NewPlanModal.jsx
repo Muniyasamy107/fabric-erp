@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { createProductionPlan } from '../../services/planningService';
+import { getFabricCode, getFabricLabel, getFabricName } from '../../utils/fabricFormat';
 import './NewPlanModal.css';
 
 const NewPlanModal = ({ fabrics = [], onClose, onSuccess }) => {
@@ -22,8 +23,8 @@ const NewPlanModal = ({ fabrics = [], onClose, onSuccess }) => {
     if (matched) {
       setForm({
         ...form,
-        qualityCode: matched.itemCode || matched.qualityCode,
-        fabricProductName: matched.name || matched.fabricName
+        qualityCode: getFabricCode(matched),
+        fabricProductName: getFabricName(matched)
       });
     }
   };
@@ -81,7 +82,7 @@ const NewPlanModal = ({ fabrics = [], onClose, onSuccess }) => {
               <label>Commissioned Woven Fabric Quality</label>
               <select onChange={(e) => handleFabricSelect(e.target.value)} required>
                 {fabrics.map((f) => (
-                  <option key={f.id} value={f.id}>{f.itemCode || f.qualityCode} — {f.name || f.fabricName}</option>
+                  <option key={f.id} value={f.id}>{getFabricLabel(f)}</option>
                 ))}
               </select>
             </div>

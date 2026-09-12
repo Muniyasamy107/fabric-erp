@@ -35,9 +35,9 @@ const NewCostSheetModal = ({ fabrics = [], onClose, onSuccess }) => {
     if (matched) {
       setForm({
         ...form,
-        qualityCode: matched.itemCode || matched.qualityCode,
-        fabricName: matched.name || matched.fabricName,
-        finishedWidthInches: matched.standardWidthInches || 58.0
+        qualityCode: getFabricCode(matched),
+        fabricName: getFabricName(matched),
+        finishedWidthInches: getFabricWidth(matched) || 58.0
       });
     }
   };
@@ -96,7 +96,7 @@ const NewCostSheetModal = ({ fabrics = [], onClose, onSuccess }) => {
               <label>Select Fabric Quality from Catalog</label>
               <select onChange={(e) => handleFabricSelect(e.target.value)} required>
                 {fabrics.map((f) => (
-                  <option key={f.id} value={f.id}>{f.itemCode || f.qualityCode} — {f.name || f.fabricName}</option>
+                  <option key={f.id} value={f.id}>{getFabricLabel(f)}</option>
                 ))}
               </select>
             </div>

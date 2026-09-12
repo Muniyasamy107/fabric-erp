@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { getStockMovements, recordWastage } from '../../services/stockService';
 import { getFabrics } from '../../services/fabricService';
+import {
+  formatMeters,
+  getFabricCode,
+  getFabricName,
+  getFabricStock,
+  getFabricStockLabel,
+} from '../../utils/fabricFormat';
 import { ArrowDownLeft, ArrowUpRight, Scissors, AlertOctagon, Download } from 'lucide-react';
 import './StockReport.css';
 
@@ -60,7 +67,7 @@ const StockReport = () => {
     const rows = movements
       .map(
         (m) =>
-          `"${m.id}","${m.itemCode}","${m.fabricName}","${m.movementType}",${m.meters},${m.balanceAfter},"${m.referenceNumber}","${m.notes}","${m.createdAt}"`
+          `"${m.id}","${getFabricCode(m)}","${getFabricName(m)}","${m.movementType}",${m.meters},${m.balanceAfter},"${m.referenceNumber}","${m.notes}","${m.createdAt}"`
       )
       .join('\n');
     const blob = new Blob([headers + rows], { type: 'text/csv;charset=utf-8;' });
@@ -74,6 +81,8 @@ const StockReport = () => {
   const filtered = movements.filter(
     (m) => typeFilter === 'ALL' || m.movementType === typeFilter
   );
+
+  const wastageFabric = fabrics.find((f) => String(f.id) === String(wastageForm.fabricId));
 
   return (
     <div className="ledger-page">
@@ -128,8 +137,8 @@ const StockReport = () => {
                   <tr key={m.id}>
                     <td>{m.createdAt ? new Date(m.createdAt).toLocaleString('en-IN') : 'N/A'}</td>
                     <td>
-                      <strong className="gold-text">{m.itemCode}</strong>
-                      <div className="muted-sub">{m.fabricName}</div>
+                      <strong className="gold-text">{getFabricCode(m)}</strong>
+                      <div className="muted-sub">{getFabricName(m)}</div>
                     </td>
                     <td>
                       <span className={`type-tag ${m.movementType?.toLowerCase()}`}>
@@ -168,10 +177,16 @@ const StockReport = () => {
               >
                 {fabrics.map((f) => (
                   <option key={f.id} value={f.id}>
-                    {f.itemCode} - {f.name} ({f.totalAvailableMeters}m available)
+                    {getFabricStockLabel(f)}
                   </option>
                 ))}
               </select>
+
+              {wastageFabric && (
+                <p className="wastage-stock-hint">
+                  Balance in warehouse now: <strong>{formatMeters(getFabricStock(wastageFabric))}</strong>
+                </p>
+              )}
 
               <label>Wasted Meters (to deduct)</label>
               <input

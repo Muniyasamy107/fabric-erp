@@ -1,5 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { getRemnantFabrics, toggleRemnantClearance } from '../../services/fabricService';
+import {
+  getFabricCode,
+  getFabricGsm,
+  getFabricHsn,
+  getFabricImage,
+  getFabricLocation,
+  getFabricName,
+  getFabricPrice,
+  getFabricStock,
+  getFabricType,
+} from '../../utils/fabricFormat';
 import { useNavigate } from 'react-router-dom';
 import { Scissors, Tag, MapPin, Sparkles, Percent, Eye } from 'lucide-react';
 import './RemnantClearance.css';
@@ -26,7 +37,7 @@ const RemnantClearance = () => {
 
   const handleSetDiscount = async (f) => {
     const defaultDiscount = f.remnantDiscountPct || 30;
-    const discount = prompt(`Set remnant clearance discount % for "${f.fabricName}":`, defaultDiscount);
+    const discount = prompt(`Set remnant clearance discount % for "${getFabricName(f)}":`, defaultDiscount);
     if (discount === null) return;
     try {
       await toggleRemnantClearance(f.id, Number(discount));
@@ -57,29 +68,29 @@ const RemnantClearance = () => {
           </div>
         ) : (
           remnants.map((f) => {
-            const originalPrice = Number(f.wholesalePricePerMeter || 0);
+            const originalPrice = getFabricPrice(f);
             const discountPct = Number(f.remnantDiscountPct || 30);
             const discountedPrice = originalPrice - (originalPrice * (discountPct / 100));
-            const meters = Number(f.totalStockMeters || 0);
+            const meters = getFabricStock(f);
             const totalRemnantValue = discountedPrice * meters;
 
             return (
               <div key={f.id} className="remnant-card">
                 {f.imageUrl && (
                   <div className="rem-photo">
-                    <img src={f.imageUrl} alt={f.fabricName} loading="lazy" />
+                    <img src={getFabricImage(f)} alt={getFabricName(f)} loading="lazy" />
                     <span className="rem-tag-badge"><Tag size={12} /> {discountPct}% OFF</span>
                   </div>
                 )}
 
                 <div className="rem-card-top">
-                  <span className="rem-sku">{f.qualityCode} • HSN {f.hsnCode || '—'}</span>
-                  <span className="rem-rack"><MapPin size={12} /> {f.warehouseBinLocation || 'Rack A-01'}</span>
+                  <span className="rem-sku">{getFabricCode(f)} • HSN {getFabricHsn(f)}</span>
+                  <span className="rem-rack"><MapPin size={12} /> {getFabricLocation(f)}</span>
                 </div>
 
                 <div className="rem-body">
-                  <h3>{f.fabricName}</h3>
-                  <p className="rem-type">{(f.fabricType || '').replace(/_/g, ' ')} · {f.gsm || '—'} GSM</p>
+                  <h3>{getFabricName(f)}</h3>
+                  <p className="rem-type">{getFabricType(f).replace(/_/g, ' ')} · {getFabricGsm(f) || '—'} GSM</p>
 
                   <div className="rem-length-box">
                     <span className="lbl">AVAILABLE LENGTH:</span>
@@ -103,7 +114,7 @@ const RemnantClearance = () => {
                   <button className="btn-edit-disc" onClick={() => handleSetDiscount(f)}>
                     <Percent size={12} /> Set Discount
                   </button>
-                  <button className="btn-take-pos" onClick={() => navigate(`/fabrics?q=${encodeURIComponent(f.qualityCode || '')}`)}>
+                  <button className="btn-take-pos" onClick={() => navigate(`/fabrics?q=${encodeURIComponent(getFabricCode(f))}`)}>
                     <Eye size={13} /> View in Catalog
                   </button>
                 </div>

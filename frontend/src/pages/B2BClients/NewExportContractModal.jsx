@@ -81,7 +81,7 @@ const NewExportContractModal = ({ fabrics = [], onClose, onSuccess }) => {
                 required
               >
                 {fabrics.map((f) => (
-                  <option key={f.id} value={f.name || f.fabricName}>{f.itemCode || f.qualityCode} — {f.name || f.fabricName}</option>
+                  <option key={f.id} value={getFabricName(f)}>{getFabricLabel(f)}</option>
                 ))}
               </select>
             </div>

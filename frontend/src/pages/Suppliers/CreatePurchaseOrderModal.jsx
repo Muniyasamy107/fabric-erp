@@ -1,22 +1,60 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createPurchaseOrder } from '../../services/purchaseOrderService';
+import {
+  getFabricCode,
+  getFabricLabel,
+  getFabricName,
+  getFabricPrice,
+  getFabricType,
+} from '../../utils/fabricFormat';
 import './CreatePurchaseOrderModal.css';
+
+// Fallback mill rate when the selected quality has no price on file yet.
+const DEFAULT_INDENT_RATE = 1000;
+
+/**
+ * Builds one purchase-order line from a FabricProduct record.
+ * FabricProduct stores qualityCode / fabricName / wholesalePricePerMeter —
+ * the legacy aliases (itemCode / name / pricePerMeter) are still supported by
+ * the utils/fabricFormat helpers so the row is never blank.
+ */
+const buildItem = (fabric) => ({
+  fabricId: fabric?.id ?? '',
+  itemCode: getFabricCode(fabric),
+  fabricName: fabric?.id ? getFabricName(fabric) : '',
+  fabricType: getFabricType(fabric) || 'Silk',
+  orderedMeters: 50,
+  estimatedCostPerMeter: getFabricPrice(fabric, 0) || DEFAULT_INDENT_RATE
+});
 
 const CreatePurchaseOrderModal = ({ suppliers = [], fabrics = [], onClose, onSuccess }) => {
   const [supplierId, setSupplierId] = useState(suppliers[0]?.id || '');
   const [expectedDeliveryDate, setExpectedDeliveryDate] = useState('');
   const [notes, setNotes] = useState('');
-  const [items, setItems] = useState([
-    {
-      fabricId: fabrics[0]?.id || '',
-      itemCode: fabrics[0]?.itemCode || '',
-      fabricName: fabrics[0]?.name || '',
-      fabricType: fabrics[0]?.fabricType || 'Silk',
-      orderedMeters: 50,
-      estimatedCostPerMeter: fabrics[0]?.costPricePerMeter || fabrics[0]?.pricePerMeter || 1000
-    }
-  ]);
+  const [items, setItems] = useState(() => [buildItem(fabrics[0])]);
   const [error, setError] = useState('');
+
+  // The fabric catalog can still be loading when the modal opens — fill the
+  // first indent row (and any row left without a fabric) as soon as it arrives.
+  useEffect(() => {
+    setItems((prev) => {
+      let changed = false;
+      const next = prev.map((item) => {
+        if (item.fabricId) return item;
+        const fallback = fabrics.find((f) => String(f.id) === String(item.fabricId)) || fabrics[0];
+        if (!fallback) return item;
+        changed = true;
+        return buildItem(fallback);
+      });
+      return changed ? next : prev;
+    });
+  }, [fabrics]);
+
+  useEffect(() => {
+    if (!supplierId && suppliers[0]?.id) {
+      setSupplierId(suppliers[0].id);
+    }
+  }, [suppliers, supplierId]);
 
   const handleItemChange = (index, field, value) => {
     const updated = [...items];
@@ -24,12 +62,8 @@ const CreatePurchaseOrderModal = ({ suppliers = [], fabrics = [], onClose, onSuc
       const selected = fabrics.find((f) => String(f.id) === String(value));
       if (selected) {
         updated[index] = {
-          ...updated[index],
-          fabricId: selected.id,
-          itemCode: selected.itemCode,
-          fabricName: selected.name,
-          fabricType: selected.fabricType,
-          estimatedCostPerMeter: selected.costPricePerMeter || selected.pricePerMeter || 1000
+          ...buildItem(selected),
+          orderedMeters: updated[index].orderedMeters
         };
       }
     } else {
@@ -39,18 +73,7 @@ const CreatePurchaseOrderModal = ({ suppliers = [], fabrics = [], onClose, onSuc
   };
 
   const addItemRow = () => {
-    const defaultFab = fabrics[0];
-    setItems([
-      ...items,
-      {
-        fabricId: defaultFab?.id || '',
-        itemCode: defaultFab?.itemCode || '',
-        fabricName: defaultFab?.name || '',
-        fabricType: defaultFab?.fabricType || 'Silk',
-        orderedMeters: 50,
-        estimatedCostPerMeter: defaultFab?.costPricePerMeter || defaultFab?.pricePerMeter || 1000
-      }
-    ]);
+    setItems([...items, buildItem(fabrics[0])]);
   };
 
   const removeItemRow = (idx) => {
@@ -71,11 +94,14 @@ const CreatePurchaseOrderModal = ({ suppliers = [], fabrics = [], onClose, onSuc
         supplierId: Number(supplierId),
         expectedDeliveryDate: expectedDeliveryDate || null,
         notes,
-        items: items.map((it) => ({
-          ...it,
-          orderedMeters: Number(it.orderedMeters),
-          estimatedCostPerMeter: Number(it.estimatedCostPerMeter)
-        }))
+        items: items
+          .filter((it) => it.fabricId)
+          .map((it) => ({
+            ...it,
+            fabricId: Number(it.fabricId),
+            orderedMeters: Number(it.orderedMeters),
+            estimatedCostPerMeter: Number(it.estimatedCostPerMeter)
+          }))
       });
       alert('Purchase Order successfully issued to Mill!');
       onSuccess();
@@ -95,6 +121,7 @@ const CreatePurchaseOrderModal = ({ suppliers = [], fabrics = [], onClose, onSuc
             <div className="form-group flex-1">
               <label>Select Mill / Supplier</label>
               <select value={supplierId} onChange={(e) => setSupplierId(e.target.value)} required>
+                <option value="">-- Choose Mill / Supplier --</option>
                 {suppliers.map((s) => (
                   <option key={s.id} value={s.id}>
                     {s.millName} — {s.city} ({s.fabricSpeciality})
@@ -115,10 +142,21 @@ const CreatePurchaseOrderModal = ({ suppliers = [], fabrics = [], onClose, onSuc
           <div className="po-items-section">
             <div className="section-head">
               <h4>Fabric Indent Items</h4>
-              <button type="button" className="btn-add-item" onClick={addItemRow}>
+              <button
+                type="button"
+                className="btn-add-item"
+                onClick={addItemRow}
+                disabled={fabrics.length === 0}
+              >
                 + Add Roll Spec
               </button>
             </div>
+
+            {fabrics.length === 0 && (
+              <p className="po-empty-hint">
+                No fabric qualities in the catalog yet. Add a fabric first, then raise the indent.
+              </p>
+            )}
 
             {items.map((it, idx) => (
               <div key={idx} className="po-item-row">
@@ -126,10 +164,12 @@ const CreatePurchaseOrderModal = ({ suppliers = [], fabrics = [], onClose, onSuc
                   value={it.fabricId}
                   onChange={(e) => handleItemChange(idx, 'fabricId', e.target.value)}
                   className="fabric-select"
+                  required
                 >
+                  <option value="">-- Choose Fabric Quality --</option>
                   {fabrics.map((f) => (
                     <option key={f.id} value={f.id}>
-                      {f.itemCode} - {f.name}
+                      {getFabricLabel(f)}
                     </option>
                   ))}
                 </select>
@@ -192,7 +232,11 @@ const CreatePurchaseOrderModal = ({ suppliers = [], fabrics = [], onClose, onSuc
             <button type="button" className="btn-cancel" onClick={onClose}>
               Cancel
             </button>
-            <button type="submit" className="btn-gold-save">
+            <button
+              type="submit"
+              className="btn-gold-save"
+              disabled={fabrics.length === 0 || !supplierId}
+            >
               Issue Official PO
             </button>
           </div>

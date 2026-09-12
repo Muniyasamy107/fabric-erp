@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { getFabrics } from '../../services/fabricService';
+import {
+  getFabricCode,
+  getFabricGsm,
+  getFabricGstRate,
+  getFabricImage,
+  getFabricLocation,
+  getFabricName,
+  getFabricPrice,
+  getFabricStock,
+  getFabricType,
+} from '../../utils/fabricFormat';
 import { Sparkles, MapPin } from 'lucide-react';
 import './Lookbook.css';
-
-const DEFAULT_IMG = '/fabrics/cotton-shirting.jpg';
 
 const Lookbook = () => {
   const [fabrics, setFabrics] = useState([]);
@@ -17,8 +26,8 @@ const Lookbook = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const types = ['ALL', ...Array.from(new Set(fabrics.map(f => f.fabricType).filter(Boolean)))];
-  const filtered = filter === 'ALL' ? fabrics : fabrics.filter(f => f.fabricType === filter);
+  const types = ['ALL', ...Array.from(new Set(fabrics.map(f => getFabricType(f)).filter(Boolean)))];
+  const filtered = filter === 'ALL' ? fabrics : fabrics.filter(f => getFabricType(f) === filter);
 
   return (
     <div className="lookbook-page">
@@ -40,26 +49,27 @@ const Lookbook = () => {
 
       <div className="lb-grid">
         {filtered.map(f => {
-          const img = f.imageUrl && f.imageUrl.trim() ? f.imageUrl.trim() : DEFAULT_IMG;
-          const price = Number(f.wholesalePricePerMeter ?? f.pricePerMeter ?? 0);
-          const loc = f.warehouseBinLocation || f.rackLocation || 'Rack A-01';
           return (
             <div key={f.id} className="swatch-card">
               <div className="swatch-img-wrap">
-                <img src={img} alt={f.fabricName} onError={e => e.target.src = DEFAULT_IMG} />
+                <img
+                  src={getFabricImage(f)}
+                  alt={getFabricName(f)}
+                  onError={e => e.target.src = getFabricImage(null)}
+                />
               </div>
               <div className="swatch-info">
-                <span className="swatch-sku">{f.qualityCode || f.itemCode}</span>
-                <h3>{f.fabricName || f.name}</h3>
+                <span className="swatch-sku">{getFabricCode(f)}</span>
+                <h3>{getFabricName(f)}</h3>
                 <div className="swatch-tags">
-                  <span>{f.fabricType}</span>
-                  <span>{f.gsm} GSM</span>
-                  <span>GST {f.gstRate || 5}%</span>
+                  <span>{getFabricType(f)}</span>
+                  <span>{getFabricGsm(f)} GSM</span>
+                  <span>GST {getFabricGstRate(f)}%</span>
                 </div>
-                <div className="swatch-loc"><MapPin size={11} color="#d4af37" /> {loc}</div>
+                <div className="swatch-loc"><MapPin size={11} color="#d4af37" /> {getFabricLocation(f)}</div>
                 <div className="swatch-bottom">
-                  <span className="swatch-price">₹{price.toFixed(2)}/m</span>
-                  <span className="swatch-stock">{Number(f.totalStockMeters ?? f.totalAvailableMeters ?? 0).toFixed(1)} m</span>
+                  <span className="swatch-price">₹{getFabricPrice(f).toFixed(2)}/m</span>
+                  <span className="swatch-stock">{getFabricStock(f).toFixed(1)} m</span>
                 </div>
               </div>
             </div>

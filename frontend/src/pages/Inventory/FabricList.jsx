@@ -3,10 +3,23 @@ import { useSearchParams } from 'react-router-dom';
 import { getFabrics, deleteFabric } from '../../services/fabricService';
 import AddFabricModal from './AddFabricModal';
 import BarcodeGenerator from './BarcodeGenerator';
+import {
+  formatMeters,
+  getFabricCode,
+  getFabricGsm,
+  getFabricGstRate,
+  getFabricHsn,
+  getFabricImage,
+  getFabricLocation,
+  getFabricMinStock,
+  getFabricName,
+  getFabricPrice,
+  getFabricStock,
+  getFabricType,
+  matchesFabricSearch,
+} from '../../utils/fabricFormat';
 import { MapPin, Edit, Trash2, Tag } from 'lucide-react';
 import './FabricList.css';
-
-const DEFAULT_IMG = '/fabrics/cotton-shirting.jpg';
 
 const FabricList = () => {
   const [fabrics, setFabrics] = useState([]);
@@ -39,8 +52,8 @@ const FabricList = () => {
   }, []);
 
   const handleDelete = async (f) => {
-    const name = f.fabricName || f.name;
-    const code = f.qualityCode || f.itemCode;
+    const name = getFabricName(f);
+    const code = getFabricCode(f);
     if (!window.confirm(`Are you sure you want to permanently delete fabric quality "${name}" (${code})?`)) return;
     try {
       await deleteFabric(f.id);
@@ -50,13 +63,7 @@ const FabricList = () => {
     }
   };
 
-  const filtered = fabrics.filter((f) => {
-    const q = search.toLowerCase();
-    return !q ||
-      (f.qualityCode || f.itemCode || '').toLowerCase().includes(q) ||
-      (f.fabricName || f.name || '').toLowerCase().includes(q) ||
-      (f.fabricType || '').toLowerCase().includes(q);
-  });
+  const filtered = fabrics.filter((f) => matchesFabricSearch(f, search));
 
   return (
     <div className="fabric-container">
@@ -85,35 +92,35 @@ const FabricList = () => {
           {filtered.length === 0 ? (
             <div className="empty-catalog-box">No products found.</div>
           ) : filtered.map((f) => {
-            const stock = Number(f.totalStockMeters ?? f.totalAvailableMeters ?? 0);
-            const price = Number(f.wholesalePricePerMeter ?? f.pricePerMeter ?? 0);
-            const img = f.imageUrl && f.imageUrl.trim() ? f.imageUrl.trim() : DEFAULT_IMG;
-            const loc = f.warehouseBinLocation || f.rackLocation || 'Rack A-01';
-            const alertLimit = Number(f.minStockAlert ?? 10);
+            const stock = getFabricStock(f);
+            const price = getFabricPrice(f);
+            const img = getFabricImage(f);
+            const loc = getFabricLocation(f);
+            const alertLimit = getFabricMinStock(f);
             const isLow = stock <= alertLimit;
             const isRemnant = f.isRemnant;
 
             return (
               <div key={f.id} className={`product-card ${isLow ? 'card-low' : ''} ${isRemnant ? 'card-remnant' : ''}`}>
                 <div className="card-image-wrap">
-                  <img src={img} alt={f.fabricName} onError={e => e.target.src = DEFAULT_IMG} />
+                  <img src={img} alt={getFabricName(f)} onError={e => e.target.src = getFabricImage(null)} />
                   {isRemnant && <span className="remnant-ribbon">REMNANT</span>}
                   {isLow && !isRemnant && <span className="low-ribbon">LOW STOCK</span>}
                 </div>
                 <div className="card-body">
-                  <div className="card-sku">{f.qualityCode || f.itemCode}</div>
-                  <h3 className="card-name">{f.fabricName || f.name}</h3>
+                  <div className="card-sku">{getFabricCode(f)}</div>
+                  <h3 className="card-name">{getFabricName(f)}</h3>
                   <div className="card-meta">
-                    <span>{f.fabricType}</span>
-                    <span>{f.gsm} GSM</span>
-                    <span>GST {f.gstRate || 5}%</span>
+                    <span>{getFabricType(f)}</span>
+                    <span>{getFabricGsm(f)} GSM</span>
+                    <span>GST {getFabricGstRate(f)}%</span>
                   </div>
                   <div className="card-location">
                     <MapPin size={12} color="#d4af37" /> {loc}
                   </div>
                   <div className="card-bottom">
                     <div className="card-price">₹{price.toFixed(2)}<small>/m</small></div>
-                    <div className={`card-stock ${isLow ? 'low' : 'ok'}`}>{stock.toFixed(1)} m</div>
+                    <div className={`card-stock ${isLow ? 'low' : 'ok'}`}>{formatMeters(stock)}</div>
                   </div>
                   <div className="card-actions">
                     <button className="ca-btn edit" onClick={() => setModalFabric(f)}><Edit size={12} /> Edit</button>
@@ -142,24 +149,24 @@ const FabricList = () => {
               {filtered.length === 0 ? (
                 <tr><td colSpan="11" className="text-center">No products found.</td></tr>
               ) : filtered.map((f) => {
-                const stock = Number(f.totalStockMeters ?? f.totalAvailableMeters ?? 0);
-                const price = Number(f.wholesalePricePerMeter ?? f.pricePerMeter ?? 0);
-                const img = f.imageUrl && f.imageUrl.trim() ? f.imageUrl.trim() : DEFAULT_IMG;
-                const loc = f.warehouseBinLocation || f.rackLocation || 'Rack A-01';
-                const alertLimit = Number(f.minStockAlert ?? 10);
+                const stock = getFabricStock(f);
+                const price = getFabricPrice(f);
+                const img = getFabricImage(f);
+                const loc = getFabricLocation(f);
+                const alertLimit = getFabricMinStock(f);
                 return (
                   <tr key={f.id}>
-                    <td><div className="thumb"><img src={img} alt="" onError={e => e.target.src = DEFAULT_IMG} /></div></td>
-                    <td className="gold">{f.qualityCode || f.itemCode}</td>
-                    <td><strong>{f.fabricName || f.name}</strong><div className="sub">{f.seasonCollection}</div></td>
-                    <td>{f.fabricType}</td>
-                    <td>{f.gsm}</td>
+                    <td><div className="thumb"><img src={img} alt="" onError={e => e.target.src = getFabricImage(null)} /></div></td>
+                    <td className="gold">{getFabricCode(f)}</td>
+                    <td><strong>{getFabricName(f)}</strong><div className="sub">{f.seasonCollection}</div></td>
+                    <td>{getFabricType(f)}</td>
+                    <td>{getFabricGsm(f)}</td>
                     <td><span className="loc-tag"><MapPin size={11} color="#d4af37" /> {loc}</span></td>
-                    <td>{f.hsnCode || '5007'}</td>
+                    <td>{getFabricHsn(f)}</td>
                     <td>₹{price.toFixed(2)}</td>
-                    <td>{f.gstRate || 5}%</td>
+                    <td>{getFabricGstRate(f)}%</td>
                     <td className={stock <= alertLimit ? 'low' : 'ok'}>
-                      {stock.toFixed(1)} m
+                      {formatMeters(stock)}
                       {f.isRemnant && <span className="remnant-badge">Remnant</span>}
                     </td>
                     <td>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { stockInward } from "../../services/supplierService";
-import "./StockInwardModel.css";
+import { formatMeters, getFabricLabel, getFabricName, getFabricStock } from "../../utils/fabricFormat";
+import "./StockInwardModal.css";
 
 const StockInwardModal = ({
   fabrics = [],
@@ -17,6 +18,10 @@ const StockInwardModal = ({
   });
 
   const [loading, setLoading] = useState(false);
+
+  const selectedFabric = fabrics.find(
+    (fabric) => String(fabric.id) === String(formData.fabricId)
+  );
 
   useEffect(() => {
     setFormData((prev) => ({
@@ -141,9 +146,8 @@ const StockInwardModal = ({
 
               {fabrics.map((fabric) => (
                 <option key={fabric.id} value={fabric.id}>
-                  {fabric.itemCode || "N/A"} -{" "}
-                  {fabric.name || "Unnamed Fabric"}{" "}
-                  (Current: {fabric.totalAvailableMeters ?? 0}m)
+                  {getFabricLabel(fabric)} -{" "}
+                  Current: {formatMeters(getFabricStock(fabric))}
                 </option>
               ))}
             </select>
@@ -151,6 +155,13 @@ const StockInwardModal = ({
             {fabrics.length === 0 && (
               <small className="form-hint">
                 No fabrics available.
+              </small>
+            )}
+
+            {selectedFabric && (
+              <small className="form-hint">
+                Selected: <strong>{getFabricName(selectedFabric)}</strong> —{" "}
+                {formatMeters(getFabricStock(selectedFabric))} in stock now.
               </small>
             )}
           </div>
