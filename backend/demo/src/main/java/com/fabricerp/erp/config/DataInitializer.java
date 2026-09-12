@@ -24,15 +24,18 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
         // One seed account per role so every shop-floor tab has a login.
-        createIfMissing("admin", "admin123", "Plant General Manager", "ADMIN");
-        createIfMissing("supervisor", "super123", "Shift Production Supervisor", "SUPERVISOR");
-        createIfMissing("weaver", "weaver123", "Loom Operator Weaver", "WEAVER");
-        createIfMissing("dyer", "dyer123", "Color Lab Chemist", "DYEING_MASTER");
-        createIfMissing("finisher", "finish123", "Finishing Master", "FINISHING_MASTER");
-        createIfMissing("fitter", "fitter123", "Maintenance Fitter", "FITTER");
-        createIfMissing("dispatcher", "dispatch123", "Dispatch Incharge", "DISPATCHER");
+        // ensureSeedAccount also re-enables and resets password if a previous
+        // run left the demo user disabled or with a forgotten password.
+        ensureSeedAccount("admin", "admin123", "Plant General Manager", "ADMIN");
+        ensureSeedAccount("supervisor", "super123", "Shift Production Supervisor", "SUPERVISOR");
+        ensureSeedAccount("weaver", "weaver123", "Loom Operator Weaver", "WEAVER");
+        ensureSeedAccount("dyer", "dyer123", "Color Lab Chemist", "DYEING_MASTER");
+        ensureSeedAccount("finisher", "finish123", "Finishing Master", "FINISHING_MASTER");
+        ensureSeedAccount("fitter", "fitter123", "Maintenance Fitter", "FITTER");
+        ensureSeedAccount("dispatcher", "dispatch123", "Dispatch Incharge", "DISPATCHER");
         migrateLegacyNames();
         migrateLegacyRoles();
+        repairOrphanDisabledAccounts();
     }
 
     /** Old boutique-era display names are replaced with factory titles. */
@@ -82,9 +85,16 @@ public class DataInitializer implements CommandLineRunner {
         }
     }
 
-    private void createIfMissing(String username, String rawPassword, String fullName, String role) {
-        if (!userRepository.existsByUsername(username)) {
-            User user = new User();
+    /**
+     * Create the documented demo login if missing. If it already exists
+     * (e.g. from an older DB), force it back to the known password, role,
+     * display name and active=true so "Account is disabled" never blocks
+     * the default admin / staff logins after a restart.
+     */
+    private void ensureSeedAccount(String username, String rawPassword, String fullName, String role) {
+        User user = userRepository.findByUsername(username).orElse(null);
+        if (user == null) {
+            user = new User();
             user.setUsername(username);
             user.setPassword(passwordEncoder.encode(rawPassword));
             user.setFullName(fullName);
@@ -92,6 +102,44 @@ public class DataInitializer implements CommandLineRunner {
             user.setActive(true);
             userRepository.save(user);
             System.out.println("Factory User Initialized: " + username + " / " + rawPassword);
+            return;
+        }
+
+        boolean changed = false;
+        if (user.getActive() == null || !user.getActive()) {
+            user.setActive(true);
+            changed = true;
+        }
+        // Keep demo passwords in sync with README so operators are never locked out.
+        if (!passwordEncoder.matches(rawPassword, user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(rawPassword));
+            changed = true;
+        }
+        if (role != null && !role.equalsIgnoreCase(user.getRole() == null ? "" : user.getRole())) {
+            user.setRole(role);
+            changed = true;
+        }
+        if (fullName != null && (user.getFullName() == null || user.getFullName().isBlank())) {
+            user.setFullName(fullName);
+            changed = true;
+        }
+        if (changed) {
+            userRepository.save(user);
+            System.out.println("Factory User Restored (active + credentials): " + username);
+        }
+    }
+
+    /**
+     * Safety net: any leftover row with active=null is treated as enabled.
+     * Null used to trip the login guard on some MySQL BIT mappings.
+     */
+    private void repairOrphanDisabledAccounts() {
+        for (User u : userRepository.findAll()) {
+            if (u.getActive() == null) {
+                u.setActive(true);
+                userRepository.save(u);
+                System.out.println("Repaired null active flag for: " + u.getUsername());
+            }
         }
     }
 }

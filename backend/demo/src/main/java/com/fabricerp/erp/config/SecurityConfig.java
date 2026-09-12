@@ -33,8 +33,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // CORS pre-flight must always pass
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        // Login endpoint is public
+                        // Login / signup / password recovery are public
                         .requestMatchers("/api/auth/**").permitAll()
+                        // Liveness probe for deploy platforms (Render / Railway / Docker)
+                        .requestMatchers("/api/health", "/api/health/**").permitAll()
                         // User administration is restricted to ADMIN accounts
                         .requestMatchers("/api/users/**").hasRole("ADMIN")
                         // Everything else requires a valid JWT
@@ -53,11 +55,20 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOriginPatterns(List.of("*"));
+        // Patterns (not fixed origins) so Vercel preview URLs + localhost all work.
+        // JWT is sent via Authorization header — credentials cookie mode is off so
+        // wildcard patterns stay valid under the CORS spec.
+        config.setAllowedOriginPatterns(List.of(
+                "http://localhost:*",
+                "http://127.0.0.1:*",
+                "https://*.vercel.app",
+                "https://*.e2b.app",
+                "https://*"
+        ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         config.setAllowedHeaders(List.of("*"));
-        config.setExposedHeaders(List.of("*"));
-        config.setAllowCredentials(true);
+        config.setExposedHeaders(List.of("Authorization", "Content-Type"));
+        config.setAllowCredentials(false);
         config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

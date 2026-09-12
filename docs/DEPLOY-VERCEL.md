@@ -69,18 +69,40 @@ white screen / chunk 404 varadhu. (`/assets/*` hashed filename, adhala 1 varusha
 4. Confirm header: `curl -I https://<your-app>.vercel.app/loom-matrix`
    → `HTTP/2 200` + `cache-control: public, max-age=0, must-revalidate`
 
-## Mudivaana note: backend `/api` Vercel-la illa
+## Mudivaana note: backend `/api` proxy (Render)
 
 Vercel static frontend ah matum host panudhu; Spring Boot (`:8083`) adhu ilanga.
-`src/services/api.js` `baseURL: import.meta.env.VITE_API_URL || '/api'` use panradhala,
-Vercel-la `/api/*` **404** aagidum. Rendu option:
 
-- **Option A (recommended):** backend-a Render / Railway / Fly.io / EC2-la deploy panni,
-  Vercel → Settings → Environment Variables → `VITE_API_URL = https://<backend-url>/api`
-  → redeploy (env build time-la inline aagudhu, adhala rebuild thevai).
-  Backend CORS-la Vercel domain-ah allow panna vendum.
-- **Option B:** full stack Docker (`docker compose up --build`) use panni — nginx `/api`
-  proxy + `try_files` already set aagirukku, indha issue-e varadhu.
+**Indha project-la already wired:**
+
+| Host | URL |
+|------|-----|
+| Frontend | https://fabric-erp-liart.vercel.app |
+| Backend (Render) | https://fabric-erp-backend.onrender.com |
+
+`frontend/vercel.json` (and root `vercel.json`) rewrite:
+
+```json
+{ "source": "/api/:path*", "destination": "https://fabric-erp-backend.onrender.com/api/:path*" }
+```
+
+Browser still calls relative `/api/...` — Vercel edge proxies to Render. No
+`VITE_API_URL` required (optional override still works in `api.js`).
+
+### Checklist after a backend change
+
+1. Push to GitHub → Render auto-deploy (or Manual Deploy)
+2. Wait until Render shows **Live**
+3. `curl https://fabric-erp-backend.onrender.com/api/health` → `{"status":"UP",...}`
+4. Login on Vercel: **Admin** tab → `admin` / `admin123`
+
+### Option B — full stack Docker (no Vercel split)
+
+```bash
+docker compose up --build -d
+```
+
+Nginx `/api` proxy + `try_files` already set — split-host issues varadhu.
 
 ---
 

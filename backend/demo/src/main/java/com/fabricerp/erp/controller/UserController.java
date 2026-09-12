@@ -75,6 +75,29 @@ public class UserController {
         }
 
         boolean currentlyActive = user.getActive() == null || user.getActive();
+
+        // Never lock out the built-in plant admin — that is what causes
+        // "Account is disabled" on the documented admin/admin123 login.
+        if (currentlyActive
+                && "admin".equalsIgnoreCase(user.getUsername())
+                && "ADMIN".equalsIgnoreCase(user.getRole())) {
+            return ResponseEntity.badRequest()
+                    .body("The primary admin account cannot be disabled. Create another admin if you need a spare.");
+        }
+
+        // Keep at least one active ADMIN so the plant is never locked out.
+        if (currentlyActive && "ADMIN".equalsIgnoreCase(user.getRole())) {
+            long otherActiveAdmins = userRepository.findAll().stream()
+                    .filter(u -> u.getId() != null && !u.getId().equals(user.getId()))
+                    .filter(u -> "ADMIN".equalsIgnoreCase(u.getRole()))
+                    .filter(u -> u.getActive() == null || Boolean.TRUE.equals(u.getActive()))
+                    .count();
+            if (otherActiveAdmins == 0) {
+                return ResponseEntity.badRequest()
+                        .body("Cannot disable the last active admin account.");
+            }
+        }
+
         user.setActive(!currentlyActive);
         userRepository.save(user);
 

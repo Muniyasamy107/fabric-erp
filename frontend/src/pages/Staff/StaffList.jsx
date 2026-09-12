@@ -47,12 +47,22 @@ const StaffList = () => {
     }
   };
 
+  const readApiError = (err, fallback) => {
+    const data = err?.response?.data;
+    if (typeof data === 'string' && data.trim()) return data;
+    if (data && typeof data === 'object') {
+      if (typeof data.error === 'string') return data.error;
+      if (typeof data.message === 'string') return data.message;
+    }
+    return fallback;
+  };
+
   const handleToggle = async (id) => {
     try {
       await toggleUser(id);
       await loadStaff();
     } catch (err) {
-      alert(err.response?.data || 'Failed to update operator state');
+      alert(readApiError(err, 'Failed to update operator state'));
     }
   };
 
@@ -156,7 +166,12 @@ const StaffList = () => {
                   <td colSpan="5" className="empty-text">No active operators found.</td>
                 </tr>
               ) : (
-                staff.map((s) => (
+                staff.map((s) => {
+                  // null active (legacy rows) counts as enabled — same rule as backend login
+                  const isActive = s.active !== false;
+                  const isPrimaryAdmin = String(s.username || '').toLowerCase() === 'admin'
+                    && String(s.role || '').toUpperCase() === 'ADMIN';
+                  return (
                   <tr key={s.id}>
                     <td><strong>{s.fullName}</strong></td>
                     <td className="gold-text">{s.username}</td>
@@ -166,7 +181,7 @@ const StaffList = () => {
                       </span>
                     </td>
                     <td>
-                      {s.active ? (
+                      {isActive ? (
                         <span className="status-on">Active</span>
                       ) : (
                         <span className="status-off">Disabled</span>
@@ -174,8 +189,15 @@ const StaffList = () => {
                     </td>
                     <td>
                       <div className="staff-actions">
-                        <button className="toggle-btn" onClick={() => handleToggle(s.id)}>
-                          {s.active ? 'Disable' : 'Enable'}
+                        <button
+                          className="toggle-btn"
+                          onClick={() => handleToggle(s.id)}
+                          title={isPrimaryAdmin && isActive
+                            ? 'Primary admin cannot be disabled'
+                            : undefined}
+                          disabled={isPrimaryAdmin && isActive}
+                        >
+                          {isActive ? 'Disable' : 'Enable'}
                         </button>
                         <button className="reset-btn" onClick={() => handleReset(s.id, s.fullName)}>
                           Reset PW
@@ -183,7 +205,8 @@ const StaffList = () => {
                       </div>
                     </td>
                   </tr>
-                ))
+                  );
+                })
               )}
             </tbody>
           </table>

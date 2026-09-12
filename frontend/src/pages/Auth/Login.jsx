@@ -158,8 +158,18 @@ const Login = () => {
 
       navigate(getRoleLanding(role) || '/login', { replace: true });
     } catch (err) {
-      const data = err.response?.data;
-      setError(typeof data === 'string' ? data : data?.error || 'Login failed. Please check your credentials.');
+      // No HTTP response usually means the API host is down / VITE_API_URL missing
+      // on a Vercel-only deploy (frontend is live, Spring Boot is not).
+      if (!err.response) {
+        setError(
+          'Cannot reach the mill API server. If this is the Vercel site, the Spring Boot backend ' +
+          'must be deployed separately and VITE_API_URL must point to it (e.g. https://your-api.onrender.com/api).'
+        );
+      } else {
+        const data = err.response?.data;
+        const msg = typeof data === 'string' ? data : data?.error || data?.message;
+        setError(msg || 'Login failed. Please check your credentials.');
+      }
     } finally {
       setLoading(false);
     }
