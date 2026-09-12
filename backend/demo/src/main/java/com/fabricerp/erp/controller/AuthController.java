@@ -33,9 +33,15 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> login(@RequestBody(required = false) LoginRequest request) {
+        if (request == null) {
+            return ResponseEntity.badRequest().body("Username and password are required");
+        }
         String username = request.getUsername() != null ? request.getUsername().trim() : "";
         String password = request.getPassword() != null ? request.getPassword() : "";
+        if (username.isEmpty() || password.isEmpty()) {
+            return ResponseEntity.badRequest().body("Username and password are required");
+        }
 
         User user = userRepository.findByUsername(username).orElse(null);
 
