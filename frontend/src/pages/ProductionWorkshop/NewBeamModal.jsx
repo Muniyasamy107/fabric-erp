@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { createBeamJob } from '../../services/warpingSizingService';
+import { getFabricCode, getFabricLabel, getFabricName } from '../../utils/fabricFormat';
 import './NewBeamModal.css';
 
 const NewBeamModal = ({ fabrics = [], yarns = [], looms = [], onClose, onSuccess }) => {
   const [form, setForm] = useState({
     beamNumber: '',
     qualityCode: 'SATIN-SILK-900',
-    fabricProductName: fabrics[0]?.name || 'Cotton Poplin 60s x 60s',
+    fabricProductName: fabrics[0] ? getFabricName(fabrics[0]) : 'Cotton Poplin 60s x 60s',
     yarnLotNumber: yarns[0]?.yarnLotNumber || 'YARN-LOT-8821',
     yarnCountSpecification: 'Cotton 80/1 Ne Combed Giza',
     totalWarpEnds: 4800,
@@ -26,8 +27,8 @@ const NewBeamModal = ({ fabrics = [], yarns = [], looms = [], onClose, onSuccess
     if (matched) {
       setForm({
         ...form,
-        qualityCode: matched.itemCode || matched.qualityCode,
-        fabricProductName: matched.name || matched.fabricName
+        qualityCode: getFabricCode(matched),
+        fabricProductName: getFabricName(matched)
       });
     }
   };
@@ -77,7 +78,7 @@ const NewBeamModal = ({ fabrics = [], yarns = [], looms = [], onClose, onSuccess
               <label>Target Woven Fabric Quality</label>
               <select onChange={(e) => handleFabricSelect(e.target.value)} required>
                 {fabrics.map((f) => (
-                  <option key={f.id} value={f.id}>{f.itemCode || f.qualityCode} — {f.name || f.fabricName}</option>
+                  <option key={f.id} value={f.id}>{getFabricLabel(f)}</option>
                 ))}
               </select>
             </div>

@@ -72,12 +72,21 @@ npm run dev
 ```
 
 ### 4. Login
-| Username    | Password   | Role          |
-|-------------|------------|---------------|
-| admin       | admin123   | ADMIN         |
-| supervisor  | super123   | SUPERVISOR    |
-| weaver      | weaver123  | WEAVER        |
-| dyer        | dyer123    | DYEING_MASTER |
+| Username    | Password     | Role             |
+|-------------|--------------|------------------|
+| admin       | admin123     | ADMIN            |
+| supervisor  | super123     | SUPERVISOR       |
+| weaver      | weaver123    | WEAVER           |
+| dyer        | dyer123      | DYEING_MASTER    |
+| finisher    | finish123    | FINISHING_MASTER |
+| fitter      | fitter123    | FITTER           |
+| dispatcher  | dispatch123  | DISPATCHER       |
+
+**Sign in:** the login page has separate **Admin** and **Staff** tabs — the Admin tab accepts `ADMIN`
+accounts only, the Staff tab accepts every shop-floor role. Sessions are kept in `sessionStorage`, so
+a new tab or browser window always starts at the login page while a refresh of the same tab stays
+signed in. Menu entries and every route are filtered by the role matrix in
+`frontend/src/utils/roleAccess.js`.
 
 > ⚠️ Change all default passwords before production use (`config/DataInitializer.java`).
 

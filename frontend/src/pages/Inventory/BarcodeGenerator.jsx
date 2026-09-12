@@ -1,6 +1,16 @@
 import React from 'react';
 import Barcode from 'react-barcode';
 import { Printer, X } from 'lucide-react';
+import {
+  formatCurrency,
+  formatMeters,
+  getFabricCode,
+  getFabricGsm,
+  getFabricName,
+  getFabricPrice,
+  getFabricStock,
+  getFabricType,
+} from '../../utils/fabricFormat';
 import './BarcodeGenerator.css';
 
 const BarcodeGenerator = ({ fabric, onClose }) => {
@@ -33,31 +43,31 @@ const BarcodeGenerator = ({ fabric, onClose }) => {
           <div className="tag-divider"></div>
 
           <div className="tag-body">
-            <h3 className="tag-fabric-name">{fabric.name}</h3>
-            
+            <h3 className="tag-fabric-name">{getFabricName(fabric)}</h3>
+
             <div className="tag-specs-grid">
               <div className="spec-item">
                 <span className="spec-label">TYPE</span>
-                <span className="spec-value">{fabric.fabricType}</span>
+                <span className="spec-value">{getFabricType(fabric) || 'N/A'}</span>
               </div>
               <div className="spec-item">
                 <span className="spec-label">GSM</span>
-                <span className="spec-value">{fabric.gsm || 'N/A'}</span>
+                <span className="spec-value">{getFabricGsm(fabric) || 'N/A'}</span>
               </div>
               <div className="spec-item">
                 <span className="spec-label">ROLL LENGTH</span>
-                <span className="spec-value">{fabric.totalAvailableMeters} m</span>
+                <span className="spec-value">{formatMeters(getFabricStock(fabric))}</span>
               </div>
               <div className="spec-item">
                 <span className="spec-label">PRICE / M</span>
-                <span className="spec-value gold-spec">₹{parseFloat(fabric.pricePerMeter).toFixed(2)}</span>
+                <span className="spec-value gold-spec">{formatCurrency(getFabricPrice(fabric))}</span>
               </div>
             </div>
 
             {/* Barcode Display */}
             <div className="tag-barcode-box">
-              <Barcode 
-                value={fabric.itemCode || 'FAB-001'} 
+              <Barcode
+                value={getFabricCode(fabric) || 'FAB-001'}
                 width={1.4}
                 height={45}
                 fontSize={12}

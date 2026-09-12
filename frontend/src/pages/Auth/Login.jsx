@@ -12,13 +12,30 @@ import {
   UserPlus,
   LogIn,
   IdCard,
-  Factory
+  Factory,
+  HardHat
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import API from '../../services/api';
+import { ADMIN_ROLE, getRoleLanding, isStaffRole, normalizeRole } from '../../utils/roleAccess';
 import './Login.css';
 
-const REMEMBER_KEY = 'kak rememberedUsername';
+// Remember-me is per tab (admin / staff) and stays in localStorage on purpose —
+// it only ever holds the username, never the session token.
+const REMEMBER_PREFIX = 'kak rememberedUsername';
+const LEGACY_REMEMBER_KEY = 'kak rememberedUsername';
+const rememberKey = (mode) => `${REMEMBER_PREFIX}:${mode}`;
+
+const readRemembered = (mode) => {
+  try {
+    if (mode === 'admin') {
+      return localStorage.getItem(rememberKey('admin')) || localStorage.getItem(LEGACY_REMEMBER_KEY) || '';
+    }
+    return localStorage.getItem(rememberKey(mode)) || '';
+  } catch {
+    return '';
+  }
+};
 
 const brandHighlights = [
   'Live loom telemetry & shift OEE tracking',
@@ -26,17 +43,36 @@ const brandHighlights = [
   'Gate pass, dispatch & export documentation'
 ];
 
+const LOGIN_TABS = {
+  admin: {
+    kicker: 'ADMIN / MANAGEMENT ACCESS',
+    heading: 'Plant admin sign in',
+    sub: 'Owners, plant managers and accounts — full access to every module.',
+    placeholder: 'e.g. admin',
+    hint: 'Admin accounts unlock all 31 modules including staff, payroll, costing and reports.',
+    submitLabel: 'Sign In as Admin'
+  },
+  staff: {
+    kicker: 'SHOP-FLOOR STAFF ACCESS',
+    heading: 'Staff sign in',
+    sub: 'Supervisors, weavers, dyeing, finishing, fitters and dispatch teams.',
+    placeholder: 'e.g. weaver',
+    hint: 'Staff roles: Supervisor · Weaver · Dyeing Master · Finishing Master · Fitter · Dispatcher — each opens only its own modules.',
+    submitLabel: 'Sign In to My Modules'
+  }
+};
+
 const Login = () => {
-  const { login, register, token } = useAuth();
+  const { login, register, logout, token, user } = useAuth();
   const navigate = useNavigate();
 
-  const [mode, setMode] = useState('signin'); // signin | signup
+  const [mode, setMode] = useState('admin'); // admin | staff | signup
 
   // -------- Sign in state --------
-  const [username, setUsername] = useState(() => localStorage.getItem(REMEMBER_KEY) || '');
+  const [username, setUsername] = useState(() => readRemembered('admin'));
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(() => Boolean(localStorage.getItem(REMEMBER_KEY)));
+  const [rememberMe, setRememberMe] = useState(() => Boolean(readRemembered('admin')));
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -58,18 +94,48 @@ const Login = () => {
   const [fpTempPassword, setFpTempPassword] = useState('');
   const [fpLoading, setFpLoading] = useState(false);
 
-  // Already authenticated users should not sit on the auth page
-  useEffect(() => {
-    if (token) {
-      navigate('/dashboard', { replace: true });
-    }
-  }, [token, navigate]);
+  const loginTab = LOGIN_TABS[mode] || LOGIN_TABS.admin;
 
+  // Already authenticated users should not sit on the auth page — they go
+  // straight to the first page their role is allowed to open.
+  useEffect(() => {
+    if (!token) return;
+    const home = getRoleLanding(user?.role);
+    if (!home) {
+      logout();
+      setError('This account has no role assigned. Contact the plant admin.');
+      return;
+    }
+    if (window.location.pathname !== home) {
+      navigate(home, { replace: true });
+    }
+  }, [token, user, navigate, logout]);
+
+  // Move the pre-tab remember-me value onto the Admin tab (one time).
+  useEffect(() => {
+    try {
+      const legacy = localStorage.getItem(LEGACY_REMEMBER_KEY);
+      if (legacy) {
+        if (!localStorage.getItem(rememberKey('admin'))) {
+          localStorage.setItem(rememberKey('admin'), legacy);
+        }
+        localStorage.removeItem(LEGACY_REMEMBER_KEY);
+      }
+    } catch {
+      /* storage unavailable */
+    }
+  }, []);
 
   const switchMode = (next) => {
     setMode(next);
     setError('');
     setSuError('');
+    if (next === 'admin' || next === 'staff') {
+      const saved = readRemembered(next);
+      setUsername(saved);
+      setRememberMe(Boolean(saved));
+      setPassword('');
+    }
   };
 
   const passwordStrength = useMemo(() => {
@@ -90,12 +156,33 @@ const Login = () => {
     setLoading(true);
     try {
       if (rememberMe) {
-        localStorage.setItem(REMEMBER_KEY, username.trim());
+        localStorage.setItem(rememberKey(mode), username.trim());
       } else {
-        localStorage.removeItem(REMEMBER_KEY);
+        localStorage.removeItem(rememberKey(mode));
       }
-      await login(username.trim(), password);
-      navigate('/dashboard');
+
+      const data = await login(username.trim(), password);
+      const role = normalizeRole(data?.role);
+
+      // Tab ↔ role guard: the Admin tab accepts ADMIN only, the Staff tab
+      // accepts every shop-floor role and rejects admin accounts.
+      if (mode === 'admin' && role !== ADMIN_ROLE) {
+        logout();
+        setError('This account is not an admin account. Sign in from the Staff tab.');
+        return;
+      }
+      if (mode === 'staff' && role === ADMIN_ROLE) {
+        logout();
+        setError('Admin accounts must sign in from the Admin tab.');
+        return;
+      }
+      if (mode === 'staff' && !isStaffRole(role)) {
+        logout();
+        setError('Your account has no staff role assigned. Contact the plant admin.');
+        return;
+      }
+
+      navigate(getRoleLanding(role) || '/login', { replace: true });
     } catch (err) {
       const data = err.response?.data;
       setError(typeof data === 'string' ? data : data?.error || 'Login failed. Please check your credentials.');
@@ -127,8 +214,9 @@ const Login = () => {
 
     setSuLoading(true);
     try {
-      await register(suFullName.trim(), suUsername.trim(), suPassword);
-      navigate('/dashboard');
+      const data = await register(suFullName.trim(), suUsername.trim(), suPassword);
+      // New accounts open with shop-floor (WEAVER) access.
+      navigate(getRoleLanding(normalizeRole(data?.role)) || '/login', { replace: true });
     } catch (err) {
       const data = err.response?.data;
       setSuError(typeof data === 'string' ? data : data?.error || 'Sign up failed. Please try again.');
@@ -223,11 +311,20 @@ const Login = () => {
             <button
               type="button"
               role="tab"
-              aria-selected={mode === 'signin'}
-              className={`auth-tab ${mode === 'signin' ? 'active' : ''}`}
-              onClick={() => switchMode('signin')}
+              aria-selected={mode === 'admin'}
+              className={`auth-tab ${mode === 'admin' ? 'active' : ''}`}
+              onClick={() => switchMode('admin')}
             >
-              <LogIn size={15} /> Sign In
+              <ShieldCheck size={15} /> Admin
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={mode === 'staff'}
+              className={`auth-tab ${mode === 'staff' ? 'active' : ''}`}
+              onClick={() => switchMode('staff')}
+            >
+              <HardHat size={15} /> Staff
             </button>
             <button
               type="button"
@@ -238,14 +335,21 @@ const Login = () => {
             >
               <UserPlus size={15} /> Create Account
             </button>
-            <span className={`auth-tab-slider ${mode === 'signup' ? 'right' : ''}`} />
+            <span
+              className={`auth-tab-slider ${mode === 'staff' ? 'mid' : ''} ${mode === 'signup' ? 'right' : ''}`}
+            />
           </div>
 
-          {mode === 'signin' ? (
+          {mode !== 'signup' ? (
             <>
-              <p className="auth-kicker">STAFF ACCESS</p>
-              <h2>Welcome back to the mill</h2>
-              <p className="auth-sub">Sign in with your staff credentials to continue.</p>
+              <p className="auth-kicker">{loginTab.kicker}</p>
+              <h2>{loginTab.heading}</h2>
+              <p className="auth-sub">{loginTab.sub}</p>
+
+              <div className="role-hint">
+                {mode === 'admin' ? <ShieldCheck size={14} /> : <HardHat size={14} />}
+                <span>{loginTab.hint}</span>
+              </div>
 
               <form onSubmit={handleSubmit} noValidate>
                 <label htmlFor="login-username">Username</label>
@@ -255,7 +359,7 @@ const Login = () => {
                     id="login-username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    placeholder="e.g. admin"
+                    placeholder={loginTab.placeholder}
                     autoComplete="username"
                     required
                   />
@@ -299,8 +403,12 @@ const Login = () => {
 
                 {error && <div className="auth-error">{String(error)}</div>}
 
-                <button type="submit" className="auth-submit" disabled={loading || !username.trim() || !password}>
-                  {loading ? 'Signing in…' : 'Sign In to ERP'}
+                <button
+                  type="submit"
+                  className="auth-submit"
+                  disabled={loading || !username.trim() || !password}
+                >
+                  {loading ? 'Signing in…' : (mode === 'admin' ? <><LogIn size={15} /> {loginTab.submitLabel}</> : <><LogIn size={15} /> {loginTab.submitLabel}</>)}
                 </button>
               </form>
             </>

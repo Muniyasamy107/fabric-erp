@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import API from '../../services/api';
+import { getFabricLabel, getFabricName } from '../../utils/fabricFormat';
 import './ScheduleJobModal.css';
 
 const ScheduleJobModal = ({ fabrics = [], looms = [], onClose, onSuccess }) => {
   const [form, setForm] = useState({
     fabricProductId: fabrics[0]?.id || '',
-    fabricProductName: fabrics[0]?.fabricName || fabrics[0]?.name || '',
+    fabricProductName: fabrics[0] ? getFabricName(fabrics[0]) : '',
     assignedLoomNumber: looms[0]?.loomNumber || 'LOOM-A01',
     masterWeaverName: 'Weaver Palani',
     targetMeters: 500.0,
@@ -20,7 +21,7 @@ const ScheduleJobModal = ({ fabrics = [], looms = [], onClose, onSuccess }) => {
       setForm({
         ...form,
         fabricProductId: matched.id,
-        fabricProductName: matched.fabricName || matched.name
+        fabricProductName: getFabricName(matched)
       });
     }
   };
@@ -60,7 +61,7 @@ const ScheduleJobModal = ({ fabrics = [], looms = [], onClose, onSuccess }) => {
               <option value="">-- Choose Fabric Quality --</option>
               {fabrics.map((f) => (
                 <option key={f.id} value={f.id}>
-                  {f.qualityCode || f.itemCode} — {f.fabricName || f.name}
+                  {getFabricLabel(f)}
                 </option>
               ))}
             </select>

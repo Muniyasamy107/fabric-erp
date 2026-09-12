@@ -40,6 +40,17 @@
   overflow-y: auto;
 }
 
+/* Shown when the signed-in role has no module assigned */
+.sidebar-empty-msg {
+  margin: 8px 4px;
+  padding: 12px 14px;
+  border: 1px dashed #3a414b;
+  border-radius: 8px;
+  color: #8b949e;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
 .nav-link {
   display: flex;
   align-items: center;

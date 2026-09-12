@@ -15,7 +15,9 @@ Bro, indha file la **project starting la irunthu ovvoru component, ovvoru form f
 
 **Data flow:** Browser → React page → API call (`/api/...`) → Spring Boot → MySQL → response → page live update.
 
-**Logins:** `admin/admin123` · `supervisor/super123` · `weaver/weaver123` · `dyer/dyer123`
+**Logins:** `admin/admin123` · `supervisor/super123` · `weaver/weaver123` · `dyer/dyer123` · `finisher/finish123` · `fitter/fitter123` · `dispatcher/dispatch123`
+
+**Login page:** `Admin` tab → ADMIN role mattum; `Staff` tab → matta ella roles um. Login session sessionStorage la store aagum — pudhu tab/browser open panna login page varum, same tab refresh la session nikkum.
 
 ---
 

@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { getFabrics } from '../../services/fabricService';
 import { getWholesaleClients, checkoutConsignment } from '../../services/factoryService';
+import {
+  formatCurrency,
+  formatMeters,
+  getFabricCode,
+  getFabricName,
+  getFabricPrice,
+  getFabricStock,
+  getFabricType,
+  getFabricWidth,
+} from '../../utils/fabricFormat';
 import { ShoppingBag, Truck, Check } from 'lucide-react';
 import './DispatchInvoicing.css';
 
@@ -35,13 +45,20 @@ const DispatchInvoicing = () => {
     const existing = cart.find(item => item.fabricProductId === fabric.id);
     if (existing) return;
 
+    // FabricProduct fields: qualityCode / fabricName / wholesalePricePerMeter /
+    // totalStockMeters — read through the shared helpers so legacy aliases
+    // (itemCode / name / pricePerMeter / totalAvailableMeters) also work.
+    const pricePerMeter = getFabricPrice(fabric);
+    const availableMeters = getFabricStock(fabric);
+    const defaultMeters = Math.min(50.0, availableMeters > 0 ? availableMeters : 50.0);
+
     setCart([...cart, {
       fabricProductId: fabric.id,
-      fabricProductName: fabric.name,
-      pricePerMeter: fabric.wholesalePricePerMeter || fabric.pricePerMeter,
-      shippedMeters: 50.0, // Default bulk roll is 50m
-      availableMeters: fabric.totalStockMeters || fabric.totalAvailableMeters,
-      lineTotal: (fabric.wholesalePricePerMeter || fabric.pricePerMeter) * 50.0
+      fabricProductName: getFabricName(fabric),
+      pricePerMeter,
+      shippedMeters: defaultMeters, // Default bulk roll is 50m
+      availableMeters,
+      lineTotal: pricePerMeter * defaultMeters
     }]);
   };
 
@@ -49,7 +66,7 @@ const DispatchInvoicing = () => {
     const updated = [...cart];
     const item = updated[index];
     if (meters > item.availableMeters) {
-      alert(`Insufficient finished stock in warehouse! Only ${item.availableMeters}m available.`);
+      alert(`Insufficient finished stock in warehouse! Only ${formatMeters(item.availableMeters)} available.`);
       return;
     }
     item.shippedMeters = parseFloat(meters) || 0;
@@ -97,12 +114,12 @@ const DispatchInvoicing = () => {
         <div className="disp-grid">
           {fabrics.map((f) => (
             <div key={f.id} className="disp-card" onClick={() => addToCart(f)}>
-              <span className="sku">{f.itemCode}</span>
-              <h3>{f.name}</h3>
-              <p>{f.fabricType} — Width: {f.standardWidthInches || 58}"</p>
+              <span className="sku">{getFabricCode(f)}</span>
+              <h3>{getFabricName(f)}</h3>
+              <p>{getFabricType(f) || 'Fabric'} — Width: {getFabricWidth(f)}"</p>
               <div className="card-ft">
-                <span>₹{f.wholesalePricePerMeter || f.pricePerMeter}/m</span>
-                <strong>{f.totalStockMeters || f.totalAvailableMeters}m stock</strong>
+                <span>{formatCurrency(getFabricPrice(f))}/m</span>
+                <strong>{formatMeters(getFabricStock(f))} stock</strong>
               </div>
             </div>
           ))}
@@ -139,14 +156,14 @@ const DispatchInvoicing = () => {
               <div key={item.fabricProductId} className="cart-roll-item">
                 <div className="info">
                   <strong>{item.fabricProductName}</strong>
-                  <small>₹{item.pricePerMeter}/m</small>
+                  <small>{formatCurrency(item.pricePerMeter)}/m · {formatMeters(item.availableMeters)} in stock</small>
                 </div>
                 <div className="meters">
                   <input type="number" step="10" value={item.shippedMeters} onChange={(e) => updateMeters(index, e.target.value)} />
                   <span>m</span>
                 </div>
                 <div className="tot">
-                  <span>₹{item.lineTotal.toFixed(2)}</span>
+                  <span>{formatCurrency(item.lineTotal)}</span>
                   <button onClick={() => removeFromCart(index)}>✕</button>
                 </div>
               </div>

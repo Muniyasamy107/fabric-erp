@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
 import { createFabric, updateFabric } from '../../services/fabricService';
+import {
+  getFabricCode,
+  getFabricHsn,
+  getFabricLocation,
+  pickNumber,
+  pickText,
+} from '../../utils/fabricFormat';
 import { Layers } from 'lucide-react';
 import './AddFabricModal.css';
 
@@ -7,18 +14,20 @@ const AddFabricModal = ({ fabric, onClose, onSuccess }) => {
   const isEdit = Boolean(fabric?.id);
 
   const [formData, setFormData] = useState({
-    qualityCode: fabric?.qualityCode || fabric?.itemCode || '',
-    fabricName: fabric?.fabricName || fabric?.name || '',
+    // Canonical FabricProduct fields first, legacy aliases as fallback
+    // (see utils/fabricFormat.js) so editing an old record never blanks a field.
+    qualityCode: getFabricCode(fabric),
+    fabricName: pickText(fabric?.fabricName, fabric?.name),
     fabricType: fabric?.fabricType || 'Mulberry Silk',
     gsm: fabric?.gsm ?? '',
-    warehouseBinLocation: fabric?.warehouseBinLocation || fabric?.rackLocation || 'Rack A-01',
-    hsnCode: fabric?.hsnCode || '5007',
+    warehouseBinLocation: getFabricLocation(fabric),
+    hsnCode: getFabricHsn(fabric),
     seasonCollection: fabric?.seasonCollection || 'Wedding 2026',
     recommendedGarment: fabric?.recommendedGarment || '3-Piece Tuxedo',
     imageUrl: fabric?.imageUrl || '',
-    wholesalePricePerMeter: fabric?.wholesalePricePerMeter ?? fabric?.pricePerMeter ?? '',
-    totalStockMeters: fabric?.totalStockMeters ?? fabric?.totalAvailableMeters ?? '',
-    minStockAlert: fabric?.minStockAlert ?? 10,
+    wholesalePricePerMeter: pickNumber([fabric?.wholesalePricePerMeter, fabric?.pricePerMeter], ''),
+    totalStockMeters: pickNumber([fabric?.totalStockMeters, fabric?.totalAvailableMeters], ''),
+    minStockAlert: pickNumber([fabric?.minStockAlert, fabric?.reorderAlertLevel], 10),
     gstRate: fabric?.gstRate ?? 5,
     isRemnant: fabric?.isRemnant || false,
     remnantDiscountPct: fabric?.remnantDiscountPct ?? 0
