@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { loginApi } from '../services/authService';
+import { loginApi, registerApi } from '../services/authService';
 
 const AuthContext = createContext(null);
 
@@ -10,13 +10,22 @@ export const AuthProvider = ({ children }) => {
     return raw ? JSON.parse(raw) : null;
   });
 
+  const persistSession = (data) => {
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data));
+    setToken(data.token);
+    setUser(data);
+    return data;
+  };
+
   const login = async (username, password) => {
     const res = await loginApi(username, password);
-    localStorage.setItem('token', res.data.token);
-    localStorage.setItem('user', JSON.stringify(res.data));
-    setToken(res.data.token);
-    setUser(res.data);
-    return res.data;
+    return persistSession(res.data);
+  };
+
+  const register = async (fullName, username, password) => {
+    const res = await registerApi(fullName, username, password);
+    return persistSession(res.data);
   };
 
   const logout = () => {
@@ -27,7 +36,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, user, login, logout }}>
+    <AuthContext.Provider value={{ token, user, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

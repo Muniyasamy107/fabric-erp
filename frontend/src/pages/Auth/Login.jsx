@@ -1,19 +1,55 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Lock, User as UserIcon, KeyRound, ShieldCheck, X, CheckCircle2 } from 'lucide-react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+  Lock,
+  User as UserIcon,
+  KeyRound,
+  ShieldCheck,
+  X,
+  CheckCircle2,
+  Eye,
+  EyeOff,
+  UserPlus,
+  LogIn,
+  IdCard,
+  Factory
+} from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import API from '../../services/api';
 import './Login.css';
 
+const REMEMBER_KEY = 'kak rememberedUsername';
+
+const brandHighlights = [
+  'Live loom telemetry & shift OEE tracking',
+  'Dye house lab, finishing & quality workflows',
+  'Gate pass, dispatch & export documentation'
+];
+
 const Login = () => {
-  const { login } = useAuth();
+  const { login, register, token } = useAuth();
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
+
+  const [mode, setMode] = useState('signin'); // signin | signup
+
+  // -------- Sign in state --------
+  const [username, setUsername] = useState(() => localStorage.getItem(REMEMBER_KEY) || '');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(() => Boolean(localStorage.getItem(REMEMBER_KEY)));
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Forgot password modal state
+  // -------- Sign up state --------
+  const [suFullName, setSuFullName] = useState('');
+  const [suUsername, setSuUsername] = useState('');
+  const [suPassword, setSuPassword] = useState('');
+  const [suConfirm, setSuConfirm] = useState('');
+  const [suShowPassword, setSuShowPassword] = useState(false);
+  const [suError, setSuError] = useState('');
+  const [suLoading, setSuLoading] = useState(false);
+
+  // -------- Forgot password modal state --------
   const [showForgot, setShowForgot] = useState(false);
   const [fpStep, setFpStep] = useState('user'); // user -> verify -> done
   const [fpUsername, setFpUsername] = useState('');
@@ -22,18 +58,82 @@ const Login = () => {
   const [fpTempPassword, setFpTempPassword] = useState('');
   const [fpLoading, setFpLoading] = useState(false);
 
+  // Already authenticated users should not sit on the auth page
+  useEffect(() => {
+    if (token) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [token, navigate]);
+
+
+  const switchMode = (next) => {
+    setMode(next);
+    setError('');
+    setSuError('');
+  };
+
+  const passwordStrength = useMemo(() => {
+    if (!suPassword) return null;
+    let score = 0;
+    if (suPassword.length >= 6) score += 1;
+    if (suPassword.length >= 10) score += 1;
+    if (/[A-Z]/.test(suPassword) && /[a-z]/.test(suPassword)) score += 1;
+    if (/\d/.test(suPassword) || /[^A-Za-z0-9]/.test(suPassword)) score += 1;
+    if (score <= 1) return { label: 'Weak', cls: 'weak' };
+    if (score <= 3) return { label: 'Good', cls: 'good' };
+    return { label: 'Strong', cls: 'strong' };
+  }, [suPassword]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
     try {
-      await login(username, password);
+      if (rememberMe) {
+        localStorage.setItem(REMEMBER_KEY, username.trim());
+      } else {
+        localStorage.removeItem(REMEMBER_KEY);
+      }
+      await login(username.trim(), password);
       navigate('/dashboard');
     } catch (err) {
       const data = err.response?.data;
       setError(typeof data === 'string' ? data : data?.error || 'Login failed. Please check your credentials.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    setSuError('');
+
+    if (suFullName.trim().length < 3) {
+      setSuError('Please enter your full name as per HR records.');
+      return;
+    }
+    if (!/^[A-Za-z0-9._-]{3,30}$/.test(suUsername.trim())) {
+      setSuError('Username must be 3-30 characters (letters, numbers, dot, dash, underscore).');
+      return;
+    }
+    if (suPassword.length < 6) {
+      setSuError('Password must be at least 6 characters long.');
+      return;
+    }
+    if (suPassword !== suConfirm) {
+      setSuError('Passwords do not match. Please re-enter.');
+      return;
+    }
+
+    setSuLoading(true);
+    try {
+      await register(suFullName.trim(), suUsername.trim(), suPassword);
+      navigate('/dashboard');
+    } catch (err) {
+      const data = err.response?.data;
+      setSuError(typeof data === 'string' ? data : data?.error || 'Sign up failed. Please try again.');
+    } finally {
+      setSuLoading(false);
     }
   };
 
@@ -79,68 +179,218 @@ const Login = () => {
   };
 
   return (
-    <div className="login-page">
-      {/* Back to public website */}
-      <Link to="/" className="login-back-btn">
-        <ArrowLeft size={16} /> Back to Website
-      </Link>
+    <div className="auth-page">
+      {/* ---------- Left branding panel ---------- */}
+      <div className="auth-brand-panel">
+        <div className="auth-brand-top">
+          <div className="auth-logo">
+            <span className="auth-logo-mark"><Factory size={20} /></span>
+            <span className="auth-logo-text">KAK<span> Textile Processing</span></span>
+          </div>
+        </div>
 
-      {/* Left branding panel */}
-      <div className="login-brand-panel">
         <div className="brand-inner">
-          <span className="brand-kicker">KAK TEXTILE PROCESSING · TIRUPUR</span>
-          <h1>Textile Processing<br />& Manufacturing ERP</h1>
+          <span className="brand-kicker">MILL MANAGEMENT SUITE · TIRUPUR</span>
+          <h1>Textile Processing<br />&amp; Manufacturing ERP</h1>
           <p>
-            Integrated mill management — weaving, dyeing, finishing,
-            quality and dispatch with live loom telemetry.
+            One secure workspace for weaving, dyeing, finishing, quality and
+            dispatch — from grey yarn inward to export gate pass.
           </p>
+
+          <ul className="brand-points">
+            {brandHighlights.map((point) => (
+              <li key={point}>
+                <CheckCircle2 size={15} /> {point}
+              </li>
+            ))}
+          </ul>
+
           <div className="brand-badges">
             <span><ShieldCheck size={14} /> ISO 9001:2015</span>
             <span><ShieldCheck size={14} /> OEKO-TEX® 100</span>
           </div>
         </div>
+
+        <div className="auth-brand-foot">
+          ISO-class process control · Secured staff access only
+        </div>
       </div>
 
-      {/* Right login panel */}
-      <div className="login-form-panel">
-        <div className="login-card">
-          <p className="login-kicker">STAFF ACCESS</p>
-          <h2>Sign in to the Mill</h2>
-
-          <form onSubmit={handleSubmit}>
-            <label>Username</label>
-            <div className="input-icon-wrap">
-              <UserIcon size={15} />
-              <input
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="e.g. admin"
-                required
-              />
-            </div>
-
-            <label>Password</label>
-            <div className="input-icon-wrap">
-              <Lock size={15} />
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Your password"
-                required
-              />
-            </div>
-
-            {error && <div className="login-error">{String(error)}</div>}
-
-            <button type="submit" className="login-submit" disabled={loading}>
-              {loading ? 'Signing in...' : 'Enter Mill'}
+      {/* ---------- Right auth panel ---------- */}
+      <div className="auth-form-panel">
+        <div className="auth-card">
+          <div className="auth-tabs" role="tablist">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={mode === 'signin'}
+              className={`auth-tab ${mode === 'signin' ? 'active' : ''}`}
+              onClick={() => switchMode('signin')}
+            >
+              <LogIn size={15} /> Sign In
             </button>
-          </form>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={mode === 'signup'}
+              className={`auth-tab ${mode === 'signup' ? 'active' : ''}`}
+              onClick={() => switchMode('signup')}
+            >
+              <UserPlus size={15} /> Create Account
+            </button>
+            <span className={`auth-tab-slider ${mode === 'signup' ? 'right' : ''}`} />
+          </div>
 
-          <button type="button" className="forgot-link" onClick={openForgot}>
-            <KeyRound size={13} /> Forgot password?
-          </button>
+          {mode === 'signin' ? (
+            <>
+              <p className="auth-kicker">STAFF ACCESS</p>
+              <h2>Welcome back to the mill</h2>
+              <p className="auth-sub">Sign in with your staff credentials to continue.</p>
+
+              <form onSubmit={handleSubmit} noValidate>
+                <label htmlFor="login-username">Username</label>
+                <div className="input-icon-wrap">
+                  <UserIcon size={15} />
+                  <input
+                    id="login-username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="e.g. admin"
+                    autoComplete="username"
+                    required
+                  />
+                </div>
+
+                <label htmlFor="login-password">Password</label>
+                <div className="input-icon-wrap">
+                  <Lock size={15} />
+                  <input
+                    id="login-password"
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Your password"
+                    autoComplete="current-password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="eye-toggle"
+                    onClick={() => setShowPassword((v) => !v)}
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                  </button>
+                </div>
+
+                <div className="auth-row">
+                  <label className="remember-wrap">
+                    <input
+                      type="checkbox"
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                    />
+                    Remember me
+                  </label>
+                  <button type="button" className="forgot-link" onClick={openForgot}>
+                    <KeyRound size={13} /> Forgot password?
+                  </button>
+                </div>
+
+                {error && <div className="auth-error">{String(error)}</div>}
+
+                <button type="submit" className="auth-submit" disabled={loading || !username.trim() || !password}>
+                  {loading ? 'Signing in…' : 'Sign In to ERP'}
+                </button>
+              </form>
+            </>
+          ) : (
+            <>
+              <p className="auth-kicker">NEW STAFF ACCOUNT</p>
+              <h2>Create your account</h2>
+              <p className="auth-sub">Accounts open with shop-floor access. The plant admin can re-assign your role after signup.</p>
+
+              <form onSubmit={handleSignup} noValidate>
+                <label htmlFor="su-fullname">Full Name</label>
+                <div className="input-icon-wrap">
+                  <IdCard size={15} />
+                  <input
+                    id="su-fullname"
+                    value={suFullName}
+                    onChange={(e) => setSuFullName(e.target.value)}
+                    placeholder="e.g. Kumar Selvam"
+                    autoComplete="name"
+                    required
+                  />
+                </div>
+
+                <label htmlFor="su-username">Username</label>
+                <div className="input-icon-wrap">
+                  <UserIcon size={15} />
+                  <input
+                    id="su-username"
+                    value={suUsername}
+                    onChange={(e) => setSuUsername(e.target.value)}
+                    placeholder="e.g. kumar.s"
+                    autoComplete="username"
+                    required
+                  />
+                </div>
+
+                <label htmlFor="su-password">Password</label>
+                <div className="input-icon-wrap">
+                  <Lock size={15} />
+                  <input
+                    id="su-password"
+                    type={suShowPassword ? 'text' : 'password'}
+                    value={suPassword}
+                    onChange={(e) => setSuPassword(e.target.value)}
+                    placeholder="Minimum 6 characters"
+                    autoComplete="new-password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="eye-toggle"
+                    onClick={() => setSuShowPassword((v) => !v)}
+                    aria-label={suShowPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {suShowPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                  </button>
+                </div>
+                {passwordStrength && (
+                  <div className={`strength-meter ${passwordStrength.cls}`}>
+                    <span className="strength-bar"><i /></span>
+                    <span className="strength-label">{passwordStrength.label}</span>
+                  </div>
+                )}
+
+                <label htmlFor="su-confirm">Confirm Password</label>
+                <div className="input-icon-wrap">
+                  <Lock size={15} />
+                  <input
+                    id="su-confirm"
+                    type={suShowPassword ? 'text' : 'password'}
+                    value={suConfirm}
+                    onChange={(e) => setSuConfirm(e.target.value)}
+                    placeholder="Re-enter password"
+                    autoComplete="new-password"
+                    required
+                  />
+                </div>
+
+                {suError && <div className="auth-error">{suError}</div>}
+
+                <button
+                  type="submit"
+                  className="auth-submit"
+                  disabled={suLoading || !suFullName.trim() || !suUsername.trim() || !suPassword || !suConfirm}
+                >
+                  {suLoading ? 'Creating account…' : 'Create Account & Sign In'}
+                </button>
+              </form>
+            </>
+          )}
         </div>
       </div>
 
@@ -168,9 +418,9 @@ const Login = () => {
                   placeholder="e.g. weaver"
                   required
                 />
-                {fpError && <div className="login-error">{fpError}</div>}
+                {fpError && <div className="auth-error">{fpError}</div>}
                 <button type="submit" disabled={fpLoading}>
-                  {fpLoading ? 'Checking...' : 'Continue'}
+                  {fpLoading ? 'Checking…' : 'Continue'}
                 </button>
               </form>
             )}
@@ -188,9 +438,9 @@ const Login = () => {
                   placeholder="e.g. Loom Operator Weaver"
                   required
                 />
-                {fpError && <div className="login-error">{fpError}</div>}
+                {fpError && <div className="auth-error">{fpError}</div>}
                 <button type="submit" disabled={fpLoading}>
-                  {fpLoading ? 'Verifying...' : 'Verify & Get One-Time Password'}
+                  {fpLoading ? 'Verifying…' : 'Verify & Get One-Time Password'}
                 </button>
               </form>
             )}

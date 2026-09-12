@@ -1,6 +1,7 @@
 package com.fabricerp.erp.controller;
 
 import com.fabricerp.erp.dto.request.LoginRequest;
+import com.fabricerp.erp.dto.request.RegisterRequest;
 import com.fabricerp.erp.dto.response.AuthResponse;
 import com.fabricerp.erp.entity.SystemNotification;
 import com.fabricerp.erp.entity.User;
@@ -45,6 +46,53 @@ public class AuthController {
 
         String token = jwtUtil.generateToken(user.getUsername(), user.getRole());
         return ResponseEntity.ok(new AuthResponse(token, user.getUsername(), user.getFullName(), user.getRole()));
+    }
+
+    /**
+     * Self-service staff signup from the login page. New accounts always
+     * start on the shop-floor WEAVER role — the plant admin can re-assign
+     * roles later from Shift Staff. Returns a token so the user is signed
+     * in immediately after registering.
+     */
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+        String username = request.getUsername() != null ? request.getUsername().trim() : "";
+        String fullName = request.getFullName() != null ? request.getFullName().trim() : "";
+        String password = request.getPassword() != null ? request.getPassword() : "";
+
+        if (fullName.length() < 3) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", "Please enter your full name (minimum 3 characters)."));
+        }
+        if (!username.matches("^[A-Za-z0-9._-]{3,30}$")) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", "Username must be 3-30 characters (letters, numbers, dot, dash, underscore)."));
+        }
+        if (password.length() < 6) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", "Password must be at least 6 characters long."));
+        }
+        if (userRepository.findByUsername(username).isPresent()) {
+            return ResponseEntity.status(409)
+                    .body(Map.of("error", "This username is already taken. Try another one."));
+        }
+
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setFullName(fullName);
+        user.setRole("WEAVER");
+        user.setActive(true);
+        userRepository.save(user);
+
+        notifyAdmins("🧵 New Staff Signup — " + fullName,
+                "A new account '" + username + "' was created from the login page with WEAVER access. "
+                        + "Review the role from Shift Staff if a different designation is needed.",
+                "INFO", "/staff");
+
+        String token = jwtUtil.generateToken(user.getUsername(), user.getRole());
+        return ResponseEntity.status(201)
+                .body(new AuthResponse(token, user.getUsername(), user.getFullName(), user.getRole()));
     }
 
     /**

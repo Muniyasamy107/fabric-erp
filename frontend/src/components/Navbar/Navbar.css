@@ -216,27 +216,6 @@
   font-size: 11px;
   color: #d4af37;
 }
-/* Link back to the public company website */
-.navbar-website-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: #d4af37;
-  border: 1px solid rgba(212, 175, 55, 0.4);
-  background: transparent;
-  font-size: 12px;
-  font-weight: 700;
-  padding: 7px 12px;
-  border-radius: 6px;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background 0.2s;
-}
-
-.navbar-website-link:hover {
-  background: rgba(212, 175, 55, 0.12);
-}
-
 /* Responsive search so navbar never overflows */
 @media (max-width: 1250px) {
   .navbar-search input { width: 300px; }

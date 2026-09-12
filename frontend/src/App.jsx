@@ -1,11 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import ProtectedRoute from './routes/ProtectedRoute';
 import Sidebar from './components/Sidebar/Sidebar';
 import Navbar from './components/Navbar/Navbar';
 import Login from './pages/Auth/Login';
-import Landing from './pages/Landing/Landing';
 import Dashboard from './pages/Dashboard/Dashboard';
 import FabricList from './pages/Inventory/FabricList';
 import Lookbook from './pages/Inventory/Lookbook';
@@ -85,12 +84,17 @@ function MainLayout() {
   );
 }
 
+function RootRedirect() {
+  const { token } = useAuth();
+  return <Navigate to={token ? '/dashboard' : '/login'} replace />;
+}
+
 function App() {
   return (
     <Router>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<Landing />} />
+          <Route path="/" element={<RootRedirect />} />
           <Route path="/login" element={<Login />} />
           <Route
             path="/*"
@@ -100,7 +104,7 @@ function App() {
               </ProtectedRoute>
             }
             />
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<RootRedirect />} />
           </Routes>
       </AuthProvider>
     </Router>
