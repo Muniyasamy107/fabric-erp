@@ -34,18 +34,45 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        User user = userRepository.findByUsername(request.getUsername()).orElse(null);
+        String username = request.getUsername() != null ? request.getUsername().trim() : "";
+        String password = request.getPassword() != null ? request.getPassword() : "";
 
-        if (user == null || !passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+        User user = userRepository.findByUsername(username).orElse(null);
+
+        if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
             return ResponseEntity.status(401).body("Invalid username or password");
         }
 
-        if (user.getActive() != null && !user.getActive()) {
-            return ResponseEntity.status(403).body("Account is disabled");
+        // Demo / seed accounts: correct password always re-enables the row.
+        // This recovers from an accidental "Disable" click in Shift Staff without
+        // needing a DB console on Render.
+        if (!user.isAccountEnabled() && isSeedAccount(username)) {
+            user.setActive(true);
+            userRepository.save(user);
+        }
+
+        // Null active is treated as enabled (legacy rows / BIT mapping quirks).
+        if (!user.isAccountEnabled()) {
+            return ResponseEntity.status(403).body("Account is disabled. Ask the plant admin to re-enable it from Shift Staff.");
+        }
+
+        // Heal rows that still carry a null flag so the next login is clean.
+        if (user.getActive() == null) {
+            user.setActive(true);
+            userRepository.save(user);
         }
 
         String token = jwtUtil.generateToken(user.getUsername(), user.getRole());
         return ResponseEntity.ok(new AuthResponse(token, user.getUsername(), user.getFullName(), user.getRole()));
+    }
+
+    /** Built-in mill logins documented in README — always recoverable. */
+    private static boolean isSeedAccount(String username) {
+        if (username == null) return false;
+        return switch (username.trim().toLowerCase()) {
+            case "admin", "supervisor", "weaver", "dyer", "finisher", "fitter", "dispatcher" -> true;
+            default -> false;
+        };
     }
 
     /**

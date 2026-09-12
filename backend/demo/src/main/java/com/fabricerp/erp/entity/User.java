@@ -21,7 +21,25 @@ public class User {
     @Column(nullable = false)
     private String role; // ADMIN, SUPERVISOR, WEAVER, DYEING_MASTER, FINISHING_MASTER, FITTER, DISPATCHER
 
+    /**
+     * TINYINT(1) avoids MySQL BIT(1) quirks where some drivers map the value
+     * incorrectly and leave the account looking disabled on login.
+     */
+    @Column(nullable = false, columnDefinition = "TINYINT(1) DEFAULT 1")
     private Boolean active = true;
+
+    @PrePersist
+    @PreUpdate
+    private void ensureActiveDefault() {
+        if (this.active == null) {
+            this.active = true;
+        }
+    }
+
+    /** Treat null the same as enabled — never lock a row out by accident. */
+    public boolean isAccountEnabled() {
+        return active == null || Boolean.TRUE.equals(active);
+    }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

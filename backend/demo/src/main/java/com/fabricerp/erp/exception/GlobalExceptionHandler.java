@@ -36,7 +36,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGeneric(Exception ex) {
+        // Always log the real cause on the server (Render logs) so deploy issues are debuggable.
+        ex.printStackTrace();
+        String detail = ex.getMessage() != null ? ex.getMessage() : ex.getClass().getSimpleName();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", "Something went wrong on the server. Please try again."));
+                .body(Map.of(
+                        "error", "Something went wrong on the server. Please try again.",
+                        "detail", detail
+                ));
     }
 }
