@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { getUnreadNotifications, markNotificationRead, markAllNotificationsRead } from '../../services/notificationService';
 import { useAuth } from '../../context/AuthContext';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   Bell,
   UserCircle,
@@ -11,8 +11,7 @@ import {
   Package,
   Globe,
   CheckCheck,
-  Check,
-  X
+  Check
 } from 'lucide-react';
 import './Navbar.css';
 
@@ -107,11 +106,6 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-profile">
-        {/* Public company website link */}
-        <Link to="/" className="navbar-website-link" title="View public company website">
-          <Globe size={15} /> Company Website
-        </Link>
-
         {/* Notification Bell Container */}
         <div className="notification-bell-container" ref={dropdownRef}>
           <button

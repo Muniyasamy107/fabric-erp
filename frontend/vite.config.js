@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: true,
+    allowedHosts: ['.e2b.app', 'localhost'],
     proxy: {
       // Forward API calls to the Spring Boot backend during development
       '/api': {

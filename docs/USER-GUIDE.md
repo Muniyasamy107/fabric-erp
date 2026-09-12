@@ -36,24 +36,21 @@ Bro, indha file la **project starting la irunthu ovvoru component, ovvoru form f
 
 ---
 
-## 3️⃣ PUBLIC WEBSITE (`/`)
+## 3️⃣ LOGIN & SIGNUP PAGE (`/login`)
 
-Client paaka — hero, fabric collections (21 photos), process, certifications, **contact (clickable phone/email)**.
-"Staff Login" → ERP ku; "Company Website" (navbar) → inga back varalam.
+App open aana odane idhu dhaan varum — website illa, direct staff access.
 
----
-
-## 4️⃣ LOGIN PAGE
-
-| Button | Purpose |
-|--------|---------|
-| ← Back to Website | Front page ku pogalam |
-| Enter Mill | Username+password check panni dashboard open |
+| Element | Purpose |
+|---------|---------|
+| Sign In tab | Existing staff login |
+| Create Account tab | Pudhu staff signup — account **WEAVER** role la create aagi udane login aagum (admin role ah Shift Staff la maathalam) |
+| Remember me | Username ah browser la save pannum |
+| Sign In to ERP | Username+password check panni dashboard open |
 | Forgot password? | Username → registered full name → **one-time password (RF-xxxxxx)** |
 
 ---
 
-## 5️⃣ MODULE BY MODULE — PURPOSE + FORM INPUTS
+## 4️⃣ MODULE BY MODULE — PURPOSE + FORM INPUTS
 
 ### 📊 MILL DASHBOARD
 **Purpose:** One-glance factory status. Revenue, meters sold, active looms, **stock alerts list**, charts.
@@ -291,7 +288,7 @@ Fields: Type `Dispatch`, Vehicle `TN 39 AB 1234`, Transporter, Driver+phone, Inv
 
 ---
 
-## 6️⃣ REAL-TIME ENGINES (background la automatic)
+## 5️⃣ REAL-TIME ENGINES (background la automatic)
 
 | Engine | Frequency | Enna pannum |
 |--------|-----------|-------------|
@@ -303,7 +300,7 @@ Fields: Type `Dispatch`, Vehicle `TN 39 AB 1234`, Transporter, Driver+phone, Inv
 | Housekeeping | 1h | old alerts auto-archive/delete |
 | All pages | 10–45s | auto refresh |
 
-## 7️⃣ BELL NOTIFICATIONS
+## 6️⃣ BELL NOTIFICATIONS
 🔴 CRITICAL (breakdown) · 🟡 WARNING (low stock) · 🔵 INFO. Click → page ku pogum. Mark All Read button. Badge 99+ cap.
 
 ---

@@ -1,6 +1,6 @@
 #  KAK Textile Processing — Integrated Fabric Manufacturing ERP
 
-A complete digital mill for a real fabric manufacturing company: **yarn procurement → weaving → dyeing & finishing → quality → packing → wholesale & export dispatch → day-end settlement**, with a public company website for clients.
+A complete digital mill for a real fabric manufacturing company: **yarn procurement → weaving → dyeing & finishing → quality → packing → wholesale & export dispatch → day-end settlement**, behind a secure staff sign-in / signup screen.
 
 ## ⚡ Real-Time Engines (built-in)
 
@@ -23,7 +23,7 @@ A complete digital mill for a real fabric manufacturing company: **yarn procurem
 
 ## ✨ Modules
 
-**Public website** — hero, collections, process, certifications, contact (`/`)
+**Staff authentication** — professional sign-in & create-account screen, remember-me, one-time password recovery (`/login`)
 
 **Mill operations**
 - Mill Dashboard (live KPIs, OEE trends, energy distribution)
@@ -88,7 +88,7 @@ npm run dev
 ```bash
 DB_PASSWORD=YourStrongPassword JWT_SECRET=YourLongRandomSecret docker compose up --build -d
 ```
-- Website + ERP → `http://localhost` (Nginx serves React and proxies `/api` to the backend)
+- ERP → `http://localhost` (Nginx serves React and proxies `/api` to the backend)
 - MySQL data persists in the `db-data` volume — take regular backups.
 - Put Nginx behind TLS (HTTPS) at your domain.
 
